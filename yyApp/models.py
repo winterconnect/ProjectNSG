@@ -14,7 +14,7 @@ class Member(models.Model):
 
 
 class Board(models.Model):
-    memberID = models.ForeignKey('Member', on_delete=models.SET_NULL)
+    memberID = models.ForeignKey('Member', on_delete=models.SET_DEFAULT, default=' ')
     date = models.DateTimeField(auto_now=True)
     title = models.CharField(max_length=200)
     content = models.CharField(max_length=200, blank=True)
@@ -23,7 +23,7 @@ class Board(models.Model):
 
 
 class Comment(models.Model):
-    memberID = models.ForeignKey('Member', on_delete=models.SET_NULL)
+    memberID = models.ForeignKey('Member', on_delete=models.SET_DEFAULT, default=' ')
     date = models.DateTimeField(auto_now=True)
     content = models.CharField(max_length=4000)
     postID = models.ForeignKey('Board', on_delete=models.CASCADE)
@@ -41,6 +41,6 @@ class Pet(models.Model):
     petColor = models.CharField(max_length=50, blank=True)
     petImage = models.ImageField(upload_to='images/')  # 'image/': 업로드된 사진을 저장할 디렉토리를 임시로 지정
     petAdoption = models.BooleanField(default=False)  # 입양 완료 여부
-    memberID = models.ForeignKey('Member', on_delete=models.SET_NULL)
-    postID = models.OneToOneField('Board', on_delete=models.SET_NULL)
+    memberID = models.ForeignKey('Member', on_delete=models.SET_DEFAULT, default=' ')
+    postID = models.OneToOneField('Board', on_delete=models.SET_DEFAULT, default=' ')
 

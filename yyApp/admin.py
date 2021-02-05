@@ -1,5 +1,5 @@
 from django.contrib import admin
-from yyApp import Member, Board, Comment, Pet
+from yyApp.models import Member, Board, Comment, Pet
 
 # Register your models here.
 admin.site.register(Member)
