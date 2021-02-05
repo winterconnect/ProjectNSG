@@ -1,0 +1,50 @@
+body {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  padding: 8px 12px;
+}
+
+.navbar__logo{
+  color: black;
+}
+
+.navbar__menu {
+  display: flex;
+  list-style: none;
+  padding-left: 0;
+}
+
+.navbar__menu li {
+  padding: 8px 12px;
+}
+
+.navbar__signin {
+  display: flex;
+  list-style: none;
+  padding-left: 0px;
+}
+
+.navbar__signin li {
+  padding:8px 12px;
+}
+
+.navbar__menu li:hover {
+  background-color: gray;
+  border-radius: 4px;
+}
+
+footer {
+  background-color: gray;
+  text-align: center;
+}
