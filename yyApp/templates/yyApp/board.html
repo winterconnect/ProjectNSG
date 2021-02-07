@@ -17,11 +17,12 @@
     gap: 20px;   
 }
 
-
 .pet_info {
     display:grid;
-    gap: 10px;
-    margin: 20px; 
+    margin: 20px;
+    align-items: center;
+    grid-template-rows: 400px auto;    
+
 }
 
 .first:hover {
@@ -127,27 +128,22 @@ function myFunction() {
 
 
     <!-- LIST -->
-    <ul class="pet_list">
-        <li class="pet_info">
+    <div class="pet_list">
+        <div class="pet_info">
             <div class="photo">
-                <img src="/Users/winter/workspace/project/web_page/ProjectNSG/yyApp/templates/yyApp/dog1.jpg" width = 400px height = 400px>                            
+                <img src="/Users/winter/workspace/project/web_page/ProjectNSG/yyApp/templates/yyApp/dog1.jpg" width = 400px>                            
             </div>
             <div class="txt">
                 <span class="name"> 멍멍이 </span> | <span class="birth">2019</span> | <span class = "sex"> 암컷 </span> <br>
                 <span class = "species"> 믹스견</span>                            
             </div>
-        </li>
+        </div>
 
         <li class="pet_info">
             <div class="photo">
-                <div class="thumbnail">
-                        <a href="/Users/winter/workspace/project/web_page/ProjectNSG/yyApp/templates/yyApp/dog2.jpg" target="_blank" title="클릭시 새창이 열립니다." onclick="showImgWin('/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302656.jpg','','width=129,height=109'); return false;" onkeypress="this.onclick(); return false;">
-                            <img src="/Users/winter/workspace/project/web_page/ProjectNSG/yyApp/templates/yyApp/dog2.jpg" width = 400px>
-                        </a>                                                  
-                </div>
-                <a href="#moreBtn" class="moreBtn" onclick="javascript:moveUrl('447505202100088');" title="경북-경주-2021-00080 자세히 보기">자세히 보기</a>
+                <img src="/Users/winter/workspace/project/web_page/ProjectNSG/yyApp/templates/yyApp/dog2.jpg" width = 400px>                                                 
             </div>
-            <div>
+            <div class="txt">
                 <span class="name"> 왈왈이 </span> | <span class="birth">2020</span> | <span class = "sex"> 수컷 </span> <br>
                 <span class = "species"> 믹스견</span>  
             </div>
@@ -171,10 +167,8 @@ function myFunction() {
                 <a href="#moreBtn" class="moreBtn" onclick="javascript:moveUrl('447505202100087');" title="경북-경주-2021-00079 자세히 보기">자세히 보기</a>
             </div>
             <div class="txt">
-                <dl><dt>이름</dt><dd>2021-02-05</dd></dl>
-                <dl><dt>나이(생년)</dt><dd>2019</dd></dl>                            
-                <dl><dt>성별</dt><dd>암컷</dd></dl>
-                <dl><dt>품종</dt><dd>믹스견</dd></dl>
+                <span class="name"> 뭉뭉이 </span> | <span class="birth">2020</span> | <span class = "sex"> 수컷 </span> <br>
+                <span class = "species"> 믹스견</span>  
             </div>
         </li>
         
@@ -326,34 +320,8 @@ function myFunction() {
                 <dl><dt>성별</dt><dd>암컷</dd></dl>
                 <dl><dt>품종</dt><dd>믹스견</dd></dl>
             </div>
-        </li>
-        
-        <li class="last">
-            <div class="photo">
-                <div class="thumbnail">
-                    
-                        
-                        
-                        
-                        <a href="/front/fileMng/imageView.do?f=/files/shelter/2021/01/202102050902278.jpg" target="_blank" title="클릭시 새창이 열립니다." onclick="showImgWin('/front/fileMng/imageView.do?f=/files/shelter/2021/01/202102050902278.jpg','','width=129,height=109'); return false;" onkeypress="this.onclick(); return false;">
-                            <img src="/front/fileMng/imageView.do?f=/files/shelter/2021/01/202102050902278_s.jpg" alt="보호중동물사진 공고번호-경북-경산-2021-00077">
-                        </a>
-                        
-                        
-                    
-                                                    
-                </div>
-                <a href="#moreBtn" class="moreBtn" onclick="javascript:moveUrl('447513202100077');" title="경북-경산-2021-00077 자세히 보기">자세히 보기</a>
-            </div>
-            <div class="txt">
-                <dl><dt>이름</dt><dd>2021-02-05</dd></dl>
-                <dl><dt>나이(생년)</dt><dd>2019</dd></dl>                            
-                <dl><dt>성별</dt><dd>암컷</dd></dl>
-                <dl><dt>품종</dt><dd>믹스견</dd></dl>
-            </div>
-        </li>
-        
-    </ul>
+        </li>        
+    </div>
     
     
 
