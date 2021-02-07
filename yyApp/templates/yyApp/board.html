@@ -1,0 +1,471 @@
+<!-- last modified: Feb 7, 12:25-->
+
+
+<!DOCTYPE html>
+<html lang = "ko">
+<head>
+
+
+</head>
+
+
+<style>
+.list {
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+</style>
+
+
+<body>
+
+
+
+    <div id="content"> 
+
+        <!-- center 시작 -->
+        <div id="sub_con">
+
+            <!-- 콘텐츠 영역  적용하세요 시작 -->
+        <form id="searchList" name="searchList" action="/front/awtis/protection/protectionList.do" method="get" onsubmit="return false;">
+        <input type="hidden" name="boardId" value="">
+        <input type="hidden" name="page" id="page" value="1">
+        <input type="hidden" name="pageSize" value="0">
+        <input type="hidden" id="desertionNo" name="desertionNo" value="">
+        <input type="hidden" id="menuNo" name="menuNo" value="1000000060">
+
+
+            <!-- SEARCH -->
+            <div class="searchArea mb20">
+                <h4 class="hide">검색영역</h4>
+                <!-- <p class="search_ex mb10">날짜 입력시 다음과 같이 입력해주세요. 예) 2011-01-01</p>-->              
+                <ul class="searchList">
+                    <li class="first">
+                        <dl>
+                            <dt><label for="searchSDate">날짜</label></dt>
+                            <dd>
+                                <input type="date" name="searchSDate" id="searchSDate" class="inputDate" title="시작일" onblur="$('.calendar').hide();" maxlength="10/"> ~ <input type="date" name="searchEDate" id="searchEDate" title="마감일" class="inputDate" onblur="$('.calendar').hide();" maxlength="10/">
+                                (날짜는 접수일 기준입니다)
+                            </dd>
+                        </dl>
+                    </li>
+                    <li>
+                        <dl>
+                            <dt><label for="searchUprCd">시도</label></dt>
+                            <dd>
+                                <select name="searchUprCd" id="searchUprCd" class="selectM">
+                                    <option value="">전체</option>
+                                        <option value="6110000">서울특별시 </option>
+                                        <option value="6260000">부산광역시 </option>
+                                        <option value="6270000">대구광역시 </option>
+                                        <option value="6280000">인천광역시 </option>
+                                        <option value="6290000">광주광역시 </option>
+                                        <option value="5690000">세종특별자치시 </option>
+                                        <option value="6300000">대전광역시 </option>
+                                        <option value="6310000">울산광역시 </option>
+                                        <option value="6410000">경기도 </option>
+                                        <option value="6420000">강원도 </option>
+                                        <option value="6430000">충청북도 </option>
+                                        <option value="6440000">충청남도 </option>
+                                        <option value="6450000">전라북도 </option>
+                                        <option value="6460000">전라남도 </option>
+                                        <option value="6470000">경상북도 </option>
+                                        <option value="6480000">경상남도 </option>
+                                        <option value="6500000">제주특별자치도 </option>
+                                </select>
+                            </dd>
+                        </dl>
+                    </li>
+                    <li class="last">
+                        <dl>
+                            <dt><label for="searchUpKindCd">크기</label></dt>
+                            <dd>
+                                <select name="searchUpKindCd" id="searchUpKindCd" class="selectM">
+                                    <option value="417000">대형견</option>
+                                    <option value="422400">소형견</option>
+                                </select>
+                                <a href="javascript:;" id="search_button" class="searchBtn">조회</a>
+                            </dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+            <!-- SEARCH -->
+
+
+                <!-- LIST -->
+            <div class="boardList">
+                <ul class="list">
+        
+                    <li class="first">
+                        <div class="photo">
+                            <div class="thumbnail">
+                                    <a href="/front/fileMng/imageView.do?f=/files/shelter/2020/11/20210205130216.jpg" target="_blank" title="클릭시 새창이 열립니다." onclick="showImgWin('/front/fileMng/imageView.do?f=/files/shelter/2020/11/20210205130216.jpg','','width=129,height=109'); return false;" onkeypress="this.onclick(); return false;">
+                                        <img src="/front/fileMng/imageView.do?f=/files/shelter/2020/11/20210205130216_s.jpg" alt="보호중동물사진 공고번호-경북-경주-2021-00081">
+                                    </a>
+                                    
+                                    
+                                
+                                                                
+                            </div>
+                            <a href="#moreBtn" class="moreBtn" onclick="javascript:moveUrl('447505202100089');" title="경북-경주-2021-00081 자세히 보기">자세히 보기</a>
+                        </div>
+                        <div class="txt">
+                            <dl><dt>이름</dt><dd>2021-02-05</dd></dl>
+                            <dl><dt>나이(생년)</dt><dd>2019</dd></dl>
+                            <dl><dt>성별</dt><dd>암컷</dd></dl>
+                            <dl><dt>품종</dt><dd>믹스견</dd></dl>
+                        </div>
+                    </li>
+                    
+                    <li>
+                        <div class="photo">
+                            <div class="thumbnail">
+                                
+                                    
+                                    
+                                    
+                                    <a href="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302656.jpg" target="_blank" title="클릭시 새창이 열립니다." onclick="showImgWin('/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302656.jpg','','width=129,height=109'); return false;" onkeypress="this.onclick(); return false;">
+                                        <img src="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302656_s.jpg" alt="보호중동물사진 공고번호-경북-경주-2021-00080">
+                                    </a>
+                                    
+                                    
+                                
+                                                                
+                            </div>
+                            <a href="#moreBtn" class="moreBtn" onclick="javascript:moveUrl('447505202100088');" title="경북-경주-2021-00080 자세히 보기">자세히 보기</a>
+                        </div>
+                        <div class="txt">
+                            <dl><dt>이름</dt><dd>2021-02-05</dd></dl>
+                            <dl><dt>나이(생년)</dt><dd>2019</dd></dl>                            
+                            <dl><dt>성별</dt><dd>암컷</dd></dl>
+                            <dl><dt>품종</dt><dd>믹스견</dd></dl>
+                        </div>
+                    </li>
+                    
+                    <li>
+                        <div class="photo">
+                            <div class="thumbnail">
+                                
+                                    
+                                    
+                                    
+                                    <a href="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302353.jpg" target="_blank" title="클릭시 새창이 열립니다." onclick="showImgWin('/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302353.jpg','','width=129,height=109'); return false;" onkeypress="this.onclick(); return false;">
+                                        <img src="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302353_s.jpg" alt="보호중동물사진 공고번호-경북-경주-2021-00079">
+                                    </a>
+                                    
+                                    
+                                
+                                                                
+                            </div>
+                            <a href="#moreBtn" class="moreBtn" onclick="javascript:moveUrl('447505202100087');" title="경북-경주-2021-00079 자세히 보기">자세히 보기</a>
+                        </div>
+                        <div class="txt">
+                            <dl><dt>이름</dt><dd>2021-02-05</dd></dl>
+                            <dl><dt>나이(생년)</dt><dd>2019</dd></dl>                            
+                            <dl><dt>성별</dt><dd>암컷</dd></dl>
+                            <dl><dt>품종</dt><dd>믹스견</dd></dl>
+                        </div>
+                    </li>
+                    
+                    <li>
+                        <div class="photo">
+                            <div class="thumbnail">
+                                
+                                    
+                                    
+                                    
+                                    <a href="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302844.jpg" target="_blank" title="클릭시 새창이 열립니다." onclick="showImgWin('/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302844.jpg','','width=129,height=109'); return false;" onkeypress="this.onclick(); return false;">
+                                        <img src="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302844_s.jpg" alt="보호중동물사진 공고번호-제주-제주-2021-00447">
+                                    </a>
+                                    
+                                    
+                                
+                                                                
+                            </div>
+                            <a href="#moreBtn" class="moreBtn" onclick="javascript:moveUrl('450650202100466');" title="제주-제주-2021-00447 자세히 보기">자세히 보기</a>
+                        </div>
+                        <div class="txt">
+                            <dl><dt>이름</dt><dd>2021-02-05</dd></dl>
+                            <dl><dt>나이(생년)</dt><dd>2019</dd></dl>                            
+                            <dl><dt>성별</dt><dd>암컷</dd></dl>
+                            <dl><dt>품종</dt><dd>믹스견</dd></dl>
+                        </div>
+                    </li>
+                    
+                    <li>
+                        <div class="photo">
+                            <div class="thumbnail">
+                                
+                                    
+                                    
+                                    
+                                    <a href="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051402599.jpg" target="_blank" title="클릭시 새창이 열립니다." onclick="showImgWin('/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051402599.jpg','','width=129,height=109'); return false;" onkeypress="this.onclick(); return false;">
+                                        <img src="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051402599_s.jpg" alt="보호중동물사진 공고번호-경남-합천-2021-00030">
+                                    </a>
+                                    
+                                    
+                                
+                                                                
+                            </div>
+                            <a href="#moreBtn" class="moreBtn" onclick="javascript:moveUrl('448548202100030');" title="경남-합천-2021-00030 자세히 보기">자세히 보기</a>
+                        </div>
+                        <div class="txt">
+                            <dl><dt>이름</dt><dd>2021-02-05</dd></dl>
+                            <dl><dt>나이(생년)</dt><dd>2019</dd></dl>                            
+                            <dl><dt>성별</dt><dd>암컷</dd></dl>
+                            <dl><dt>품종</dt><dd>믹스견</dd></dl>
+                        </div>
+                    </li>
+                    
+                    <li>
+                        <div class="photo">
+                            <div class="thumbnail">
+                                
+                                    
+                                    
+                                    
+                                    <a href="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302510.jpg" target="_blank" title="클릭시 새창이 열립니다." onclick="showImgWin('/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302510.jpg','','width=129,height=109'); return false;" onkeypress="this.onclick(); return false;">
+                                        <img src="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302510_s.jpg" alt="보호중동물사진 공고번호-경남-거제-2021-00109">
+                                    </a>
+                                    
+                                    
+                                
+                                                                
+                            </div>
+                            <a href="#moreBtn" class="moreBtn" onclick="javascript:moveUrl('448537202100106');" title="경남-거제-2021-00109 자세히 보기">자세히 보기</a>
+                        </div>
+                        <div class="txt">
+                            <dl><dt>이름</dt><dd>2021-02-05</dd></dl>
+                            <dl><dt>나이(생년)</dt><dd>2019</dd></dl>                            
+                            <dl><dt>성별</dt><dd>암컷</dd></dl>
+                            <dl><dt>품종</dt><dd>믹스견</dd></dl>
+                        </div>
+                    </li>
+                    
+                    <li>
+                        <div class="photo">
+                            <div class="thumbnail">
+                                
+                                    
+                                    
+                                    
+                                    <a href="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302512.jpg" target="_blank" title="클릭시 새창이 열립니다." onclick="showImgWin('/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302512.jpg','','width=129,height=109'); return false;" onkeypress="this.onclick(); return false;">
+                                        <img src="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302512_s.jpg" alt="보호중동물사진 공고번호-경남-거제-2021-00110">
+                                    </a>
+                                    
+                                    
+                                
+                                                                
+                            </div>
+                            <a href="#moreBtn" class="moreBtn" onclick="javascript:moveUrl('448537202100105');" title="경남-거제-2021-00110 자세히 보기">자세히 보기</a>
+                        </div>
+                        <div class="txt">
+                            <dl><dt>이름</dt><dd>2021-02-05</dd></dl>
+                            <dl><dt>나이(생년)</dt><dd>2019</dd></dl>                            
+                            <dl><dt>성별</dt><dd>암컷</dd></dl>
+                            <dl><dt>품종</dt><dd>믹스견</dd></dl>
+                        </div>
+                    </li>
+                    
+                    <li>
+                        <div class="photo">
+                            <div class="thumbnail">
+                                
+                                    
+                                    
+                                    
+                                    <a href="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051102560.jpeg" target="_blank" title="클릭시 새창이 열립니다." onclick="showImgWin('/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051102560.jpeg','','width=129,height=109'); return false;" onkeypress="this.onclick(); return false;">
+                                        <img src="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051102560_s.jpg" alt="보호중동물사진 공고번호-경북-의성-2021-00008">
+                                    </a>
+                                    
+                                    
+                                
+                                                                
+                            </div>
+                            <a href="#moreBtn" class="moreBtn" onclick="javascript:moveUrl('447515202100008');" title="경북-의성-2021-00008 자세히 보기">자세히 보기</a>
+                        </div>
+                        <div class="txt">
+                            <dl><dt>이름</dt><dd>2021-02-05</dd></dl>
+                            <dl><dt>나이(생년)</dt><dd>2019</dd></dl>                            
+                            <dl><dt>성별</dt><dd>암컷</dd></dl>
+                            <dl><dt>품종</dt><dd>믹스견</dd></dl>
+                        </div>
+                    </li>
+                    
+                    <li>
+                        <div class="photo">
+                            <div class="thumbnail">
+                                
+                                    
+                                    
+                                    
+                                    <a href="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051102545.jpeg" target="_blank" title="클릭시 새창이 열립니다." onclick="showImgWin('/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051102545.jpeg','','width=129,height=109'); return false;" onkeypress="this.onclick(); return false;">
+                                        <img src="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051102545_s.jpg" alt="보호중동물사진 공고번호-경북-의성-2021-00007">
+                                    </a>
+                                    
+                                    
+                                
+                                                                
+                            </div>
+                            <a href="#moreBtn" class="moreBtn" onclick="javascript:moveUrl('447515202100007');" title="경북-의성-2021-00007 자세히 보기">자세히 보기</a>
+                        </div>
+                        <div class="txt">
+                            <dl><dt>이름</dt><dd>2021-02-05</dd></dl>
+                            <dl><dt>나이(생년)</dt><dd>2019</dd></dl>                            
+                            <dl><dt>성별</dt><dd>암컷</dd></dl>
+                            <dl><dt>품종</dt><dd>믹스견</dd></dl>
+                        </div>
+                    </li>
+                    
+                    <li class="last">
+                        <div class="photo">
+                            <div class="thumbnail">
+                                
+                                    
+                                    
+                                    
+                                    <a href="/front/fileMng/imageView.do?f=/files/shelter/2021/01/202102050902278.jpg" target="_blank" title="클릭시 새창이 열립니다." onclick="showImgWin('/front/fileMng/imageView.do?f=/files/shelter/2021/01/202102050902278.jpg','','width=129,height=109'); return false;" onkeypress="this.onclick(); return false;">
+                                        <img src="/front/fileMng/imageView.do?f=/files/shelter/2021/01/202102050902278_s.jpg" alt="보호중동물사진 공고번호-경북-경산-2021-00077">
+                                    </a>
+                                    
+                                    
+                                
+                                                                
+                            </div>
+                            <a href="#moreBtn" class="moreBtn" onclick="javascript:moveUrl('447513202100077');" title="경북-경산-2021-00077 자세히 보기">자세히 보기</a>
+                        </div>
+                        <div class="txt">
+                            <dl><dt>이름</dt><dd>2021-02-05</dd></dl>
+                            <dl><dt>나이(생년)</dt><dd>2019</dd></dl>                            
+                            <dl><dt>성별</dt><dd>암컷</dd></dl>
+                            <dl><dt>품종</dt><dd>믹스견</dd></dl>
+                        </div>
+                    </li>
+                    
+                </ul>
+                
+                
+            
+            </div>
+                <!-- LIST -->                
+
+                <!--  페이지 표시 시작 -->
+                
+                
+                    
+                    
+                
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+</script>
+<ul class="paging">
+    
+
+    
+        
+        
+            <li class="first"><a href="#" class="active" title="현재 페이지">1</a></li>        
+        
+    
+
+    
+        
+            <li><a href="?totalCount=4962&amp;pageSize=10&amp;menuNo=1000000060&amp;&amp;page=2">2</a></li>
+        
+        
+    
+
+    
+        
+            <li><a href="?totalCount=4962&amp;pageSize=10&amp;menuNo=1000000060&amp;&amp;page=3">3</a></li>
+        
+        
+    
+
+    
+        
+            <li><a href="?totalCount=4962&amp;pageSize=10&amp;menuNo=1000000060&amp;&amp;page=4">4</a></li>
+        
+        
+    
+
+    
+        
+            <li><a href="?totalCount=4962&amp;pageSize=10&amp;menuNo=1000000060&amp;&amp;page=5">5</a></li>
+        
+        
+    
+
+    
+        
+            <li><a href="?totalCount=4962&amp;pageSize=10&amp;menuNo=1000000060&amp;&amp;page=6">6</a></li>
+        
+        
+    
+
+    
+        
+            <li><a href="?totalCount=4962&amp;pageSize=10&amp;menuNo=1000000060&amp;&amp;page=7">7</a></li>
+        
+        
+    
+
+    
+        
+            <li><a href="?totalCount=4962&amp;pageSize=10&amp;menuNo=1000000060&amp;&amp;page=8">8</a></li>
+        
+        
+    
+
+    
+        
+            <li><a href="?totalCount=4962&amp;pageSize=10&amp;menuNo=1000000060&amp;&amp;page=9">9</a></li>
+        
+        
+    
+
+    
+        
+            <li><a href="?totalCount=4962&amp;pageSize=10&amp;menuNo=1000000060&amp;&amp;page=10">10</a></li>
+        
+        
+    
+
+
+    <li><a href="?totalCount=4962&amp;pageSize=10&amp;menuNo=1000000060&amp;&amp;page=11" class="next">Next</a></li>
+    <li class="last"><a href="?totalCount=4962&amp;pageSize=10&amp;menuNo=1000000060&amp;&amp;page=497" class="last">Last</a></li>
+    
+</ul>
+
+					
+                <!--  페이지 표시 끝 -->
+                
+                
+                <!-- 콘텐츠 영역 적용하세요 끝 -->
+            </form>
+            </div><!-- sub_con -->
+
+        </div><!-- center 콘텐츠 끝 -->
+
+    </div>
+
+
+
+
+</body>
+
+
+
+<footer>
+입양해조_ 김희진, 송지현, 이해동, 전승우
+</footer>
