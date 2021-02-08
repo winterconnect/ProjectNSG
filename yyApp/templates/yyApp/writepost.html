@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <title>보호자 게시판 글쓰기</title>
+
+  <body>
+      <nav class="navbar">
+          <div class="navbar__logo">
+            <a href="">나랑살개</a>
+          </div>
+
+          <ul class="navbar__menu">
+            <li><a href="">보호자 게시판</a></li>
+            <li><a href="">마이페이지</a></li>
+          </ul>
+
+          <ul class="navbar__signin">
+            <li><a href="">로그인</a></li>
+            <li><a href="">회원가입</a></li>
+          </ul>
+        </nav>
+--------------------
+    <!-- <button><a href="new_post/">글쓰기</a></button> #게시판 페이지에 버튼 추가-->
+    
+    <div>
+        <h1>게시판 글쓰기</h1>
+    </div>
+    <form method="POST"> <!--내부의 정보를 한번에 서버로 전송-->
+        {% csrf_token %} <!-- 공격에 대한 취약성을 보완하는 기능?-->
+        
+        <div class="join_row">
+          <label for="title">제목</label> <br>
+          <input type="text" name="title">"<br>
+        </div>
+
+        <div class="join_row">
+          <label for="petName">펫 이름</label> <br>
+          <input type="text" id="petName" name="petName">
+        </div>
+
+        <div>
+          <label for="petBirth">출생/보호 날짜</label> <br>
+          <input type="date" id="petBirth" name="petBirth">
+        </div>
+
+        <div>
+          <label for="petSex">성별</label> <br>
+          <select name="petSex" id="petSex">
+            <option value="Male">수컷</option>
+            <option value="Female">암컷</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="petSize">크기</label> <br>
+          <select name="petSize" id="petSize">
+            <option value="Big">대형견</option>
+            <option value="Small">소형견</option>
+          </select>
+        </div>
+         
+        <div>
+          <label for="PetFoundLocation">보호장소</label> <br>
+          <select name="PetFoundLocation" id="PetFoundLocation">
+            <option value="seoul">서울</option>
+            <option value="ggnorth">경기북부</option>
+            <option value="ggsouth">경기남부</option>
+            <option value="gangwon">강원</option>
+            <option value="ccnorth">충북</option>
+            <option value="ccsouth">충남</option>
+            <option value="jlnorth">전북</option>
+            <option value="jlsouth">전남</option>
+            <option value="gsnorth">경북</option>
+            <option value="gssouth">경남</option>
+            <option value="jeju">제주</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="PetSpecies">견종</label> <br>
+          <select name="PetSpecies" id="PetSpecies">
+            <option value="~~">골든리트리버</option>
+            <option value="~~">요크셔테리어</option>
+          </select>
+        </div>
+         
+        <div>
+          <label for="Petweight">무게</label> <br>
+          <input type="text" id="Petweight" name="Petweight">
+          kg<br> <!-- 뒤에 kg 표기 확인 필요-->
+          </select>
+        </div>   
+
+        <div>
+          <label for="PetTNR">중성화 여부</label> <br>
+          <input type="checkbox" v-model="toggle" True-value="yes" False-value="no" 
+          id="PetTNR" name="PetTNR">
+        </div>    
+
+        <div>
+          <label for="petColor">털 색</label> <br>
+          <select name="petColor" id="petColor">
+            <option value="black">검정색</option>
+            <option value="white">하얀색</option>
+            <option value="yellow">황색</option>
+            <option value="brown">갈색</option>
+          </select>
+        </div>      
+
+        <div>
+          <label for="adoption_complete">입양 여부</label> <br>
+          <input type="checkbox" v-model="toggle" True-value="yes" False-value="no" 
+          id="adoption_complete" name="adoption_complete">
+        </div>    
+
+        <div>
+          <label for="petPhoto">사진 첨부</label> <br>
+          <input type="file" id="petPhoto" name="petPhoto" multiple>
+        </div>  
+
+        <div>
+          <label for="petName">본문</label> <br>
+          <textarea rows ="10" cols="50" name="content"></textarea><br>
+        </div>
+        
+        
+        <div>
+          <label for="hashtag">해시태그</label> <br>
+          <textarea rows ="10" cols="50" name="content"></textarea><br>
+        </div>
+
+
+        </div>
+
+      </div>
+
+
+
+        
+
+
+        
+        </div>
+        <input type="submit" value="글쓰기"> <!--type="submit" 버튼이 클릭되면 서버로 전송-->
+    </form>
+--------------------
+  </body>
+
+  </head>
+
+      <footer>
+      입양해조_ 김희진, 송지현, 이해동, 전승우
+      </footer>
+
+</html>
