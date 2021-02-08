@@ -38,7 +38,7 @@ class Pet(models.Model):
     petSex = models.NullBooleanField()
     petSize = models.CharField(max_length=50, blank=True)
     petLoc = models.CharField(max_length=50, blank=True)  # 발견 장소
-    petSpecies = models.CharField(max_length=50, blank=True)  # 견종
+    petSpecies = models.CharField(max_length=50, blank=True)  # 견종 총 10개 (8개 종 + 믹스 + 기타)
     petWeight = models.FloatField(null=True, blank=True)
     petNeuter = models.NullBooleanField()  # 중성화
     petColor = models.CharField(max_length=50, blank=True)

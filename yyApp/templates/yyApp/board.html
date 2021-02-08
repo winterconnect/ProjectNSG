@@ -38,6 +38,12 @@ cursor: pointer;
     text-align: center;
 }
 
+.search_checkbox {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;    
+
+}
+
 </style>
 
 <!-- JAVASCRIPT -->
@@ -71,64 +77,47 @@ function myFunction() {
 
 
         <!-- SEARCH -->
-        <div class="searchArea mb20">
-            <h4 class="hide">검색</h4>
-            <!-- <p class="search_ex mb10">날짜 입력시 다음과 같이 입력해주세요. 예) 2011-01-01</p>-->              
-            <ul class="searchList">
-                <li class="first">
-                    <dl>
-                        <dt><label for="searchSDate">날짜</label></dt>
-                        <dd>
-                            <input type="date" name="searchSDate" id="searchSDate" class="inputDate" title="시작일" onblur="$('.calendar').hide();" maxlength="10/"> ~ <input type="date" name="searchEDate" id="searchEDate" title="마감일" class="inputDate" onblur="$('.calendar').hide();" maxlength="10/">
-                            (날짜는 접수일 기준입니다)
-                        </dd>
-                    </dl>
-                </li>
-                <li>
-                    <dl>
-                        <dt><label for="searchUprCd">시도</label></dt>
-                        <dd>
-                            <select name="searchUprCd" id="searchUprCd" class="selectM">
-                                <option value="">전체</option>
-                                    <option value="6110000">서울특별시 </option>
-                                    <option value="6260000">부산광역시 </option>
-                                    <option value="6270000">대구광역시 </option>
-                                    <option value="6280000">인천광역시 </option>
-                                    <option value="6290000">광주광역시 </option>
-                                    <option value="5690000">세종특별자치시 </option>
-                                    <option value="6300000">대전광역시 </option>
-                                    <option value="6310000">울산광역시 </option>
-                                    <option value="6410000">경기도 </option>
-                                    <option value="6420000">강원도 </option>
-                                    <option value="6430000">충청북도 </option>
-                                    <option value="6440000">충청남도 </option>
-                                    <option value="6450000">전라북도 </option>
-                                    <option value="6460000">전라남도 </option>
-                                    <option value="6470000">경상북도 </option>
-                                    <option value="6480000">경상남도 </option>
-                                    <option value="6500000">제주특별자치도 </option>
-                            </select>
-                        </dd>
-                    </dl>
-                </li>
-                <li class="last">
-                    <dl>
-                        <dt><label for="searchUpKindCd">크기</label></dt>
-                        <dd>
-                            <select name="searchUpKindCd" id="searchUpKindCd" class="selectM">
-                                <option value="417000">대형견</option>
-                                <option value="422400">소형견</option>
-                            </select>
-                            <a href="javascript:;" id="search_button" class="searchBtn">조회</a>
-                        </dd>
-                    </dl>
-                </li>
-            </ul>
-        </div>
+        <div class="search_area">
+        
+            <div class="search_checkbox">
+                <label for="pet_sex">성별</label>
+                <div id="pet_sex">
+                    <input type="radio" name="pet" value="True">
+                    <label for="True">수컷</label>
+                    <input type="radio" name="pet" value="False">
+                    <label for="False">암컷</label>
+                </div>
 
-    <span class='green_window'>
-    <input id=text type="text" class='input_text' name="search" onkeydown="enterSearch()"/></span>
-    <input type="button" class='sch_smit' value="검색" onclick="myFunction()"/>
+                <label for="pet_size">크기</label>
+                <div id="pet_size">
+                    <input type="radio" name="pet" value="대형견">
+                    <label for="대형견">대형견</label>
+                    <input type="radio" name="pet" value="소형견">
+                    <label for="소형견">소형견</label>                
+                </div>
+
+                <label for="pet_species">품종</label>
+                <div id="pet_species">
+                    <select name="searchUprCd" id="searchUprCd" class="selectM">
+                        <option value="">전체</option>
+                            <option value="6110000">종1</option>
+                            <option value="6260000">종2</option>
+                            <option value="6270000">종3</option>
+                            <option value="6280000">종4</option>
+                            <option value="6280000">종5</option>                            
+                            <option value="6280000">종6</option>
+                            <option value="6280000">종7</option>
+                            <option value="6280000">종8</option>
+                            <option value="6280000">믹스</option>
+                            <option value="6280000">기타</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="search_bar">
+                <span class='green_window'>
+                <input id=text type="text" class='input_text' name="search" onkeydown="enterSearch()"/></span>
+                <input type="button" class='sch_smit' value="검색" onclick="myFunction()"/>
 
 
     <!-- SEARCH -->
