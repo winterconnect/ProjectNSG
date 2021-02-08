@@ -1,4 +1,4 @@
-<body>
+<head>
 {% load static %}
 <link rel="stylesheet" href="{% static 'style.css' %}">
   <nav class="navbar">
@@ -17,7 +17,11 @@
     </ul>
 
   </nav>
-</body>
+</head>
+
+{% block body %}
+{% endblock %}
+
 
 <footer>
 입양해조_ 김희진, 송지현, 이해동, 전승우
