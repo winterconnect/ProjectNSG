@@ -38,9 +38,13 @@ cursor: pointer;
     text-align: center;
 }
 
+.search_area{
+    text-align: center;
+}
+
 .search_checkbox {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;    
+    grid-template-columns: 300px 300px 300px;    
 
 }
 
@@ -80,24 +84,24 @@ function myFunction() {
         <div class="search_area">
         
             <div class="search_checkbox">
-                <label for="pet_sex">성별</label>
                 <div id="pet_sex">
+                    성별
                     <input type="radio" name="pet" value="True">
                     <label for="True">수컷</label>
                     <input type="radio" name="pet" value="False">
                     <label for="False">암컷</label>
                 </div>
 
-                <label for="pet_size">크기</label>
                 <div id="pet_size">
+                    크기
                     <input type="radio" name="pet" value="대형견">
                     <label for="대형견">대형견</label>
                     <input type="radio" name="pet" value="소형견">
                     <label for="소형견">소형견</label>                
                 </div>
 
-                <label for="pet_species">품종</label>
                 <div id="pet_species">
+                    품종
                     <select name="searchUprCd" id="searchUprCd" class="selectM">
                         <option value="">전체</option>
                             <option value="6110000">종1</option>
