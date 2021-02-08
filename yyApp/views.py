@@ -51,3 +51,7 @@ def join_guardian(request):
 def choose_authority(request):
     if request.method == "GET":
         return render(request, 'yyApp/jointype.html')
+
+def board(request):
+    if request.method == "GET":
+        return render(request, 'yyApp/board.html')        
