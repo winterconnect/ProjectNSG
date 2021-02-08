@@ -3,7 +3,7 @@ from django.db import models
 
 class Member(models.Model):
     memberID = models.CharField(max_length=50, primary_key=True)
-    memberPW = models.CharField(max_length=50)
+    memberPW = models.CharField(max_length=200)
     memberName = models.CharField(max_length=20)
     memberAge = models.DateField()
     memberEmail = models.CharField(max_length=50)
@@ -11,6 +11,9 @@ class Member(models.Model):
     adopterAddress = models.CharField(max_length=200, blank=True)
     adopterFamily = models.CharField(max_length=200, blank=True)
     authority = models.BooleanField()
+
+    def __str__(self):
+        return self.memberID
 
 
 class Board(models.Model):
