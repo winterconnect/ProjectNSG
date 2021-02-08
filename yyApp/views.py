@@ -51,3 +51,22 @@ def join_guardian(request):
 def choose_authority(request):
     if request.method == "GET":
         return render(request, 'yyApp/jointype.html')
+
+
+# 승우 게시판 글쓰기
+def new_post(request):
+    if request.method == 'POST':
+        if request.POST['mainphoto']:
+            new_article=Post.objects.create(
+                memberID=request.POST['memberID'],
+                contents=request.POST['contents'],
+                mainphoto=request.POST['mainphoto'],
+            )
+        else:
+            new_article=Post.objects.create(
+                post=request.POST['memberID'],
+                contents=request.POST['contents'],
+                mainphoto=request.POST['mainphoto'],
+            )
+        return redirect('/blog/') # 변경
+    return render(request, 'C:\Users\user\atomtest\projectnsg_writepost.html') # 확인
