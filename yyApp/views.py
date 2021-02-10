@@ -1,7 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password
-from yyApp.models import Member
+from yyApp.models import Member, Board, Pet
+from django.core.paginator import Paginator
+from django.db.models import Q, Count
+from django.contrib import messages
+from django.template import context
+from django.views.generic import ListView
 
 
 # Create your views here.
@@ -45,13 +50,83 @@ def join_guardian(request):
             member = Member(memberID=memberID, memberPW=make_password(memberPW), memberName=memberName,
                             memberEmail=memberEmail, memberAge=memberAge, authority=True)
             member.save()
-        return render(request, 'yyApp/guardian.html', res_data)
+    return render(request, 'yyApp/guardian.html', res_data)
 
 
 def choose_authority(request):
     if request.method == "GET":
         return render(request, 'yyApp/jointype.html')
 
-def board(request):
-    if request.method == "GET":
-        return render(request, 'yyApp/board.html')        
+
+
+class BoardListView(ListView):
+    model = Board
+    paginate_by = 9
+    template_name = 'yyApp/board_list.html'  #DEFAULT : <app_label>/<model_name>_list.html
+    context_object_name = 'board_list'        #DEFAULT : <model_name>_list
+
+    def get_queryset(self):
+        board_list = Board.objects.order_by('-id')
+        search_keyword = self.request.GET.get('q', '')
+        search_type = self.request.GET.get('type', '')
+        
+        if search_keyword :
+            if len(search_keyword) > 1 :
+                if search_type == 'all':
+                    search_board_list = board_list.filter(Q (title__icontains=search_keyword) | Q (content__icontains=search_keyword))
+                elif search_type == 'title_content':
+                    search_board_list = board_list.filter(Q (title__icontains=search_keyword) | Q (content__icontains=search_keyword))
+                elif search_type == 'title':
+                    search_board_list = board_list.filter(title__icontains=search_keyword)    
+                elif search_type == 'content':
+                    search_board_list = board_list.filter(content__icontains=search_keyword)
+                return search_board_list
+            else:
+                messages.error(self.request, '검색어는 2글자 이상 입력해주세요.')        
+        return board_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        paginator = context['paginator']
+        page_numbers_range = 5
+        max_index = len(paginator.page_range)
+
+        page = self.request.GET.get('page')
+        current_page = int(page) if page else 1
+
+        start_index = int((current_page - 1) / page_numbers_range) * page_numbers_range
+        end_index = start_index + page_numbers_range
+        if end_index >= max_index:
+            end_index = max_index
+
+        page_range = paginator.page_range[start_index:end_index]
+        context['page_range'] = page_range
+
+
+        search_keyword = self.request.GET.get('q', '') 
+        search_type = self.request.GET.get('type', '')
+        board_fixed = Board.objects.order_by('-id')
+
+        if len(search_keyword) > 1 :
+            context['q'] = search_keyword
+        context['type'] = search_type
+        context['board_fixed'] = board_fixed
+
+
+        return context
+
+
+
+# def board(request):
+#     petlist = Pet.objects.order_by('-postID')   
+
+#     page = request.GET.get('page', '1')  
+#     paginator = Paginator(petlist, 9)    
+#     page_obj = paginator.get_page(page)
+#     context = {'petlist': petlist, 'paging': page_obj, 'page': page}    
+
+#     return render(request, 'yyApp/board.html', context)
+
+
+
+

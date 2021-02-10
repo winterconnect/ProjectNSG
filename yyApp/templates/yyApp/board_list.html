@@ -1,0 +1,337 @@
+<!-- last modified: Feb 7, 12:25-->
+
+
+<!DOCTYPE html>
+<html lang = "ko">
+<head>
+    <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+</head>
+
+
+<style>
+.pet_list {
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 10px;   
+}
+
+.pet_info {
+    display:grid;
+    padding: 30px;
+    align-items: center;
+    grid-template-rows: 400px auto;    
+
+}
+
+.pet_info:hover {
+background: silver;
+cursor: pointer;
+}
+
+
+.photo {
+    text-align: center;
+}
+
+
+.txt {
+    text-align: center;
+}
+
+.search_area{
+    display: grid;
+    text-align: center;
+    margin: 20px;
+}
+
+.search_checkbox {
+    display: grid;
+    grid-template-columns: 300px 300px 300px;
+    padding: 30px;
+    boarder: 10px;
+    margin: 20px;
+    background: silver;
+
+}
+
+
+.search_bar {
+    padding: 30px;
+    boarder: 10px;
+    margin: 20px;
+    background: silver;
+}
+
+</style>
+
+<!-- JAVASCRIPT -->
+<script type="text/javascript">
+function enterSearch() {
+    if(event.keyCode == 13){
+        myFunction();  // 실행할 이벤트
+    }
+}
+function myFunction() {
+    var x = document.getElementById("text").value;
+    window.location.href = "http://cybertramp.net/search/"+x;
+}
+
+</script>
+
+{% block content %}
+
+
+{% block script %}
+<script type='text/javascript'>
+$(document).ready(function(){
+    $(".page-link").on('click', function() {
+        $("#page").val($(this).data("page"));
+        $("#searchForm").submit();
+    });
+
+    $("#btn_search").on('click', function() {
+        $("#kw").val($(".kw").val());
+        $("#page").val(1);  // 검색버튼을 클릭할 경우 1페이지부터 조회한다.
+        $("#searchForm").submit();
+    });
+});
+</script>
+{% endblock %}
+
+<body>
+
+        <!-- SEARCH -->
+
+        <div class="search_area">
+        
+            <div class="search_checkbox">
+                <div id="pet_sex">
+                    성별
+                    <input type="radio" name="pet" value="True">
+                    <label for="True">수컷</label>
+                    <input type="radio" name="pet" value="False">
+                    <label for="False">암컷</label>
+                </div>
+
+                <div id="pet_size">
+                    크기
+                    <input type="radio" name="pet" value="대형견">
+                    <label for="대형견">대형견</label>
+                    <input type="radio" name="pet" value="소형견">
+                    <label for="소형견">소형견</label>                
+                </div>
+
+                <div id="pet_species">
+                    품종
+                    <select name="searchUprCd" id="searchUprCd" class="selectM">
+                        <option value="">전체</option>
+                            <option value="6110000">종1</option>
+                            <option value="6260000">종2</option>
+                            <option value="6270000">종3</option>
+                            <option value="6280000">종4</option>
+                            <option value="6280000">종5</option>                            
+                            <option value="6280000">종6</option>
+                            <option value="6280000">종7</option>
+                            <option value="6280000">종8</option>
+                            <option value="6280000">믹스</option>
+                            <option value="6280000">기타</option>
+                    </select>
+                <i class="fas fa-search"></i>    
+                </div>
+            </div>
+
+            <div class = "search_bar" style="margin-top: 30px;">
+                    <form action="" method="GET">
+                        <div class="col">
+                            <div style="float: right;" class="form-row">
+                                <div class="form-row">
+                                    <div class="col" style="margin-top: 10px;">
+                                        <select style="width: 6em;" class="custom-select custom-select-md" name="type">
+                                            <option value="all">전체</option>
+                                            <option value="title_content">제목+내용</option>
+                                            <option value="title">제목</option>
+                                            <option value="content">내용</option>
+                                        </select>
+                                    </div>
+                                    <div class="col" style="margin-top: 10px;">
+                                        <input type="text" name="q" value="{{ q }}" class="form-control form-control-md"
+                                            style="width: 15em;" placeholder="검색어를 입력해주세요.">
+                                    </div>
+                                    <div class="col">
+                                        <!-- <button class="btn btn-md btn-outline-dark" type="submit">검색</button> -->
+                                        <button class="btn btn-sm" type="submit" id="search_btn">검색</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+
+
+    <!-- SEARCH -->
+
+
+    <!-- LIST --> <!--게시글과 동물 내용 조인하는 방법 다시 찾아보기-->
+
+
+    {% if q %}
+    <h5>'{{ q }}' 검색 결과입니다.</h5>
+    {% endif %}
+
+    <div class="board_list">
+    {% if board_list %}
+        {% for board in board_list %}    
+        <div class="board_info">
+            <div class="photo">
+                <img src ="{{ pet.petImage.url }}">
+            </div>
+            <div class="txt">
+                <span class="adoption">{{ board.title }} | <span class="name"> {{ pet.petName }} </span> | <span class="birth"> {{ pet.petBirth }} </span> | <span class = "sex"> {% if pet.petSex == True %} 수컷 {% else %} 암컷 {% endif %} </span> <br>
+                <span class = "species"> {{ pet.petSpecies }} </span>                           
+            </div>
+        </div>
+        {% endfor%}
+    {% else %}              <!-- 게시글 쿼리셋이 존재하지 않을 때 -->
+        {% if q %}          <!-- 검색어가 있어 q가 context로 넘어오면 검색결과가 없음 -->
+        <tr class="text-center">
+            <td colspan="5">
+                일치하는 검색 결과가 없습니다.
+            </td>
+        </tr>
+        {% else %}          <!-- q가 없으면 검색어가 아니며 게시글이 존재하지 않으므로 게시글 미작성 -->
+        <tr class="text-center">
+            <td colspan="5">
+                작성된 게시글이 없습니다.
+            </td>
+        </tr>
+        {% endif %}
+    {% endif %}
+    </div>
+
+
+
+
+
+
+
+
+    <!-- LIST -->                
+
+    <!--  페이지 표시 시작 -->
+    
+<div class="paginate_regular" style="margin:0 0 15px 0;">
+    <style type="text/css">
+    <!--
+        
+        .board_pagetab { 
+            text-align:center; 
+            display: inline-block;
+            }
+        
+        .board_pagetab a{
+            text-decoration:none;
+            font:12px verdana;
+            color:#000;
+            padding:0 3px 0 3px;
+            }
+            
+        .board_pagetab a:hover {
+            text-decoration:underline;
+            background-color:#f2f2f2;
+            }
+        
+        .on a{ 
+            font-weight:bold;
+            }
+        
+
+
+
+{% if is_paginated %}
+<ul class="pagination">
+    {% if page_obj.has_previous %}
+    <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}"
+            tabindex="-1">이전</a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1">이전</a>
+    </li>
+    {% endif %}
+
+    {% for page in page_range %}
+    <li class="page-item {% if page == page_obj.number %} activate {% endif %}">
+        <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+    </li>
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+    <li class="page-item">
+        <a class="page-link"
+            href="?page={{ page_obj.next_page_number }}">다음</a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+        <a class="page-link" href="#">다음</a>
+    </li>
+    {% endif %}
+</ul>
+{% endif %}
+
+
+{% comment %} 
+
+    <!-- 페이징처리 시작 -->
+    <ul class = "board_pagetab" align="absmiddle">
+        <!-- 이전페이지 -->
+        {% if paging.has_previous %}
+        <li class="page-item">
+            <a class="page-link" data-page="{{ paging.previous_page_number }}" href="#">이전</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+        </li>
+        {% endif %}
+        <!-- 페이지리스트 -->
+        {% for page_number in paging.paginator.page_range %}
+
+            {% if page_number >= paging.number|add:-5 and page_number <= paging.number|add:5 %}
+                {% if page_number == paging.number %}
+                <li class="page-item active" aria-current="page">
+                    <a class="page-link" data-page="{{ page_number }}" href="#">{{ page_number }}</a>
+                </li>
+                {% else %}
+                <li class="page-item">
+                    <a class="page-link" data-page="{{ page_number }}" href="#">{{ page_number }}</a>
+                </li>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        <!-- 다음페이지 -->
+        {% if paging.has_next %}
+        <li class="page-item">
+            <a class="page-link" data-page="{{ paging.next_page_number }}" href="#">다음</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+        </li>
+        {% endif %}
+    </ul>
+    <!-- 페이징처리 끝 --> {% endcomment %}
+
+
+            
+        <!--  페이지 표시 끝 -->           
+        <!-- 콘텐츠 영역 적용하세요 끝 -->
+    </form>
+    </div><!-- sub_con -->
+</div><!-- center 콘텐츠 끝 -->
+</div>
+</body>
+
+{% endblock %}
