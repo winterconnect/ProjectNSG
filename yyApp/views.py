@@ -60,30 +60,39 @@ def choose_authority(request):
 
 
 class BoardListView(ListView):
-    model = Board
+    model = Pet
     paginate_by = 9
     template_name = 'yyApp/board_list.html'  #DEFAULT : <app_label>/<model_name>_list.html
-    context_object_name = 'board_list'        #DEFAULT : <model_name>_list
+    context_object_name = 'pet_list'        #DEFAULT : <model_name>_list
 
     def get_queryset(self):
         board_list = Board.objects.order_by('-id')
+        pet_list = Pet.objects.order_by('-id')
+        board_pet = Pet.objects.select_related('board')
+
+        print(board_pet)
+
         search_keyword = self.request.GET.get('q', '')
         search_type = self.request.GET.get('type', '')
         
         if search_keyword :
             if len(search_keyword) > 1 :
                 if search_type == 'all':
-                    search_board_list = board_list.filter(Q (title__icontains=search_keyword) | Q (content__icontains=search_keyword))
+                    search_board_list = board_pet.filter(Q (board__title__icontains=search_keyword) | Q (board__content__icontains=search_keyword))
                 elif search_type == 'title_content':
-                    search_board_list = board_list.filter(Q (title__icontains=search_keyword) | Q (content__icontains=search_keyword))
+                    search_board_list = board_pet.filter(Q (board__title__icontains=search_keyword) | Q (board__content__icontains=search_keyword))
                 elif search_type == 'title':
-                    search_board_list = board_list.filter(title__icontains=search_keyword)    
+                    search_board_list = board_pet.filter(board__title__icontains=search_keyword)    
                 elif search_type == 'content':
-                    search_board_list = board_list.filter(content__icontains=search_keyword)
+                    search_board_list = board_pet.filter(board__content__icontains=search_keyword)
+
                 return search_board_list
             else:
-                messages.error(self.request, '검색어는 2글자 이상 입력해주세요.')        
-        return board_list
+                messages.error(self.request, '검색어는 2글자 이상 입력해주세요.')   
+
+        return pet_list
+
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -114,7 +123,6 @@ class BoardListView(ListView):
 
 
         return context
-
 
 
 # def board(request):
