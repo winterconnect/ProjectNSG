@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  {% extends "yyApp/nav.html" %}
+  {% block body %}
+
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+</head>
+
+<body>
+
+    <form method="POST"> <!--내부의 정보를 한번에 서버로 전송-->
+        {% csrf_token %} <!-- 공격에 대한 취약성을 보완하는 기능?-->
+        
+        <div>
+            <img src="/media/">
+        </div>
+        <!-- 제목박스 -->
+        <div class="post_header">
+          <div class="post_title">
+            <a href="http://127.0.0.1:8000/yyApp/board/" class="link_board"></a>
+            
+            <!-- 제목 -->
+            <div class="title_text">
+            <h1> {{ post.title }} </h1>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- 회원 & 글 정보-->
+        <div class="member_area">
+          <!-- <a href="회원 상세 팝업" class="thumb"> -->
+          <div class="memberInfo">
+            <h3>작성자: {{post.memberID}}</h3>
+            <a id="memberID" href="#" role="button" class="memberID">
+            </a>
+          </div>
+
+          <div class="post_info">
+            <h4>작성날짜: {{post.date}}</h4>
+          </div>
+        </div>
+
+        <!-- 게시글 상세 -->
+        <div class="post_viewer">
+          
+          <!-- 본문 -->
+          <div class="post_content_viewer"> 
+            <p>{{ post.content | linebreaksbr }}</p>
+          </div>
+
+
+          <!-- 해시태그 -->
+          <div class="post_hashtag">
+            <a>해시태그: {{post.hashtag}}</a>
+          </div>
+
+
+
+          <!-- 수정, 삭제-->
+          {% if is_check %}
+            <div>
+              <input type="submit" value="수정">
+                <!-- 버튼 누르면 write post 링크  -> html로 이동 -->
+              <input type="submit" value="삭제">
+            </div>
+
+            {% else %}
+                <div>
+                  <h5>로그인 계정이랑 일치하지 않을 때</h5>
+                </div>
+          {% endif %}
+        </div>
+
+        댓글 (작성자, 본문, 작성시간)
+    </form>
+
+
+</body>
+
+  {% endblock %}
+
+</html>

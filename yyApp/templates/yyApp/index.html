@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HOME</title>
+{% extends "yyApp/nav.html" %}
+
+</head>
+{% block body %}
+<body>
+    <h1 style="text-align:center;">HOME</h1>
+    {% if member %}
+        <h3 style="text-align:center;">
+            {{ member.memberID }}로 로그인한 상태!
+        </h3>
+    {% endif %}
+</body>
+{% endblock %}
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  {% extends "yyApp/nav.html" %}
+  {% block body %}
+
+  <meta charset="UTF-8">
+
+</head>
+
+<body>
+<div class="container my-3">
+    <!-- <button><a href="new_post/">글쓰기</a></button> #게시판 페이지에 버튼 추가-->
+    <!-- 네이버 카페 글쓰기 디자인 참고-->
+    <div>
+        <h4 style="text-align:center;">게시판 글쓰기</h4>
+    </div>
+
+    <form method="POST" class="post-form" action="." enctype="multipart/form-data"> <!--내부의 정보를 한번에 서버로 전송-->
+        {% csrf_token %} <!-- 공격에 대한 취약성을 보완하는 기능?-->
+
+        <!--게시판 글쓰기 시작-->
+        <div class="form-group">
+          <label for="title">제목</label>
+          <input type="text" class="form-control" name="title" id="title">
+        </div>
+
+        <div class="form-group">
+          <label for="petName">펫 이름</label>
+          <input type="text" class="form-control" id="petName" name="petName">
+        </div>
+
+        <div class="form-group">
+          <label for="petBirth">출생/보호 날짜</label>
+          <input type="date" class="form-control" id="petBirth" name="petBirth">
+        </div>
+
+        <div class="form-group">
+          <label for="petSex">성별</label>
+          <select class="form-control selectpicker noborder" name="petSex" id="petSex">
+            <option value=Null>--모름--</option>
+            <option value="Male">수컷</option>
+            <option value="Female">암컷</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="buttons">크기</label>
+          <div class="btn-group" id="buttons">
+            <label class="btn btn-outline-primary">
+              <input type="radio" name="petSize" value="Big">
+              대형견
+            </label>
+            <label class="btn btn-outline-primary">
+              <input type="radio" name="petSize" value="Small">
+              소형견
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="petFoundLocation">보호장소</label>
+          <select class="form-control selectpicker noborder" name="petLoc" id="petFoundLocation">
+            <option value=Null>선택</option>
+            <option value="seoul">서울</option>
+            <option value="ggnorth">경기북부</option>
+            <option value="ggsouth">경기남부</option>
+            <option value="gangwon">강원</option>
+            <option value="ccnorth">충북</option>
+            <option value="ccsouth">충남</option>
+            <option value="jlnorth">전북</option>
+            <option value="jlsouth">전남</option>
+            <option value="gsnorth">경북</option>
+            <option value="gssouth">경남</option>
+            <option value="jeju">제주</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="petSpecies">견종</label>
+          <select class="form-control selectpicker noborder" name="petSpecies" id="petSpecies">
+            <option value=Null>선택</option>
+            <option value="g">골든리트리버</option>
+            <option value="y">요크셔테리어</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="petWeight">무게</label>
+          <input type="text" class="form-control" id="petWeight" name="petWeight" value="kg">
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="PetTNR">중성화 여부</label>
+          <input type="checkbox" v-model="toggle" True-value="yes" False-value="no"
+          id="PetTNR" name="petTNR">
+        </div>
+
+        <div class="form-group">
+          <label for="petColor">털 색</label>
+          <select class="form-control selectpicker noborder" name="petColor" id="petColor">
+            <option value="black">검정색</option>
+            <option value="white">하얀색</option>
+            <option value="yellow">황색</option>
+            <option value="brown">갈색</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="petImage">사진 첨부</label>
+          <input type="file" id="petImage" name="petImage">
+        </div>
+
+        <div class="form-group">
+<!--          <ul id="hashtag">-->
+<!--          </ul>-->
+
+          <input type="text" id="hashtag" size="10" placeholder="# 태그 입력" />
+          <button type="submit">해시태그</button>
+          <!-- 버튼 누르면 해당 값 전송. 여러번 가능해야 함 -->
+        </div>
+
+
+        <div>
+          <label for="petName">본문</label><br>
+          <textarea rows ="10" cols="50" name="content"></textarea><br>
+          <input type="submit" value="글쓰기"><br><!--type="submit" 버튼이 클릭되면 서버로 전송-->
+        </div>
+
+    </form>
+</div>
+</body>
+{% endblock %}
+</html>
