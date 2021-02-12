@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Member(models.Model):
-    memberID = models.CharField(max_length=50, primary_key=True)
+    memberID = models.CharField(max_length=50, primary_key=True, default=' ')
     memberPW = models.CharField(max_length=200)
     memberName = models.CharField(max_length=20)
     memberAge = models.DateField()
@@ -23,6 +23,7 @@ class Board(models.Model):
     content = models.CharField(max_length=200, blank=True)
     hashtag = models.CharField(max_length=200, blank=True)
     like = models.IntegerField(default=0, blank=True, null=False)
+    petID = models.OneToOneField('Pet', on_delete=models.SET_DEFAULT, default='')
 
 
 class Comment(models.Model):
@@ -38,12 +39,12 @@ class Pet(models.Model):
     petSex = models.NullBooleanField()
     petSize = models.CharField(max_length=50, blank=True)
     petLoc = models.CharField(max_length=50, blank=True)  # 발견 장소
-    petSpecies = models.CharField(max_length=50, blank=True)  # 견종 총 10개 (8개 종 + 믹스 + 기타)
+    petSpecies = models.CharField(max_length=50, blank=True)  # 견종
     petWeight = models.FloatField(null=True, blank=True)
     petNeuter = models.NullBooleanField()  # 중성화
     petColor = models.CharField(max_length=50, blank=True)
-    petImage = models.ImageField(upload_to='images/')  # 'image/': 업로드된 사진을 저장할 디렉토리를 임시로 지정
+    petImage = models.ImageField(upload_to='images/', blank=True, null=True)  # 'image/': 업로드된 사진을 저장할 디렉토리를 임시로 지정
     petAdoption = models.BooleanField(default=False)  # 입양 완료 여부
-    memberID = models.ForeignKey('Member', on_delete=models.SET_DEFAULT, default=' ')
-    postID = models.OneToOneField('Board', on_delete=models.SET_DEFAULT, default=' ')
+    memberID = models.ForeignKey('Member', on_delete=models.SET_DEFAULT, default='')
+    # postID = models.OneToOneField('Board', on_delete=models.SET_DEFAULT, default='2')
 

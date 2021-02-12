@@ -1,8 +1,7 @@
 from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
-from django.conf.urls.static import static
-from django.conf import settings
+
 
 app_name = 'yyApp'
 urlpatterns = [
@@ -13,10 +12,10 @@ urlpatterns = [
     path('join/adopter/', views.join_adopter),
     path('join/guardian/', views.join_guardian),
     path('writepost/', views.write_post),
-    path('postdetail/', views.post_detail),
-    # path('postlike/', views.post_like, name='post_like'),
     path('board/', views.BoardListView.as_view(), name='board_list'),
     path('', views.home, name='index'),
-    path('pie-chart/', views.pie_chart, name='pie-chart'),
+    path('chart/', views.chart, name='chart'),
+    path('postdetail/<int:postID>', views.post_detail, name='post_detail'),
+    path('postdetail/delete', views.post_delete, name='post_delete'),
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]

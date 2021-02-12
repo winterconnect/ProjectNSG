@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.hashers import make_password, check_password
 from yyApp.models import Member, Board, Pet
@@ -112,8 +112,8 @@ def home(request):
     return render(request, 'yyApp/index_haedong.html', {'login_member': check_session(request)})
 
 
-def save_post(post):
-    post.save()
+def save_pet(pet):
+    pet.save()
 
 
 def write_post(request):
@@ -138,9 +138,17 @@ def write_post(request):
         petLoc = request.POST.get('petLoc', None)
         petSpecies = request.POST.get('petSpecies', '')
         petWeight = float(request.POST.get('petWeight', 0))
-        petNeuter = request.POST.get('petTNR', '')
+        petNeuter = request.POST.get('petNeuter', '')
+        if petNeuter == 'yes':
+            petNeuter = True
+        elif petNeuter == 'no':
+            petNeuter = False
+        else:
+            petNeuter = None
         petColor = request.POST.get('petColor', '')
         petImage = request.FILES['petImage']
+        if not petImage:
+            petImage = None
         hashtag = request.POST.get('hashtag', '').split('#')
 
         if not title:
@@ -148,36 +156,42 @@ def write_post(request):
         if not content:
             errors.append('내용을 입력하세요.')
         if not errors:
+            pet = Pet(petName=petName, petBirth=petBirth, petSex=petSex, petSize=petSize, petLoc=petLoc, petSpecies=petSpecies,
+                      petWeight=petWeight, petImage=petImage, petNeuter=petNeuter, petColor=petColor,
+                      memberID=Member.objects.get(memberID=member.memberID))
+
+            save_pet(pet)
+            saved_pet = Pet.objects.order_by('-id').first()
 
             post = Board(memberID=Member.objects.get(memberID=member.memberID), title=title, content=content,
-                         date=date, hashtag=hashtag)
+                         date=date, hashtag=hashtag, petID=Pet.objects.get(id=saved_pet.id))
 
-            save_post(post)
+            post.save()
 
-            saved_post = Board.objects.order_by('-id').first()
-
-            pet = Pet(postID=Board.objects.get(id=saved_post.id), petName=petName, petBirth=petBirth, petSex=petSex,
-                      petSize=petSize, petLoc=petLoc, petSpecies=petSpecies, petWeight=petWeight, petImage=petImage,
-                      petNeuter=petNeuter, petColor=petColor, memberID=Member.objects.get(memberID=member.memberID))
-
-            # 두개의 테이블 연동 및 date 자료 인식 불가?
-            pet.save()
             # for hashtag in hashtag:
             #     hashtag = hashtag.strip()
             #     post.hashtag.add(hashtag)
-    return render(request, 'yyApp/writepost.html', {'user': request.user, 'errors': errors})
+    return render(request, 'yyApp/writepost.html', {'user': request.user, 'errors': errors, 'login_member': check_session(request)})
 
 
-def post_detail(request):
-    post = Board.objects.order_by('-id').first()
-    pet = Pet.objects.get(postID=post.postID)
+def post_detail(request, postID):
+    post = get_object_or_404(Board, pk=postID)
+    pet = get_object_or_404(Pet, pk=post.petID_id)
     is_check = False
     try:
         if str(post.memberID) == request.session['user']:
             is_check = True
     except KeyError:
         is_check = False
-    return render(request, 'yyApp/postdetail.html', {'post': post, 'is_check': is_check, 'pet': pet})
+    return render(request, 'yyApp/postdetail.html', {'post': post, 'is_check': is_check, 'pet': pet, 'login_member': check_session(request)})
+
+
+def post_delete(request):
+    id = int(request.GET.get('id'))
+    if 'id' in request.GET:
+        post = get_object_or_404(Board, id=id)
+        post.delete()
+    return render(request, "yyApp/finish_delete.html")
 
 
 class BoardListView(ListView):
@@ -238,11 +252,16 @@ class BoardListView(ListView):
         return context
 
 
-def pie_chart(request):
-    labels = list(state['상태'])
-    data = list(state['견 수'])
+def chart(request):
+
+    pie_labels = list(state['상태'])
+    pie_data = list(state['견 수'])
+    bar_labels = list(city['지역'])
+    bar_data = list(city['견 수'])
 
     return JsonResponse(data={
-        'labels': labels,
-        'data': data,
+        'labelsPie': pie_labels,
+        'dataPie': pie_data,
+        'labelsBar': bar_labels,
+        'dataBar': bar_data
     })

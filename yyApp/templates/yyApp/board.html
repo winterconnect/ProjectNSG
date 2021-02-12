@@ -4,6 +4,8 @@
 <!DOCTYPE html>
 <html lang = "ko">
 <head>
+
+
 </head>
 
 
@@ -12,41 +14,22 @@
     display:grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
-    gap: 10px;   
+    gap: 20px;   
 }
 
 .pet_info {
     display:grid;
-    padding: 30px;
+    margin: 20px;
     align-items: center;
     grid-template-rows: 400px auto;    
 
 }
 
-.pet_info:hover {
+.first:hover {
 background: silver;
 cursor: pointer;
 }
 
-
-.photo {
-    text-align: center;
-}
-
-
-.txt {
-    text-align: center;
-}
-
-.search_area{
-    text-align: center;
-}
-
-.search_checkbox {
-    display: grid;
-    grid-template-columns: 300px 300px 300px;    
-
-}
 
 </style>
 
@@ -81,47 +64,64 @@ function myFunction() {
 
 
         <!-- SEARCH -->
-        <div class="search_area">
-        
-            <div class="search_checkbox">
-                <div id="pet_sex">
-                    성별
-                    <input type="radio" name="pet" value="True">
-                    <label for="True">수컷</label>
-                    <input type="radio" name="pet" value="False">
-                    <label for="False">암컷</label>
-                </div>
+        <div class="searchArea mb20">
+            <h4 class="hide">검색</h4>
+            <!-- <p class="search_ex mb10">날짜 입력시 다음과 같이 입력해주세요. 예) 2011-01-01</p>-->              
+            <ul class="searchList">
+                <li class="first">
+                    <dl>
+                        <dt><label for="searchSDate">날짜</label></dt>
+                        <dd>
+                            <input type="date" name="searchSDate" id="searchSDate" class="inputDate" title="시작일" onblur="$('.calendar').hide();" maxlength="10/"> ~ <input type="date" name="searchEDate" id="searchEDate" title="마감일" class="inputDate" onblur="$('.calendar').hide();" maxlength="10/">
+                            (날짜는 접수일 기준입니다)
+                        </dd>
+                    </dl>
+                </li>
+                <li>
+                    <dl>
+                        <dt><label for="searchUprCd">시도</label></dt>
+                        <dd>
+                            <select name="searchUprCd" id="searchUprCd" class="selectM">
+                                <option value="">전체</option>
+                                    <option value="6110000">서울특별시 </option>
+                                    <option value="6260000">부산광역시 </option>
+                                    <option value="6270000">대구광역시 </option>
+                                    <option value="6280000">인천광역시 </option>
+                                    <option value="6290000">광주광역시 </option>
+                                    <option value="5690000">세종특별자치시 </option>
+                                    <option value="6300000">대전광역시 </option>
+                                    <option value="6310000">울산광역시 </option>
+                                    <option value="6410000">경기도 </option>
+                                    <option value="6420000">강원도 </option>
+                                    <option value="6430000">충청북도 </option>
+                                    <option value="6440000">충청남도 </option>
+                                    <option value="6450000">전라북도 </option>
+                                    <option value="6460000">전라남도 </option>
+                                    <option value="6470000">경상북도 </option>
+                                    <option value="6480000">경상남도 </option>
+                                    <option value="6500000">제주특별자치도 </option>
+                            </select>
+                        </dd>
+                    </dl>
+                </li>
+                <li class="last">
+                    <dl>
+                        <dt><label for="searchUpKindCd">크기</label></dt>
+                        <dd>
+                            <select name="searchUpKindCd" id="searchUpKindCd" class="selectM">
+                                <option value="417000">대형견</option>
+                                <option value="422400">소형견</option>
+                            </select>
+                            <a href="javascript:;" id="search_button" class="searchBtn">조회</a>
+                        </dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
 
-                <div id="pet_size">
-                    크기
-                    <input type="radio" name="pet" value="대형견">
-                    <label for="대형견">대형견</label>
-                    <input type="radio" name="pet" value="소형견">
-                    <label for="소형견">소형견</label>                
-                </div>
-
-                <div id="pet_species">
-                    품종
-                    <select name="searchUprCd" id="searchUprCd" class="selectM">
-                        <option value="">전체</option>
-                            <option value="6110000">종1</option>
-                            <option value="6260000">종2</option>
-                            <option value="6270000">종3</option>
-                            <option value="6280000">종4</option>
-                            <option value="6280000">종5</option>                            
-                            <option value="6280000">종6</option>
-                            <option value="6280000">종7</option>
-                            <option value="6280000">종8</option>
-                            <option value="6280000">믹스</option>
-                            <option value="6280000">기타</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="search_bar">
-                <span class='green_window'>
-                <input id=text type="text" class='input_text' name="search" onkeydown="enterSearch()"/></span>
-                <input type="button" class='sch_smit' value="검색" onclick="myFunction()"/>
+    <span class='green_window'>
+    <input id=text type="text" class='input_text' name="search" onkeydown="enterSearch()"/></span>
+    <input type="button" class='sch_smit' value="검색" onclick="myFunction()"/>
 
 
     <!-- SEARCH -->
@@ -151,71 +151,174 @@ function myFunction() {
         
         <li class="pet_info">
             <div class="photo">
-                <img src="/Users/winter/workspace/project/web_page/ProjectNSG/yyApp/templates/yyApp/dog2.jpg" width = 400px>                                                 
+                <div class="thumbnail">
+                    
+                        
+                        
+                        
+                        <a href="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302353.jpg" target="_blank" title="클릭시 새창이 열립니다." onclick="showImgWin('/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302353.jpg','','width=129,height=109'); return false;" onkeypress="this.onclick(); return false;">
+                            <img src="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302353_s.jpg" alt="보호중동물사진 공고번호-경북-경주-2021-00079">
+                        </a>
+                        
+                        
+                    
+                                                    
+                </div>
+                <a href="#moreBtn" class="moreBtn" onclick="javascript:moveUrl('447505202100087');" title="경북-경주-2021-00079 자세히 보기">자세히 보기</a>
             </div>
             <div class="txt">
-                <span class="name"> 왈왈이 </span> | <span class="birth">2020</span> | <span class = "sex"> 수컷 </span> <br>
-                <span class = "species"> 믹스견</span>                             
+                <span class="name"> 뭉뭉이 </span> | <span class="birth">2020</span> | <span class = "sex"> 수컷 </span> <br>
+                <span class = "species"> 믹스견</span>  
             </div>
         </li>
         
         <li class="pet_info">
             <div class="photo">
-                <img src="/Users/winter/workspace/project/web_page/ProjectNSG/yyApp/templates/yyApp/dog2.jpg" width = 400px>                                                 
+                <div class="thumbnail">
+                    
+                        
+                        
+                        
+                        <a href="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302844.jpg" target="_blank" title="클릭시 새창이 열립니다." onclick="showImgWin('/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302844.jpg','','width=129,height=109'); return false;" onkeypress="this.onclick(); return false;">
+                            <img src="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302844_s.jpg" alt="보호중동물사진 공고번호-제주-제주-2021-00447">
+                        </a>
+                        
+                        
+                    
+                                                    
+                </div>
+                <a href="#moreBtn" class="moreBtn" onclick="javascript:moveUrl('450650202100466');" title="제주-제주-2021-00447 자세히 보기">자세히 보기</a>
             </div>
             <div class="txt">
-                <span class="name"> 왈왈이 </span> | <span class="birth">2020</span> | <span class = "sex"> 수컷 </span> <br>
-                <span class = "species"> 믹스견</span>                             
+                <dl><dt>이름</dt><dd>2021-02-05</dd></dl>
+                <dl><dt>나이(생년)</dt><dd>2019</dd></dl>                            
+                <dl><dt>성별</dt><dd>암컷</dd></dl>
+                <dl><dt>품종</dt><dd>믹스견</dd></dl>
             </div>
         </li>
         
-        <li class="pet_info">
+        <li>
             <div class="photo">
-                <img src="/Users/winter/workspace/project/web_page/ProjectNSG/yyApp/templates/yyApp/dog2.jpg" width = 400px>                                                 
+                <div class="thumbnail">
+                    
+                        
+                        
+                        
+                        <a href="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051402599.jpg" target="_blank" title="클릭시 새창이 열립니다." onclick="showImgWin('/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051402599.jpg','','width=129,height=109'); return false;" onkeypress="this.onclick(); return false;">
+                            <img src="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051402599_s.jpg" alt="보호중동물사진 공고번호-경남-합천-2021-00030">
+                        </a>
+                        
+                        
+                    
+                                                    
+                </div>
+                <a href="#moreBtn" class="moreBtn" onclick="javascript:moveUrl('448548202100030');" title="경남-합천-2021-00030 자세히 보기">자세히 보기</a>
             </div>
             <div class="txt">
-                <span class="name"> 왈왈이 </span> | <span class="birth">2020</span> | <span class = "sex"> 수컷 </span> <br>
-                <span class = "species"> 믹스견</span>                             
+                <dl><dt>이름</dt><dd>2021-02-05</dd></dl>
+                <dl><dt>나이(생년)</dt><dd>2019</dd></dl>                            
+                <dl><dt>성별</dt><dd>암컷</dd></dl>
+                <dl><dt>품종</dt><dd>믹스견</dd></dl>
             </div>
         </li>
         
-        <li class="pet_info">
+        <li>
             <div class="photo">
-                <img src="/Users/winter/workspace/project/web_page/ProjectNSG/yyApp/templates/yyApp/dog2.jpg" width = 400px>                                                 
+                <div class="thumbnail">
+                    
+                        
+                        
+                        
+                        <a href="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302510.jpg" target="_blank" title="클릭시 새창이 열립니다." onclick="showImgWin('/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302510.jpg','','width=129,height=109'); return false;" onkeypress="this.onclick(); return false;">
+                            <img src="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302510_s.jpg" alt="보호중동물사진 공고번호-경남-거제-2021-00109">
+                        </a>
+                        
+                        
+                    
+                                                    
+                </div>
+                <a href="#moreBtn" class="moreBtn" onclick="javascript:moveUrl('448537202100106');" title="경남-거제-2021-00109 자세히 보기">자세히 보기</a>
             </div>
             <div class="txt">
-                <span class="name"> 왈왈이 </span> | <span class="birth">2020</span> | <span class = "sex"> 수컷 </span> <br>
-                <span class = "species"> 믹스견</span>                             
+                <dl><dt>이름</dt><dd>2021-02-05</dd></dl>
+                <dl><dt>나이(생년)</dt><dd>2019</dd></dl>                            
+                <dl><dt>성별</dt><dd>암컷</dd></dl>
+                <dl><dt>품종</dt><dd>믹스견</dd></dl>
             </div>
         </li>
         
-        <li class="pet_info">
+        <li>
             <div class="photo">
-                <img src="/Users/winter/workspace/project/web_page/ProjectNSG/yyApp/templates/yyApp/dog2.jpg" width = 400px>                                                 
+                <div class="thumbnail">
+                    
+                        
+                        
+                        
+                        <a href="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302512.jpg" target="_blank" title="클릭시 새창이 열립니다." onclick="showImgWin('/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302512.jpg','','width=129,height=109'); return false;" onkeypress="this.onclick(); return false;">
+                            <img src="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302512_s.jpg" alt="보호중동물사진 공고번호-경남-거제-2021-00110">
+                        </a>
+                        
+                        
+                    
+                                                    
+                </div>
+                <a href="#moreBtn" class="moreBtn" onclick="javascript:moveUrl('448537202100105');" title="경남-거제-2021-00110 자세히 보기">자세히 보기</a>
             </div>
             <div class="txt">
-                <span class="name"> 왈왈이 </span> | <span class="birth">2020</span> | <span class = "sex"> 수컷 </span> <br>
-                <span class = "species"> 믹스견</span>                             
+                <dl><dt>이름</dt><dd>2021-02-05</dd></dl>
+                <dl><dt>나이(생년)</dt><dd>2019</dd></dl>                            
+                <dl><dt>성별</dt><dd>암컷</dd></dl>
+                <dl><dt>품종</dt><dd>믹스견</dd></dl>
             </div>
         </li>
         
-        <li class="pet_info">
+        <li>
             <div class="photo">
-                <img src="/Users/winter/workspace/project/web_page/ProjectNSG/yyApp/templates/yyApp/dog2.jpg" width = 400px>                                                 
+                <div class="thumbnail">
+                    
+                        
+                        
+                        
+                        <a href="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051102560.jpeg" target="_blank" title="클릭시 새창이 열립니다." onclick="showImgWin('/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051102560.jpeg','','width=129,height=109'); return false;" onkeypress="this.onclick(); return false;">
+                            <img src="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051102560_s.jpg" alt="보호중동물사진 공고번호-경북-의성-2021-00008">
+                        </a>
+                        
+                        
+                    
+                                                    
+                </div>
+                <a href="#moreBtn" class="moreBtn" onclick="javascript:moveUrl('447515202100008');" title="경북-의성-2021-00008 자세히 보기">자세히 보기</a>
             </div>
             <div class="txt">
-                <span class="name"> 왈왈이 </span> | <span class="birth">2020</span> | <span class = "sex"> 수컷 </span> <br>
-                <span class = "species"> 믹스견</span>                             
+                <dl><dt>이름</dt><dd>2021-02-05</dd></dl>
+                <dl><dt>나이(생년)</dt><dd>2019</dd></dl>                            
+                <dl><dt>성별</dt><dd>암컷</dd></dl>
+                <dl><dt>품종</dt><dd>믹스견</dd></dl>
             </div>
         </li>
         
-        <li class="pet_info">
+        <li>
             <div class="photo">
-                <img src="/Users/winter/workspace/project/web_page/ProjectNSG/yyApp/templates/yyApp/dog2.jpg" width = 400px>                                                 
+                <div class="thumbnail">
+                    
+                        
+                        
+                        
+                        <a href="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051102545.jpeg" target="_blank" title="클릭시 새창이 열립니다." onclick="showImgWin('/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051102545.jpeg','','width=129,height=109'); return false;" onkeypress="this.onclick(); return false;">
+                            <img src="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051102545_s.jpg" alt="보호중동물사진 공고번호-경북-의성-2021-00007">
+                        </a>
+                        
+                        
+                    
+                                                    
+                </div>
+                <a href="#moreBtn" class="moreBtn" onclick="javascript:moveUrl('447515202100007');" title="경북-의성-2021-00007 자세히 보기">자세히 보기</a>
             </div>
             <div class="txt">
-                <span class="name"> 왈왈이 </span> | <span class="birth">2020</span> | <span class = "sex"> 수컷 </span> <br>
-                <span class = "species"> 믹스견</span>                             
+                <dl><dt>이름</dt><dd>2021-02-05</dd></dl>
+                <dl><dt>나이(생년)</dt><dd>2019</dd></dl>                            
+                <dl><dt>성별</dt><dd>암컷</dd></dl>
+                <dl><dt>품종</dt><dd>믹스견</dd></dl>
             </div>
         </li>        
     </div>
@@ -229,7 +332,15 @@ function myFunction() {
     
     
         
+        
     
+
+
+
+
+
+
+
 
 <script type="text/javascript">
 
@@ -258,3 +369,9 @@ function myFunction() {
 </div><!-- center 콘텐츠 끝 -->
 </div>
 </body>
+
+
+
+<footer>
+입양해조_ 김희진, 송지현, 이해동, 전승우
+</footer>

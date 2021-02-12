@@ -1,28 +1,50 @@
 <head>
 {% load static %}
-<link rel="stylesheet" href="{% static 'style.css' %}" >
   <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
-  <nav class="navbar">
+  <link href="{% static 'all.css' %}" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+    html, head, body, footer {
+      font-family: 'Jua', sans-serif;
+      font-size: 20px;
+    }
+  </style>
+
+  <nav class="navbar navbar-dark bg-dark">
     <div class="navbar__logo">
-      <a href="/yyApp">나랑살개</a>
+      <i class="fas fa-bone"></i>
+      <a class="navbar-brand" href="/yyApp">나랑살개</a>
     </div>
 
-    <ul class="navbar__menu">
-      <li><a href="{% url 'yyApp:board_list' %}">보호자 게시판</a></li>
-      <li><a href="">마이페이지</a></li>
+    <ul class="navbar-nav navbar-dark">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'yyApp:board_list' %}">보호자 게시판</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav navbar-dark">
+      <li class="nav-item">
+        <a class="nav-link" href="">마이페이지</a>
+      </li>
     </ul>
 
-    <ul class="navbar__signin">
-      {% if login_member%}
-        <li><a href="{% url 'yyApp:logout' %}">로그아웃</a></li>
-      {% else %}
-        <li><a href="{% url 'yyApp:login' %}">로그인</a></li>
-        <li><a href="{% url 'yyApp:join' %}">회원가입</a></li>
-      {% endif %}
+    {% if login_member%}
+    <ul class="navbar-nav navbar-dark">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'yyApp:logout' %}">로그아웃</a>
+      </li>
     </ul>
-
-
-
+    {% else %}
+    <ul class="navbar-nav navbar-dark">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'yyApp:login' %}">로그인</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav navbar-dark">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'yyApp:join' %}">회원가입</a>
+      </li>
+    </ul>
+    {% endif %}
   </nav>
 </head>
 
@@ -30,6 +52,8 @@
 {% endblock %}
 
 
-<footer>
-입양해조_ 김희진, 송지현, 이해동, 전승우
+<footer style="margin-top:-1.9em;height:1.9em">
+  <div class="jumbotron text-center mt-5 mb-0">
+    <strong>입양해조</strong> 김희진 송지현 이해동 전승우
+  </div>
 </footer>

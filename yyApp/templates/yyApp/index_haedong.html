@@ -1,53 +1,43 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    
-</head>
 
 {% extends "yyApp/nav.html" %}
 {% block body %}
 <body>
-
+<!-- href: 사진에 해당하는 게시글 링크 -->
 {% csrf_token %}
-<!-- 최신의 사진 3개 정도만 가지고 오는 코드를 짜야 함 -->
-<div class="petImage">
-    <label for="image">최근 게시물</label>
-    <img src="https://cdn.pixabay.com/photo/2017/09/25/13/12/dog-2785074_960_720.jpg" width = 300px>
-    <img src="https://cdn.pixabay.com/photo/2017/09/25/13/12/dog-2785074_960_720.jpg" width = 300px>
-    <img src="https://cdn.pixabay.com/photo/2017/09/25/13/12/dog-2785074_960_720.jpg" width = 300px>
-</div>
 
-
-<!-- 차트 구현. 라벨, 데이터 가져오는 뷰 코딩해야 함 -->
-
-<div id="container" style="width: 75%;">
-    <canvas id="pie-chart" data-url="{% url 'yyApp:pie-chart' %}"></canvas>
+  <div class="container">
+      <div class="col">
+          <div class="row-sm-6">
+              <canvas id="pieChart" data-url="{% url 'yyApp:chart' %}"></canvas>
+          </div>
+          <div class="row-sm-6">
+              <canvas id="barChart" data-url="{% url 'yyApp:chart' %}"></canvas>
+          </div>
+      </div>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
-  <script>
 
+  <script>
     $(function () {
 
-      var $pieChart = $("#pie-chart");
-
+      var $barChart = $("#barChart");
       $.ajax({
-        url: $pieChart.data("url"),
+        url: $barChart.data("url"),
         success: function (data) {
 
-          var chartOne = $pieChart[0].getContext("2d");
+          var ctx2 = $barChart[0].getContext("2d");
 
-          new Chart(chartOne, {
-            type: 'pie',
+          new Chart(ctx2, {
+            type: 'bar',
             data: {
-              labels: data.labels,
+              labels: data.labelsBar,
               datasets: [{
-                label: '6개월간 경기도 상태별 유기견 현황',
+                label: '6개월간 경기도 지역별 유기견 현황',
                 backgroundColor: 'blue',
-                data: data.data
-              }]          
+                data: data.dataPie
+              }]
             },
             options: {
               responsive: true,
@@ -56,17 +46,45 @@
               },
               title: {
                 display: true,
-                text: ''
+                text: '6개월간 경기도 지역별 유기견 현황'
               }
             }
           });
-
         }
       });
-     });
 
+      var $pieChart = $("#pieChart");
+      $.ajax({
+        url: $pieChart.data("url"),
+        success: function (data) {
+
+          var ctx = $pieChart[0].getContext("2d");
+
+          new Chart(ctx, {
+            type: 'pie',
+            data: {
+              labels: data.labelsPie,
+              datasets: [{
+                label: '6개월간 경기도 상태별 유기견 현황',
+                backgroundColor: 'blue',
+                data: data.dataPie
+              }]
+            },
+            options: {
+              responsive: true,
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: '6개월간 경기도 상태별 유기견 현황'
+              }
+            }
+          });
+        }
+      });
+    });
   </script>
-
 
 </body>
 {% endblock %}

@@ -38,7 +38,7 @@
         <div class="form-group">
           <label for="petSex">성별</label>
           <select class="form-control selectpicker noborder" name="petSex" id="petSex">
-            <option value=Null>--모름--</option>
+            <option value=None>--모름--</option>
             <option value="Male">수컷</option>
             <option value="Female">암컷</option>
           </select>
@@ -48,11 +48,11 @@
           <label for="buttons">크기</label>
           <div class="btn-group" id="buttons">
             <label class="btn btn-outline-primary">
-              <input type="radio" name="petSize" value="Big">
+              <input type="radio" name="petSize" value="대형견">
               대형견
             </label>
             <label class="btn btn-outline-primary">
-              <input type="radio" name="petSize" value="Small">
+              <input type="radio" name="petSize" value="소형견">
               소형견
             </label>
           </div>
@@ -61,55 +61,68 @@
         <div class="form-group">
           <label for="petFoundLocation">보호장소</label>
           <select class="form-control selectpicker noborder" name="petLoc" id="petFoundLocation">
-            <option value=Null>선택</option>
-            <option value="seoul">서울</option>
-            <option value="ggnorth">경기북부</option>
-            <option value="ggsouth">경기남부</option>
-            <option value="gangwon">강원</option>
-            <option value="ccnorth">충북</option>
-            <option value="ccsouth">충남</option>
-            <option value="jlnorth">전북</option>
-            <option value="jlsouth">전남</option>
-            <option value="gsnorth">경북</option>
-            <option value="gssouth">경남</option>
-            <option value="jeju">제주</option>
+            <option value=None>선택</option>
+            <option value="서울">서울</option>
+            <option value="경기북부">경기북부</option>
+            <option value="경기남부">경기남부</option>
+            <option value="강원">강원</option>
+            <option value="충북">충북</option>
+            <option value="충남">충남</option>
+            <option value="전북">전북</option>
+            <option value="전남">전남</option>
+            <option value="경북">경북</option>
+            <option value="경남">경남</option>
+            <option value="제주">제주</option>
           </select>
         </div>
 
         <div class="form-group">
           <label for="petSpecies">견종</label>
           <select class="form-control selectpicker noborder" name="petSpecies" id="petSpecies">
-            <option value=Null>선택</option>
-            <option value="g">골든리트리버</option>
-            <option value="y">요크셔테리어</option>
+            <option value=None>선택</option>
+            <option value="골든리트리버">골든리트리버</option>
+            <option value="요크셔테리어">요크셔테리어</option>
+              <option value="골든리트리버">골든리트리버</option>
+            <option value="요크셔테리어">요크셔테리어</option>
+            <option value="말티즈">말티즈</option>
+            <option value="시츄">시츄</option>
+            <option value="푸들">푸들</option>
+            <option value="포메라니안">포메라니안</option>
+            <option value="비글">비글</option>
+            <option value="브렌치불독">브렌치불독</option>
+            <option value="믹싱견">믹싱견</option>
+            <option value="기타">기타</option>
           </select>
         </div>
 
         <div class="form-group">
           <label for="petWeight">무게</label>
-          <input type="text" class="form-control" id="petWeight" name="petWeight" value="kg">
+          <input type="text" class="form-control" id="petWeight" name="petWeight">
           </select>
         </div>
 
         <div class="form-group">
-          <label for="PetTNR">중성화 여부</label>
-          <input type="checkbox" v-model="toggle" True-value="yes" False-value="no"
-          id="PetTNR" name="petTNR">
+          <label for="petNeuter">중성화 여부</label>
+          <select class="form-control selectpicker noborder" id="petNeuter" name="petNeuter">
+              <option value=None>--모름--</option>
+              <option value="yes">중성화 O</option>
+              <option value="no">중성화 X</option>
+          </select>
         </div>
 
         <div class="form-group">
           <label for="petColor">털 색</label>
           <select class="form-control selectpicker noborder" name="petColor" id="petColor">
-            <option value="black">검정색</option>
-            <option value="white">하얀색</option>
-            <option value="yellow">황색</option>
-            <option value="brown">갈색</option>
+            <option value="검정색">검정색</option>
+            <option value="하얀색">하얀색</option>
+            <option value="황색">황색</option>
+            <option value="갈색">갈색</option>
           </select>
         </div>
 
         <div class="form-group">
           <label for="petImage">사진 첨부</label>
-          <input type="file" id="petImage" name="petImage">
+          <input type="file" id="petImage" name="petImage" accept="image/*">
         </div>
 
         <div class="form-group">
