@@ -1,8 +1,10 @@
 <!-- last modified: Feb 10, 14:56-->
 
 
+
 <!DOCTYPE html>
 <html lang = "ko">
+
 <head>
     <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
 
@@ -43,7 +45,7 @@
 
         .search_checkbox {
             display: grid;
-            grid-template-columns: 300px 300px 300px;
+            grid-template-columns: 1fr 1fr 1fr;
             padding: 30px;
             boarder: 10px;
             margin: 20px;
@@ -64,106 +66,141 @@
 
 {% block content %}
 
+
 <body>
 
-    <!-- SEARCH -->
-    <div class="search_area">    
-        <div class="search_checkbox">
-            <div id="pet_sex">
-                성별
-                <input type="radio" name="pet" value="True">
-                <label for="True">수컷</label>
-                <input type="radio" name="pet" value="False">
-                <label for="False">암컷</label>
-            </div>
+<!-- SEARCH -->
 
-            <div id="pet_size">
-                크기
-                <input type="radio" name="pet" value="대형견">
-                <label for="대형견">대형견</label>
-                <input type="radio" name="pet" value="소형견">
-                <label for="소형견">소형견</label>                
-            </div>
-
-            <div id="pet_species">
-                품종
-                <select name="searchUprCd" id="searchUprCd" class="selectM">
-                    <option value="">전체</option>
-                        <option value="6110000">종1</option>
-                        <option value="6260000">종2</option>
-                        <option value="6270000">종3</option>
-                        <option value="6280000">종4</option>
-                        <option value="6280000">종5</option>                            
-                        <option value="6280000">종6</option>
-                        <option value="6280000">종7</option>
-                        <option value="6280000">종8</option>
-                        <option value="6280000">믹스</option>
-                        <option value="6280000">기타</option>
-                </select>
-                <i class="fas fa-search"></i>    
-            </div>
-        </div>
-
-        <div class = "search_bar" style="margin-top: 30px;">
+<div class="search_area">
+    <div class="search_checkbox">    
+        <div>
             <form action="" method="GET">
+                <fieldset id="pet_sex">
+                    성별
+                    <input type="radio" name="pet_sex" value=True>
+                    <label for="True">수컷</label>
+                    <input type="radio" name="pet_sex" value=False>
+                    <label for="False">암컷</label>
+                </fieldset>
+
+                <div class="pet_size">
+                <fieldset id="pet_size">
+                    크기
+                    <input type="radio" name="pet_size" value="대형견">
+                    <label for="대형견">대형견</label>
+                    <input type="radio" name="pet_size" value="소형견">
+                    <label for="소형견">소형견</label>                
+                </fieldset>
+
+                <fieldset id="pet_species">
+                    품종
+                    <input type="radio" name="pet_species", value="종1">
+                    <label for="종1">종1</label>
+                    <input type="radio" name="pet_species", value="종2">
+                    <label for="종2">종2</label>                
+                </fieldset>
+
                 <div class="col">
-                    <div style="float: right;" class="form-row">
-                        <div class="form-row">
-                            <div class="col" style="margin-top: 10px;">
-                                <select style="width: 6em;" class="custom-select custom-select-md" name="type">
-                                    <option value="all">전체</option>
-                                    <option value="title_content">제목+내용</option>
-                                    <option value="title">제목</option>
-                                    <option value="content">내용</option>
-                                </select>
-                            </div>
-                            <div class="col" style="margin-top: 10px;">
-                                <input type="text" name="q" value="{{ q }}" class="form-control form-control-md"
-                                    style="width: 15em;" placeholder="검색어를 입력해주세요.">
-                            </div>
-                            <div class="col">
-                                <!-- <button class="btn btn-md btn-outline-dark" type="submit">검색</button> -->
-                                <button class="btn btn-sm" type="submit" id="search_btn">검색</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    <!-- <button class="btn btn-md btn-outline-dark" type="submit">검색</button> -->
+                    <button class="btn btn-sm" type="submit">검색</button> 
+                </div>            
             </form>
         </div>
     </div>
+</div>
 
 
-    <!-- LIST --> <!--게시글과 동물 내용 조인하는 방법 다시 찾아보기-->
+<div>
+    <div class = "search_bar" style="margin-top: 30px;">
+        <form action="" method="GET">
+            <div class="col">
+                <div style="float: right;" class="form-row">
+                    <div class="form-row">
+                        <div class="col" style="margin-top: 10px;">
+                            <select style="width: 6em;" class="custom-select custom-select-md" name="type">
+                                <option value="all">전체</option>
+                                <option value="title_content">제목+내용</option>
+                                <option value="title">제목</option>
+                                <option value="content">내용</option>
+                            </select>
+                        </div>
+                        <div class="col" style="margin-top: 10px;">
+                            <input type="text" name="q" value="{{ q }}" class="form-control form-control-md"
+                                style="width: 15em;" placeholder="검색어를 입력해주세요.">
+                        </div>
+                        <div class="col">
+                            <!-- <button class="btn btn-md btn-outline-dark" type="submit">검색</button> -->
+                            <button class="btn btn-sm" type="submit" id="search_btn">검색</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+    <!-- LIST --> 
+
 
     <div class="container">
         <div class="row mt-5">
             <div class="col-12">
                 {% if q %}
                 <h5 style="color: gray; font-weight: 550;"><i class="fas fa-search"></i>&nbsp;'{{ q }}' 검색 결과입니다.</h5>
-                {% endif %}
+                {% elif pet_sex %}
+                <h5 style="color: gray; font-weight: 550;"><i class="fas fa-search"></i>&nbsp;'{{ pet_sex }}' 검색 결과입니다.</h5>
+                {% elif pet_size %}
+                <h5 style="color: gray; font-weight: 550;"><i class="fas fa-search"></i>&nbsp;'{{ pet_size }}' 검색 결과입니다.</h5>
+                {% endif %}                
+
             </div>
         </div>
 
     <div>
-        {% if board_list %}
-        {% for board in board_list %}
-        <div class="board_info">
+
+
+    {% if pet_list %}
+    <div class="pet_list">
+        {% for pet in pet_list %}    
+        <div class="pet_info">
             <div class="photo">
                 <img src ="{{ pet.petImage.url }}">
             </div>
             <div class="txt">
-                <span class="adoption">{{ board.title }} | <span class="name"> {{ pet.petName }} </span> | <span class="birth"> {{ pet.petBirth }} </span> | <span class = "sex"> {% if pet.petSex == True %} 수컷 {% else %} 암컷 {% endif %} </span> <br>
+                <span class="adoption">{{ pet.petAdoption }} | <span class="name"> {{ pet.petName }} </span> | <span class="birth"> {{ pet.petBirth }} </span> | <span class = "sex"> {% if pet.petSex == True %} 수컷 {% else %} 암컷 {% endif %} </span> <br>
                 <span class = "species"> {{ pet.petSpecies }} </span>                           
             </div>
         </div>
         {% endfor %}
+    </div>    
+
         {% else %}
             {% if q %}
+            <tr class="text-center">
+                <td style="font-weight: bold; color:gray;" colspan="5">
+                    <i class="fas fa-info-circle"></i>&nbsp;{{q}} 와 일치하는 검색 결과가 없습니다.
+                </td>
+            </tr>
+            {% elif pet_size %}
             <tr class="text-center">
                 <td style="font-weight: bold; color:gray;" colspan="5">
                     <i class="fas fa-info-circle"></i>&nbsp;일치하는 검색 결과가 없습니다.
                 </td>
             </tr>
+            {% elif pet_species %}
+            <tr class="text-center">
+                <td style="font-weight: bold; color:gray;" colspan="5">
+                    <i class="fas fa-info-circle"></i>&nbsp;일치하는 검색 결과가 없습니다.
+                </td>
+            </tr>
+            {% elif pet_sex %}
+            <tr class="text-center">
+                <td style="font-weight: bold; color:gray;" colspan="5">
+                    <i class="fas fa-info-circle"></i>&nbsp;일치하는 검색 결과가 없습니다.
+                </td>
+            </tr>
+
             {% else %}
                 <tr class="text-center">
                     <td style="font-weight: bold; color:gray;" colspan="5">
@@ -176,11 +213,7 @@
 </div>
 
 
-{% endblock %}
-
     <!-- LIST -->                
-    <!--  페이지 표시 시작 -->
-
 
     <!-- 페이징처리 시작 -->
     <ul class = "board_pagetab" align="absmiddle">
@@ -221,3 +254,7 @@
         {% endif %}
     </ul>
     <!-- 페이징처리 끝 -->
+
+
+{% endblock %}
+

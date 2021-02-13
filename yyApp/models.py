@@ -1,4 +1,5 @@
 from django.db import models
+from django_db_views.db_view import DBView
 
 
 class Member(models.Model):
@@ -12,9 +13,6 @@ class Member(models.Model):
     adopterFamily = models.CharField(max_length=200, blank=True)
     authority = models.BooleanField()
 
-    def __str__(self):
-        return self.memberID
-
 
 class Board(models.Model):
     memberID = models.ForeignKey('Member', on_delete=models.SET_DEFAULT, default=' ')
@@ -24,6 +22,7 @@ class Board(models.Model):
     hashtag = models.CharField(max_length=200, blank=True)
     like = models.IntegerField(default=0, blank=True, null=False)
     petID = models.OneToOneField('Pet', on_delete=models.SET_DEFAULT, default='')
+
 
 
 class Comment(models.Model):
@@ -47,4 +46,3 @@ class Pet(models.Model):
     petAdoption = models.BooleanField(default=False)  # 입양 완료 여부
     memberID = models.ForeignKey('Member', on_delete=models.SET_DEFAULT, default='')
     # postID = models.OneToOneField('Board', on_delete=models.SET_DEFAULT, default='2')
-
