@@ -66,32 +66,73 @@ class BoardListView(ListView):
     context_object_name = 'pet_list'        #DEFAULT : <model_name>_list
 
     def get_queryset(self):
-        board_list = Board.objects.order_by('-id')
         pet_list = Pet.objects.order_by('-id')
         board_pet = Pet.objects.select_related('board')
 
-        print(board_pet)
+        search_keyword_bar = self.request.GET.get('q', '')
 
-        search_keyword = self.request.GET.get('q', '')
+
+        
+        search_keyword_box_sex = self.request.GET.get('pet_sex', '')
+        search_keyword_box_size = self.request.GET.get('pet_size', '')        
+        search_keyword_box_species = self.request.GET.get('pet_species', '')
+
+
+        print(search_keyword_box_sex)
+        print(search_keyword_box_size)
+        print(search_keyword_box_species)           
         search_type = self.request.GET.get('type', '')
         
-        if search_keyword :
-            if len(search_keyword) > 1 :
+        if search_keyword_bar :
+            if len(search_keyword_bar) > 1 :
                 if search_type == 'all':
-                    search_board_list = board_pet.filter(Q (board__title__icontains=search_keyword) | Q (board__content__icontains=search_keyword))
+                    search_board_list = board_pet.filter(Q (board__title__icontains=search_keyword_bar) | Q (board__content__icontains=search_keyword_bar))
                 elif search_type == 'title_content':
-                    search_board_list = board_pet.filter(Q (board__title__icontains=search_keyword) | Q (board__content__icontains=search_keyword))
+                    search_board_list = board_pet.filter(Q (board__title__icontains=search_keyword_bar) | Q (board__content__icontains=search_keyword_bar))
                 elif search_type == 'title':
-                    search_board_list = board_pet.filter(board__title__icontains=search_keyword)    
+                    search_board_list = board_pet.filter(board__title__icontains=search_keyword_bar)    
                 elif search_type == 'content':
-                    search_board_list = board_pet.filter(board__content__icontains=search_keyword)
+                    search_board_list = board_pet.filter(board__content__icontains=search_keyword_bar)
 
-                return search_board_list
+                return search_board_list    
+
             else:
+
                 messages.error(self.request, '검색어는 2글자 이상 입력해주세요.')   
+            
+        # 검색박스 구현
+        if search_keyword_box_sex and search_keyword_box_size and search_keyword_box_species :
+            search_board_list = pet_list.filter(Q (petSex__icontains=search_keyword_box_sex) & Q (petSpecies__icontains=search_keyword_box_species) & Q (petSize__icontains=search_keyword_box_size) )
+            return search_board_list
+
+        elif search_keyword_box_sex and search_keyword_box_size:
+            search_board_list = pet_list.filter(Q (petSex__icontains=search_keyword_box_sex) & Q (petSize__icontains=search_keyword_box_size) )
+            return search_board_list
+
+        elif search_keyword_box_sex and search_keyword_box_species :
+            search_board_list = pet_list.filter(Q (petSex__icontains=search_keyword_box_sex) & Q (petSpecies__icontains=search_keyword_box_species) )
+            return search_board_list
+
+        elif search_keyword_box_size and search_keyword_box_species :
+            search_board_list = pet_list.filter(Q (petSpecies__icontains=search_keyword_box_species) & Q (petSize__icontains=search_keyword_box_size) )
+            return search_board_list
+
+        elif search_keyword_box_sex :
+            search_board_list = pet_list.filter(Q (petSex__icontains=search_keyword_box_sex) )
+            return search_board_list
+
+        elif search_keyword_box_size :
+            search_board_list = pet_list.filter(Q (petSize__icontains=search_keyword_box_size) )
+            return search_board_list
+
+        elif search_keyword_box_species :
+            search_board_list = pet_list.filter(Q (petSpecies__icontains=search_keyword_box_species) )          
+            return search_board_list
+
+        else:
+            messages.error(self.request, '옵션을 선택해주세요')
 
         return pet_list
-
 
 
     def get_context_data(self, **kwargs):
@@ -110,31 +151,24 @@ class BoardListView(ListView):
 
         page_range = paginator.page_range[start_index:end_index]
         context['page_range'] = page_range
-
-
-        search_keyword = self.request.GET.get('q', '') 
-        search_type = self.request.GET.get('type', '')
         board_fixed = Board.objects.order_by('-id')
 
-        if len(search_keyword) > 1 :
-            context['q'] = search_keyword
+        search_keyword_bar = self.request.GET.get('q', '')      
+        search_type = self.request.GET.get('type', '')
+
+        search_keyword_box_sex = self.request.GET.get('pet_sex', '')
+        search_keyword_box_size = self.request.GET.get('pet_size', '')        
+        search_keyword_box_species = self.request.GET.get('pet_species', '')
+
+        if len(search_keyword_bar) > 1 :
+            context['q'] = search_keyword_bar
+
         context['type'] = search_type
         context['board_fixed'] = board_fixed
-
+        context['pet_sex'] = search_keyword_box_sex
+        context['pet_size'] = search_keyword_box_size
+        context['pet_species'] = search_keyword_box_species
+                        
 
         return context
-
-
-# def board(request):
-#     petlist = Pet.objects.order_by('-postID')   
-
-#     page = request.GET.get('page', '1')  
-#     paginator = Paginator(petlist, 9)    
-#     page_obj = paginator.get_page(page)
-#     context = {'petlist': petlist, 'paging': page_obj, 'page': page}    
-
-#     return render(request, 'yyApp/board.html', context)
-
-
-
 
