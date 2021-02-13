@@ -1,0 +1,260 @@
+<!-- last modified: Feb 10, 14:56-->
+
+
+
+<!DOCTYPE html>
+<html lang = "ko">
+
+<head>
+    <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+
+    <style>
+        .pet_list {
+            display:grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr 1fr;
+            gap: 10px;   
+        }
+
+        .pet_info {
+            display:grid;
+            padding: 30px;
+            align-items: center;
+            grid-template-rows: 400px auto;    
+
+        }
+
+        .pet_info:hover {
+        background: silver;
+        cursor: pointer;
+        }
+
+        .photo {
+            text-align: center;
+        }
+
+        .txt {
+            text-align: center;
+        }
+
+        .search_area{
+            display: grid;
+            text-align: center;
+            margin: 20px;
+        }
+
+        .search_checkbox {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            padding: 30px;
+            boarder: 10px;
+            margin: 20px;
+            background: silver;
+
+        }
+
+        .search_bar {
+            padding: 30px;
+            boarder: 10px;
+            margin: 20px;
+            background: silver;
+        }
+
+    </style>
+</head>
+
+
+{% block content %}
+
+
+<body>
+
+<!-- SEARCH -->
+
+<div class="search_area">
+    <div class="search_checkbox">    
+        <div>
+            <form action="" method="GET">
+                <fieldset id="pet_sex">
+                    성별
+                    <input type="radio" name="pet_sex" value=True>
+                    <label for="True">수컷</label>
+                    <input type="radio" name="pet_sex" value=False>
+                    <label for="False">암컷</label>
+                </fieldset>
+
+                <div class="pet_size">
+                <fieldset id="pet_size">
+                    크기
+                    <input type="radio" name="pet_size" value="대형견">
+                    <label for="대형견">대형견</label>
+                    <input type="radio" name="pet_size" value="소형견">
+                    <label for="소형견">소형견</label>                
+                </fieldset>
+
+                <fieldset id="pet_species">
+                    품종
+                    <input type="radio" name="pet_species", value="종1">
+                    <label for="종1">종1</label>
+                    <input type="radio" name="pet_species", value="종2">
+                    <label for="종2">종2</label>                
+                </fieldset>
+
+                <div class="col">
+                    <!-- <button class="btn btn-md btn-outline-dark" type="submit">검색</button> -->
+                    <button class="btn btn-sm" type="submit">검색</button> 
+                </div>            
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div>
+    <div class = "search_bar" style="margin-top: 30px;">
+        <form action="" method="GET">
+            <div class="col">
+                <div style="float: right;" class="form-row">
+                    <div class="form-row">
+                        <div class="col" style="margin-top: 10px;">
+                            <select style="width: 6em;" class="custom-select custom-select-md" name="type">
+                                <option value="all">전체</option>
+                                <option value="title_content">제목+내용</option>
+                                <option value="title">제목</option>
+                                <option value="content">내용</option>
+                            </select>
+                        </div>
+                        <div class="col" style="margin-top: 10px;">
+                            <input type="text" name="q" value="{{ q }}" class="form-control form-control-md"
+                                style="width: 15em;" placeholder="검색어를 입력해주세요.">
+                        </div>
+                        <div class="col">
+                            <!-- <button class="btn btn-md btn-outline-dark" type="submit">검색</button> -->
+                            <button class="btn btn-sm" type="submit" id="search_btn">검색</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+    <!-- LIST --> 
+
+
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-12">
+                {% if q %}
+                <h5 style="color: gray; font-weight: 550;"><i class="fas fa-search"></i>&nbsp;'{{ q }}' 검색 결과입니다.</h5>
+                {% elif pet_sex %}
+                <h5 style="color: gray; font-weight: 550;"><i class="fas fa-search"></i>&nbsp;'{{ pet_sex }}' 검색 결과입니다.</h5>
+                {% elif pet_size %}
+                <h5 style="color: gray; font-weight: 550;"><i class="fas fa-search"></i>&nbsp;'{{ pet_size }}' 검색 결과입니다.</h5>
+                {% endif %}                
+
+            </div>
+        </div>
+
+    <div>
+
+
+    {% if pet_list %}
+    <div class="pet_list">
+        {% for pet in pet_list %}    
+        <div class="pet_info">
+            <div class="photo">
+                <img src ="{{ pet.petImage.url }}">
+            </div>
+            <div class="txt">
+                <span class="adoption">{{ pet.petAdoption }} | <span class="name"> {{ pet.petName }} </span> | <span class="birth"> {{ pet.petBirth }} </span> | <span class = "sex"> {% if pet.petSex == True %} 수컷 {% else %} 암컷 {% endif %} </span> <br>
+                <span class = "species"> {{ pet.petSpecies }} </span>                           
+            </div>
+        </div>
+        {% endfor %}
+    </div>    
+
+        {% else %}
+            {% if q %}
+            <tr class="text-center">
+                <td style="font-weight: bold; color:gray;" colspan="5">
+                    <i class="fas fa-info-circle"></i>&nbsp;{{q}} 와 일치하는 검색 결과가 없습니다.
+                </td>
+            </tr>
+            {% elif pet_size %}
+            <tr class="text-center">
+                <td style="font-weight: bold; color:gray;" colspan="5">
+                    <i class="fas fa-info-circle"></i>&nbsp;일치하는 검색 결과가 없습니다.
+                </td>
+            </tr>
+            {% elif pet_species %}
+            <tr class="text-center">
+                <td style="font-weight: bold; color:gray;" colspan="5">
+                    <i class="fas fa-info-circle"></i>&nbsp;일치하는 검색 결과가 없습니다.
+                </td>
+            </tr>
+            {% elif pet_sex %}
+            <tr class="text-center">
+                <td style="font-weight: bold; color:gray;" colspan="5">
+                    <i class="fas fa-info-circle"></i>&nbsp;일치하는 검색 결과가 없습니다.
+                </td>
+            </tr>
+
+            {% else %}
+                <tr class="text-center">
+                    <td style="font-weight: bold; color:gray;" colspan="5">
+                        <i class="fas fa-info-circle"></i>&nbsp;작성된 게시글이 없습니다.
+                    </td>
+                </tr>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+
+
+    <!-- LIST -->                
+
+    <!-- 페이징처리 시작 -->
+    <ul class = "board_pagetab" align="absmiddle">
+        <!-- 이전페이지 -->
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" data-page="{{ page_obj.previous_page_number }}" href="#">이전</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+        </li>
+        {% endif %}
+        <!-- 페이지리스트 -->
+        {% for page_number in page_obj.paginator.page_range %}
+
+            {% if page_number >= page_obj.number|add:-5 and page_number <= page_obj.number|add:5 %}
+                {% if page_number == page_obj.number %}
+                <li class="page-item active" aria-current="page">
+                    <a class="page-link" data-page="{{ page_number }}" href="#">{{ page_number }}</a>
+                </li>
+                {% else %}
+                <li class="page-item">
+                    <a class="page-link" data-page="{{ page_number }}" href="#">{{ page_number }}</a>
+                </li>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        <!-- 다음페이지 -->
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" data-page="{{ page_obj.next_page_number }}" href="#">다음</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+        </li>
+        {% endif %}
+    </ul>
+    <!-- 페이징처리 끝 -->
+
+
+{% endblock %}
+

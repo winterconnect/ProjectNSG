@@ -1,0 +1,91 @@
+
+{% extends "yyApp/nav.html" %}
+{% block body %}
+<body>
+<!-- href: 사진에 해당하는 게시글 링크 -->
+{% csrf_token %}
+
+  <div class="container">
+      <div class="col">
+          <div class="row-sm-6">
+              <canvas id="pieChart" data-url="{% url 'yyApp:chart' %}"></canvas>
+          </div>
+          <div class="row-sm-6">
+              <canvas id="barChart" data-url="{% url 'yyApp:chart' %}"></canvas>
+          </div>
+      </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+
+  <script>
+    $(function () {
+
+      var $barChart = $("#barChart");
+      $.ajax({
+        url: $barChart.data("url"),
+        success: function (data) {
+
+          var ctx2 = $barChart[0].getContext("2d");
+
+          new Chart(ctx2, {
+            type: 'bar',
+            data: {
+              labels: data.labelsBar,
+              datasets: [{
+                label: '6개월간 경기도 지역별 유기견 현황',
+                backgroundColor: 'blue',
+                data: data.dataPie
+              }]
+            },
+            options: {
+              responsive: true,
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: '6개월간 경기도 지역별 유기견 현황'
+              }
+            }
+          });
+        }
+      });
+
+      var $pieChart = $("#pieChart");
+      $.ajax({
+        url: $pieChart.data("url"),
+        success: function (data) {
+
+          var ctx = $pieChart[0].getContext("2d");
+
+          new Chart(ctx, {
+            type: 'pie',
+            data: {
+              labels: data.labelsPie,
+              datasets: [{
+                label: '6개월간 경기도 상태별 유기견 현황',
+                backgroundColor: 'blue',
+                data: data.dataPie
+              }]
+            },
+            options: {
+              responsive: true,
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: '6개월간 경기도 상태별 유기견 현황'
+              }
+            }
+          });
+        }
+      });
+    });
+  </script>
+
+</body>
+{% endblock %}
+</html>
