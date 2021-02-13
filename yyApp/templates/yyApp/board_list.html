@@ -1,9 +1,9 @@
-<!-- last modified: Feb 13, 16:05-->
+<!-- last modified: Feb 10, 14:56-->
+
 
 
 <!DOCTYPE html>
 <html lang = "ko">
-
 
 <head>
     <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
@@ -47,6 +47,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             padding: 30px;
+            boarder: 10px;
             margin: 20px;
             background: silver;
 
@@ -141,6 +142,7 @@
 
     <!-- LIST --> 
 
+
     <div class="container">
         <div class="row mt-5">
             <div class="col-12">
@@ -151,10 +153,12 @@
                 {% elif pet_size %}
                 <h5 style="color: gray; font-weight: 550;"><i class="fas fa-search"></i>&nbsp;'{{ pet_size }}' 검색 결과입니다.</h5>
                 {% endif %}                
+
             </div>
         </div>
 
     <div>
+
 
     {% if pet_list %}
     <div class="pet_list">
@@ -209,51 +213,9 @@
 </div>
 
 
+    <!-- LIST -->                
 
-    <!-- LIST -->
-{% comment %} 
-    <div class ="container-fluid text-center">
-        <!-- 페이징처리 시작 -->
-        {% if is_paginated %}
-        <p>
-        <!-- 이전페이지 그룹으로 이동-->
-        {% if has_previous_page %}
-            <a href = '/yyApp/list?page={{previous_page}}' style="color: #CDCDCD">이전페이지</a>
-        {% endif %}
-        &nbsp;
-
-        <!-- 페이지 번호 링크-->
-        {% for page in current_page_group_range %}
-            &nbsp;
-        <!-- page_obj.number: 현재 보고있는 페이지-->
-            {% if page == page_obj.number %}
-                <a style="color: ##FFC107">{{ page }}</a>
-            {% else %}
-                <a href ='yyApp/list?page={{page}} style="color:#CDCDCD'>
-                    {{page}}
-                </a>
-            {% endif %}
-            &nbsp;
-        {% endfor %}
-
-
-        <!-- 다음페이지 그룹 -->
-        &nbsp;
-        {% if has_next_page %}
-            <a href='/yyApp/list/?page={{next_page}}' style="color: #CDCDCD">다음페이지</a>
-        {% endif %}
-        </p>
-
-        {% endif %}
-
-        <br>
-        <br>
-        <br>
-    </div> {% endcomment %}
-
-
-
-
+    <!-- 페이징처리 시작 -->
     <ul class = "board_pagetab" align="absmiddle">
         <!-- 이전페이지 -->
         {% if page_obj.has_previous %}
@@ -293,4 +255,6 @@
     </ul>
     <!-- 페이징처리 끝 -->
 
+
 {% endblock %}
+

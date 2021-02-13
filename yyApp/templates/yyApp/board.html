@@ -13,21 +13,22 @@
     display:grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
-    gap: 10px;   
+    gap: 20px;   
 }
 
 .pet_info {
     display:grid;
-    padding: 30px;
+    margin: 20px;
     align-items: center;
     grid-template-rows: 400px auto;    
 
 }
 
-.pet_info:hover {
+.first:hover {
 background: silver;
 cursor: pointer;
 }
+
 
 
 .photo {
@@ -96,6 +97,7 @@ function myFunction() {
 
 
         <!-- SEARCH -->
+
         <div class="search_area">
         
             <div class="search_checkbox">
@@ -191,71 +193,174 @@ function myFunction() {
         
         <li class="pet_info">
             <div class="photo">
-                <img src="/Users/winter/workspace/project/web_page/ProjectNSG/yyApp/templates/yyApp/dog2.jpg" width = 400px>                                                 
+                <div class="thumbnail">
+                    
+                        
+                        
+                        
+                        <a href="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302353.jpg" target="_blank" title="클릭시 새창이 열립니다." onclick="showImgWin('/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302353.jpg','','width=129,height=109'); return false;" onkeypress="this.onclick(); return false;">
+                            <img src="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302353_s.jpg" alt="보호중동물사진 공고번호-경북-경주-2021-00079">
+                        </a>
+                        
+                        
+                    
+                                                    
+                </div>
+                <a href="#moreBtn" class="moreBtn" onclick="javascript:moveUrl('447505202100087');" title="경북-경주-2021-00079 자세히 보기">자세히 보기</a>
             </div>
             <div class="txt">
-                <span class="name"> 왈왈이 </span> | <span class="birth">2020</span> | <span class = "sex"> 수컷 </span> <br>
-                <span class = "species"> 믹스견</span>                             
+                <span class="name"> 뭉뭉이 </span> | <span class="birth">2020</span> | <span class = "sex"> 수컷 </span> <br>
+                <span class = "species"> 믹스견</span>  
             </div>
         </li>
         
         <li class="pet_info">
             <div class="photo">
-                <img src="/Users/winter/workspace/project/web_page/ProjectNSG/yyApp/templates/yyApp/dog2.jpg" width = 400px>                                                 
+                <div class="thumbnail">
+                    
+                        
+                        
+                        
+                        <a href="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302844.jpg" target="_blank" title="클릭시 새창이 열립니다." onclick="showImgWin('/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302844.jpg','','width=129,height=109'); return false;" onkeypress="this.onclick(); return false;">
+                            <img src="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302844_s.jpg" alt="보호중동물사진 공고번호-제주-제주-2021-00447">
+                        </a>
+                        
+                        
+                    
+                                                    
+                </div>
+                <a href="#moreBtn" class="moreBtn" onclick="javascript:moveUrl('450650202100466');" title="제주-제주-2021-00447 자세히 보기">자세히 보기</a>
             </div>
             <div class="txt">
-                <span class="name"> 왈왈이 </span> | <span class="birth">2020</span> | <span class = "sex"> 수컷 </span> <br>
-                <span class = "species"> 믹스견</span>                             
+                <dl><dt>이름</dt><dd>2021-02-05</dd></dl>
+                <dl><dt>나이(생년)</dt><dd>2019</dd></dl>                            
+                <dl><dt>성별</dt><dd>암컷</dd></dl>
+                <dl><dt>품종</dt><dd>믹스견</dd></dl>
             </div>
         </li>
         
-        <li class="pet_info">
+        <li>
             <div class="photo">
-                <img src="/Users/winter/workspace/project/web_page/ProjectNSG/yyApp/templates/yyApp/dog2.jpg" width = 400px>                                                 
+                <div class="thumbnail">
+                    
+                        
+                        
+                        
+                        <a href="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051402599.jpg" target="_blank" title="클릭시 새창이 열립니다." onclick="showImgWin('/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051402599.jpg','','width=129,height=109'); return false;" onkeypress="this.onclick(); return false;">
+                            <img src="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051402599_s.jpg" alt="보호중동물사진 공고번호-경남-합천-2021-00030">
+                        </a>
+                        
+                        
+                    
+                                                    
+                </div>
+                <a href="#moreBtn" class="moreBtn" onclick="javascript:moveUrl('448548202100030');" title="경남-합천-2021-00030 자세히 보기">자세히 보기</a>
             </div>
             <div class="txt">
-                <span class="name"> 왈왈이 </span> | <span class="birth">2020</span> | <span class = "sex"> 수컷 </span> <br>
-                <span class = "species"> 믹스견</span>                             
+                <dl><dt>이름</dt><dd>2021-02-05</dd></dl>
+                <dl><dt>나이(생년)</dt><dd>2019</dd></dl>                            
+                <dl><dt>성별</dt><dd>암컷</dd></dl>
+                <dl><dt>품종</dt><dd>믹스견</dd></dl>
             </div>
         </li>
         
-        <li class="pet_info">
+        <li>
             <div class="photo">
-                <img src="/Users/winter/workspace/project/web_page/ProjectNSG/yyApp/templates/yyApp/dog2.jpg" width = 400px>                                                 
+                <div class="thumbnail">
+                    
+                        
+                        
+                        
+                        <a href="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302510.jpg" target="_blank" title="클릭시 새창이 열립니다." onclick="showImgWin('/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302510.jpg','','width=129,height=109'); return false;" onkeypress="this.onclick(); return false;">
+                            <img src="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302510_s.jpg" alt="보호중동물사진 공고번호-경남-거제-2021-00109">
+                        </a>
+                        
+                        
+                    
+                                                    
+                </div>
+                <a href="#moreBtn" class="moreBtn" onclick="javascript:moveUrl('448537202100106');" title="경남-거제-2021-00109 자세히 보기">자세히 보기</a>
             </div>
             <div class="txt">
-                <span class="name"> 왈왈이 </span> | <span class="birth">2020</span> | <span class = "sex"> 수컷 </span> <br>
-                <span class = "species"> 믹스견</span>                             
+                <dl><dt>이름</dt><dd>2021-02-05</dd></dl>
+                <dl><dt>나이(생년)</dt><dd>2019</dd></dl>                            
+                <dl><dt>성별</dt><dd>암컷</dd></dl>
+                <dl><dt>품종</dt><dd>믹스견</dd></dl>
             </div>
         </li>
         
-        <li class="pet_info">
+        <li>
             <div class="photo">
-                <img src="/Users/winter/workspace/project/web_page/ProjectNSG/yyApp/templates/yyApp/dog2.jpg" width = 400px>                                                 
+                <div class="thumbnail">
+                    
+                        
+                        
+                        
+                        <a href="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302512.jpg" target="_blank" title="클릭시 새창이 열립니다." onclick="showImgWin('/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302512.jpg','','width=129,height=109'); return false;" onkeypress="this.onclick(); return false;">
+                            <img src="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051302512_s.jpg" alt="보호중동물사진 공고번호-경남-거제-2021-00110">
+                        </a>
+                        
+                        
+                    
+                                                    
+                </div>
+                <a href="#moreBtn" class="moreBtn" onclick="javascript:moveUrl('448537202100105');" title="경남-거제-2021-00110 자세히 보기">자세히 보기</a>
             </div>
             <div class="txt">
-                <span class="name"> 왈왈이 </span> | <span class="birth">2020</span> | <span class = "sex"> 수컷 </span> <br>
-                <span class = "species"> 믹스견</span>                             
+                <dl><dt>이름</dt><dd>2021-02-05</dd></dl>
+                <dl><dt>나이(생년)</dt><dd>2019</dd></dl>                            
+                <dl><dt>성별</dt><dd>암컷</dd></dl>
+                <dl><dt>품종</dt><dd>믹스견</dd></dl>
             </div>
         </li>
         
-        <li class="pet_info">
+        <li>
             <div class="photo">
-                <img src="/Users/winter/workspace/project/web_page/ProjectNSG/yyApp/templates/yyApp/dog2.jpg" width = 400px>                                                 
+                <div class="thumbnail">
+                    
+                        
+                        
+                        
+                        <a href="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051102560.jpeg" target="_blank" title="클릭시 새창이 열립니다." onclick="showImgWin('/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051102560.jpeg','','width=129,height=109'); return false;" onkeypress="this.onclick(); return false;">
+                            <img src="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051102560_s.jpg" alt="보호중동물사진 공고번호-경북-의성-2021-00008">
+                        </a>
+                        
+                        
+                    
+                                                    
+                </div>
+                <a href="#moreBtn" class="moreBtn" onclick="javascript:moveUrl('447515202100008');" title="경북-의성-2021-00008 자세히 보기">자세히 보기</a>
             </div>
             <div class="txt">
-                <span class="name"> 왈왈이 </span> | <span class="birth">2020</span> | <span class = "sex"> 수컷 </span> <br>
-                <span class = "species"> 믹스견</span>                             
+                <dl><dt>이름</dt><dd>2021-02-05</dd></dl>
+                <dl><dt>나이(생년)</dt><dd>2019</dd></dl>                            
+                <dl><dt>성별</dt><dd>암컷</dd></dl>
+                <dl><dt>품종</dt><dd>믹스견</dd></dl>
             </div>
         </li>
         
-        <li class="pet_info">
+        <li>
             <div class="photo">
-                <img src="/Users/winter/workspace/project/web_page/ProjectNSG/yyApp/templates/yyApp/dog2.jpg" width = 400px>                                                 
+                <div class="thumbnail">
+                    
+                        
+                        
+                        
+                        <a href="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051102545.jpeg" target="_blank" title="클릭시 새창이 열립니다." onclick="showImgWin('/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051102545.jpeg','','width=129,height=109'); return false;" onkeypress="this.onclick(); return false;">
+                            <img src="/front/fileMng/imageView.do?f=/files/shelter/2020/11/202102051102545_s.jpg" alt="보호중동물사진 공고번호-경북-의성-2021-00007">
+                        </a>
+                        
+                        
+                    
+                                                    
+                </div>
+                <a href="#moreBtn" class="moreBtn" onclick="javascript:moveUrl('447515202100007');" title="경북-의성-2021-00007 자세히 보기">자세히 보기</a>
             </div>
             <div class="txt">
-                <span class="name"> 왈왈이 </span> | <span class="birth">2020</span> | <span class = "sex"> 수컷 </span> <br>
-                <span class = "species"> 믹스견</span>                             
+                <dl><dt>이름</dt><dd>2021-02-05</dd></dl>
+                <dl><dt>나이(생년)</dt><dd>2019</dd></dl>                            
+                <dl><dt>성별</dt><dd>암컷</dd></dl>
+                <dl><dt>품종</dt><dd>믹스견</dd></dl>
             </div>
         </li>        
     </div>
@@ -319,6 +424,35 @@ function myFunction() {
     </div>
 </div>
 
+        
+    
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+</script>
+<ul class="paging">
+
+    <li class="first"><a href="#" class="active" title="현재 페이지">1</a></li>        
+    <li><a href="?totalCount=4962&amp;pageSize=10&amp;menuNo=1000000060&amp;&amp;page=2">2</a></li>
+    <li><a href="?totalCount=4962&amp;pageSize=10&amp;menuNo=1000000060&amp;&amp;page=3">3</a></li>
+    <li><a href="?totalCount=4962&amp;pageSize=10&amp;menuNo=1000000060&amp;&amp;page=4">4</a></li>
+    <li><a href="?totalCount=4962&amp;pageSize=10&amp;menuNo=1000000060&amp;&amp;page=5">5</a></li>
+    <li><a href="?totalCount=4962&amp;pageSize=10&amp;menuNo=1000000060&amp;&amp;page=6">6</a></li>
+    <li><a href="?totalCount=4962&amp;pageSize=10&amp;menuNo=1000000060&amp;&amp;page=7">7</a></li>
+    <li><a href="?totalCount=4962&amp;pageSize=10&amp;menuNo=1000000060&amp;&amp;page=8">8</a></li>
+    <li><a href="?totalCount=4962&amp;pageSize=10&amp;menuNo=1000000060&amp;&amp;page=9">9</a></li>
+    <li><a href="?totalCount=4962&amp;pageSize=10&amp;menuNo=1000000060&amp;&amp;page=10">10</a></li>
+<li><a href="?totalCount=4962&amp;pageSize=10&amp;menuNo=1000000060&amp;&amp;page=11" class="next">Next</a></li>
+<li class="last"><a href="?totalCount=4962&amp;pageSize=10&amp;menuNo=1000000060&amp;&amp;page=497" class="last">Last</a></li>  
+</ul>
+
             
         <!--  페이지 표시 끝 -->           
         <!-- 콘텐츠 영역 적용하세요 끝 -->
@@ -327,3 +461,9 @@ function myFunction() {
 </div><!-- center 콘텐츠 끝 -->
 </div>
 </body>
+
+
+
+<footer>
+입양해조_ 김희진, 송지현, 이해동, 전승우
+</footer>
