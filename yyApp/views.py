@@ -70,7 +70,7 @@ def join_guardian(request):
             else:
                 res_data['error'] = '비밀번호와 비밀번호 확인이 일치하지 않아요'
 
-        return render(request, 'yyApp/guardian.html', res_data
+        return render(request, 'yyApp/guardian.html', res_data)
 
 
 def choose_authority(request):
