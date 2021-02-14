@@ -1,11 +1,11 @@
 <!-- last modified: Feb 10, 14:56-->
-
-
-
 <!DOCTYPE html>
 <html lang = "ko">
 
 <head>
+    {% extends "yyApp/nav.html" %}
+    {% block body %}
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
 
     <style>
@@ -64,7 +64,6 @@
 </head>
 
 
-{% block content %}
 
 
 <body>
@@ -77,27 +76,29 @@
             <form action="" method="GET">
                 <fieldset id="pet_sex">
                     성별
-                    <input type="radio" name="pet_sex" value=True>
-                    <label for="True">수컷</label>
-                    <input type="radio" name="pet_sex" value=False>
-                    <label for="False">암컷</label>
+                    <input type="radio" name="pet_sex" value=True>수컷
+                    <input type="radio" name="pet_sex" value=False> 암컷
                 </fieldset>
 
                 <div class="pet_size">
                 <fieldset id="pet_size">
                     크기
-                    <input type="radio" name="pet_size" value="대형견">
-                    <label for="대형견">대형견</label>
-                    <input type="radio" name="pet_size" value="소형견">
-                    <label for="소형견">소형견</label>                
+                    <input type="radio" name="pet_size" value="대형견"> 대형견
+                    <input type="radio" name="pet_size" value="소형견"> 소형견             
                 </fieldset>
 
                 <fieldset id="pet_species">
                     품종
-                    <input type="radio" name="pet_species", value="종1">
-                    <label for="종1">종1</label>
-                    <input type="radio" name="pet_species", value="종2">
-                    <label for="종2">종2</label>                
+                    <input type="radio" name="pet_species", value="골든리트리버"> 골든리트리버
+                    <input type="radio" name="pet_species", value="요크셔테리어"> 요크셔테리어
+                    <input type="radio" name="pet_species", value="말티즈"> 말티즈
+                    <input type="radio" name="pet_species", value="시츄"> 시츄
+                    <input type="radio" name="pet_species", value="푸들"> 푸들
+                    <input type="radio" name="pet_species", value="포메라니안"> 포메라니안
+                    <input type="radio" name="pet_species", value="비글"> 비글
+                    <input type="radio" name="pet_species", value="프렌치불독"> 프렌치불독
+                    <input type="radio" name="pet_species", value="믹싱견"> 믹싱견
+                    <input type="radio" name="pet_species", value="기타"> 기타
                 </fieldset>
 
                 <div class="col">
@@ -139,6 +140,18 @@
     </div>
 </div>
 
+<div class="write_post_button">
+    {% if is_check %}
+    <div>
+        <a href="{% url 'yyApp:write_post' %}"><input type="submit" value="글쓰기"></a>
+    </div>
+
+    {% else %}
+        <div>
+        </div>
+    {% endif %}
+</div>
+
 
     <!-- LIST --> 
 
@@ -165,12 +178,25 @@
         {% for pet in pet_list %}    
         <div class="pet_info">
             <div class="photo">
-                <img src ="{{ pet.petImage.url }}">
+                <a href="http://localhost:8000/yyApp/postdetail/1"><img src ="{{ pet.petImage.url }}"></a>
             </div>
             <div class="txt">
-                <span class="adoption">{{ pet.petAdoption }} | <span class="name"> {{ pet.petName }} </span> | <span class="birth"> {{ pet.petBirth }} </span> | <span class = "sex"> {% if pet.petSex == True %} 수컷 {% else %} 암컷 {% endif %} </span> <br>
+                <span class="adoption">{{ pet.petAdoption }}
+                | <span class="name"> {{ pet.petName }} </span>
+                | <span class="birth"> {{ pet.petBirth }} </span> 
+                | <span class = "sex">
+                    {% if pet.petSex %}
+                    수컷
+                    {% elif pet.petSex == False %}
+                    암컷
+                    {% else %}
+                    모름
+                    {% endif %}
+                    </span>
+                <br>
                 <span class = "species"> {{ pet.petSpecies }} </span>                           
             </div>
+
         </div>
         {% endfor %}
     </div>    
