@@ -1,146 +1,150 @@
 <!-- last modified: Feb 10, 14:56-->
 <!DOCTYPE html>
 <html lang = "ko">
-
 <head>
     {% extends "yyApp/nav.html" %}
-    {% block body %}
+    {% load static %}
+        <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+        <link href="{% static 'all.css' %}" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.80.0">
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/album/">
+
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
 
     <style>
-        .pet_list {
-            display:grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            grid-template-rows: 1fr 1fr 1fr;
-            gap: 10px;
+    .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+    }
+
+    @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+        font-size: 3.5rem;
         }
-
-        .pet_info {
-            display:grid;
-            padding: 30px;
-            align-items: center;
-            grid-template-rows: 400px auto;
-
-        }
-
-        .pet_info:hover {
-        background: silver;
-        cursor: pointer;
-        }
-
-        .photo {
-            text-align: center;
-        }
-
-        .txt {
-            text-align: center;
-        }
-
-        .search_area{
-            display: grid;
-            text-align: center;
-            margin: 20px;
-        }
-
-        .search_checkbox {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            padding: 30px;
-            boarder: 10px;
-            margin: 20px;
-            background: silver;
-
-        }
-
-        .search_bar {
-            padding: 30px;
-            boarder: 10px;
-            margin: 20px;
-            background: silver;
-        }
-
+    }
     </style>
 </head>
 
-
-
-
 <body>
+{% block body %}
 
-<!-- SEARCH -->
 
-<div class="search_area">
-    <div class="search_checkbox">
-        <div>
+<!-- 검색필터 -->
+
+<section class="container">
+    <div class="row py-lg-5">
+        <div class="">
             <form action="" method="GET">
-                <fieldset id="pet_sex">
-                    성별
-                    <input type="radio" name="pet_sex" value=True>수컷
-                    <input type="radio" name="pet_sex" value=False> 암컷
+            <div class="col-6">
+                <fieldset id="pet_sex" class="row mb-3">
+                    <legend class="col-form-label col-sm-2 pt-0">성별</legend>
+                        <div class="form-check form-check-inline">                
+                            <input type="radio" class="form-check-input" name="pet_sex" id="gridRadios1" value=True >
+                            <label class="form-check-label" for="gridRadios1">수컷</label>
+                        </div>                       
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="pet_sex" id="gridRadios2" value=False>
+                            <label class="form-check-label" for="gridRadios2">암컷</lable>
+                        </div>
                 </fieldset>
-
-                <div class="pet_size">
-                <fieldset id="pet_size">
-                    크기
-                    <input type="radio" name="pet_size" value="대형견"> 대형견
-                    <input type="radio" name="pet_size" value="소형견"> 소형견             
-
+                <fieldset id="pet_size" class="row mb-3">
+                    <legend class="col-form-label col-sm-2 pt-0">크기</legend>
+                        <div class="form-check form-check-inline">                
+                            <input type="radio" class="form-check-input" name="pet_size" id="gridRadios1" value="대형견">
+                            <label class="form-check-label" for="gridRadios1">대형견</label>
+                        </div>
+                        <div class="form-check form-check-inline">                
+                            <input type="radio" class="form-check-input" name="pet_size" id="gridRadios2" value="소형견">
+                            <label class="form-check-label" for="gridRadios1">소형견</label>
+                        </div>           
                 </fieldset>
-
-                <fieldset id="pet_species">
-                    품종
-                    <input type="radio" name="pet_species", value="골든리트리버"> 골든리트리버
-                    <input type="radio" name="pet_species", value="요크셔테리어"> 요크셔테리어
-                    <input type="radio" name="pet_species", value="말티즈"> 말티즈
-                    <input type="radio" name="pet_species", value="시츄"> 시츄
-                    <input type="radio" name="pet_species", value="푸들"> 푸들
-                    <input type="radio" name="pet_species", value="포메라니안"> 포메라니안
-                    <input type="radio" name="pet_species", value="비글"> 비글
-                    <input type="radio" name="pet_species", value="프렌치불독"> 프렌치불독
-                    <input type="radio" name="pet_species", value="믹싱견"> 믹싱견
-                    <input type="radio" name="pet_species", value="기타"> 기타
-                </fieldset>
-
-                <div class="col">
-                    <!-- <button class="btn btn-md btn-outline-dark" type="submit">검색</button> -->
-                    <button class="btn btn-sm" type="submit">검색</button>
+                <fieldset id="pet_species" class="row mb-3">
+                    <legend class="col-form-label col-sm-2 pt-0">품종</legend>
+                        <div class="form-check form-check-inline">                
+                            <input type="radio" class="form-check-input" name="pet_species" id="gridRadios1" value="골든리트리버">
+                            <label class="form-check-label" for="gridRadios1">골든리트리버</label>                    
+                        </div> 
+                        <div class="form-check form-check-inline">                
+                            <input type="radio" class="form-check-input" name="pet_species" id="gridRadios2" value="요크셔테리어">
+                            <label class="form-check-label" for="gridRadios2">요크셔테리어</label>                    
+                        </div> 
+                        <div class="form-check form-check-inline">                
+                            <input type="radio" class="form-check-input" name="pet_species" id="gridRadios3" value="말티즈">
+                            <label class="form-check-label" for="gridRadios3">말티즈</label>                    
+                        </div> 
+                        <div class="form-check form-check-inline">                
+                            <input type="radio" class="form-check-input" name="pet_species" id="gridRadios4" value="시츄">
+                            <label class="form-check-label" for="gridRadios4">시츄</label>                    
+                        </div> 
+                        <div class="form-check form-check-inline">                
+                            <input type="radio" class="form-check-input" name="pet_species" id="gridRadios5" value="푸들">
+                            <label class="form-check-label" for="gridRadios5">푸들</label>                    
+                        </div> 
+                        <div class="form-check form-check-inline">                
+                            <input type="radio" class="form-check-input" name="pet_species" id="gridRadios6" value="포메라니안">
+                            <label class="form-check-label" for="gridRadios6">포메라니안</label>                    
+                        </div> 
+                        <div class="form-check form-check-inline">                
+                            <input type="radio" class="form-check-input" name="pet_species" id="gridRadios7" value="비글">
+                            <label class="form-check-label" for="gridRadios7">비글</label>                    
+                        </div> 
+                        <div class="form-check form-check-inline">                
+                            <input type="radio" class="form-check-input" name="pet_species" id="gridRadios8" value="프렌치불독">
+                            <label class="form-check-label" for="gridRadios8">프렌치불독</label>                    
+                        </div> 
+                        <div class="form-check form-check-inline">                
+                            <input type="radio" class="form-check-input" name="pet_species" id="gridRadios9" value="믹싱견">
+                            <label class="form-check-label" for="gridRadios9">믹싱견</label>                    
+                        </div> 
+                        <div class="form-check form-check-inline">                
+                            <input type="radio" class="form-check-input" name="pet_species" id="gridRadios10" value="기타">
+                            <label class="form-check-label" for="gridRadios10">기타</label>                    
+                        </div> 
+                <div class="row mb-3">
+                    <button class="p-3 border bg-light" type="submit">검색</button>
                 </div>
+            </div>
             </form>
         </div>
     </div>
-</div>
+</section>
 
 
-<div>
+<!-- 검색바 시작 -->
     <div class = "search_bar" style="margin-top: 30px;">
         <form action="" method="GET">
-            <div class="col">
-                <div style="float: right;" class="form-row">
-                    <div class="form-row">
-                        <div class="col" style="margin-top: 10px;">
-                            <select style="width: 6em;" class="custom-select custom-select-md" name="type">
-                                <option value="all">전체</option>
-                                <option value="title_content">제목+내용</option>
-                                <option value="title">제목</option>
-                                <option value="content">내용</option>
-                            </select>
-                        </div>
-                        <div class="col" style="margin-top: 10px;">
-                            <input type="text" name="q" value="{{ q }}" class="form-control form-control-md"
-                                style="width: 15em;" placeholder="검색어를 입력해주세요.">
-                        </div>
-                        <div class="col">
-                            <!-- <button class="btn btn-md btn-outline-dark" type="submit">검색</button> -->
-                            <button class="btn btn-sm" type="submit" id="search_btn">검색</button>
-                        </div>
-                    </div>
+            <div style="float: center;" class="row g-3">
+                <div class="col-sm" style="margin-top: 10px;">
+                    <select style="width: 6em;" class="custom-select custom-select-md" name="type">
+                        <option value="all">전체</option>
+                        <option value="title_content">제목+내용</option>
+                        <option value="title">제목</option>
+                        <option value="content">내용</option>
+                    </select>
+                </div>
+                <div class="col-sm-8" style="margin-top: 10px;">
+                    <input type="text" name="q" value="{{ q }}" class="form-control"
+                        style="width: 15em;" placeholder="검색어를 입력해주세요.">
+                </div>
+                <div class="col-sm">
+                    <button class="p-3 border bg-light" type="submit">검색</button>
                 </div>
             </div>
         </form>
     </div>
-</div>
+<!-- 검색바 끝 -->
 
+
+<!-- 글쓰기 버튼 -->
 <div class="write_post_button">
     {% if is_check %}
     <div>
@@ -154,54 +158,58 @@
 </div>
 
 
-    <!-- LIST -->
 
+<!-- 게시물목록-->
 
-    <div class="container">
-        <div class="row mt-5">
-            <div class="col-12">
-                {% if q %}
-                <h5 style="color: gray; font-weight: 550;"><i class="fas fa-search"></i>&nbsp;'{{ q }}' 검색 결과입니다.</h5>
-                {% elif pet_sex %}
-                <h5 style="color: gray; font-weight: 550;"><i class="fas fa-search"></i>&nbsp;'{{ pet_sex }}' 검색 결과입니다.</h5>
-                {% elif pet_size %}
-                <h5 style="color: gray; font-weight: 550;"><i class="fas fa-search"></i>&nbsp;'{{ pet_size }}' 검색 결과입니다.</h5>
-                {% endif %}
-
-            </div>
-        </div>
-
-    <div>
-
-
-    {% if pet_list %}
-    <div class="pet_list">
-        {% for pet in pet_list %}
-        <div class="pet_info">
-            <div class="photo">
-                <a href="http://localhost:8000/yyApp/postdetail/1"><img src ="{{ pet.petImage.url }}"></a>
-            </div>
-            <div class="txt">
-                <span class="adoption">{{ pet.petAdoption }}
-                | <span class="name"> {{ pet.petName }} </span>
-                | <span class="birth"> {{ pet.petBirth }} </span> 
-                | <span class = "sex">
-                    {% if pet.petSex %}
-                    수컷
-                    {% elif pet.petSex == False %}
-                    암컷
-                    {% else %}
-                    모름
-                    {% endif %}
-                    </span>
-                <br>
-                <span class = "species"> {{ pet.petSpecies }} </span>                           
-            </div>
+<!-- 검색결과가 있을 경우 -->
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-12">
+            {% if q %}
+            <h5 style="color: gray; font-weight: 550;"><i class="fas fa-search"></i>&nbsp;'{{ q }}' 검색 결과입니다.</h5>
+            {% elif pet_sex %}
+            <h5 style="color: gray; font-weight: 550;"><i class="fas fa-search"></i>&nbsp;'{{ pet_sex }}' 검색 결과입니다.</h5>
+            {% elif pet_size %}
+            <h5 style="color: gray; font-weight: 550;"><i class="fas fa-search"></i>&nbsp;'{{ pet_size }}' 검색 결과입니다.</h5>
+            {% elif pet_species %}
+            <h5 style="color: gray; font-weight: 550;"><i class="fas fa-search"></i>&nbsp;'{{ pet_species }}' 검색 결과입니다.</h5>
+            {% endif %}
 
         </div>
-        {% endfor %}
     </div>
 
+<!-- 게시물 목록 -->
+<div class="album py-5 bg-light">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        {% if board_pet %}
+        {% for pet in board_pet %}
+            <div class="col">
+                <div class="card shadow-sm">
+                    <svg class="bd-placeholder-img card-img-top" 
+                    width="100%" height="50" xmlns="http://www.w3.org/2000/svg" 
+                    role="img" aria-label="Placeholder: Thumbnail" 
+                    preserveAspectRatio="xMidYMid slice" 
+                    focusable="false">
+                    <img src ="{{ pet.petImage.url }}" class="rounded mx-auto d-block" width = 200>
+                    <rect width="100%" height="100%" fill="#55595c"/></svg>
+                    <div class="card-body">
+                        <p class="card-text">
+                            <span class="name"> {{ pet.petName }} </span>
+                            | <span class="birth"> {{ pet.petBirth }} </span> 
+                            | <span class = "sex">
+                                {% if pet.petSex %} 수컷 {% elif pet.petSex == False %} 암컷 {% else %} 모름 {% endif %}</span>                                
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a href="http://localhost:8000/yyApp/postdetail/{{ pet.board.id }}"><button type="button" class="btn btn-sm btn-outline-secondary">View</button></a>
+                            </div>
+                                <small class="text-muted">{{ pet.petAdoption }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
         {% else %}
             {% if q %}
             <tr class="text-center">
@@ -227,7 +235,6 @@
                     <i class="fas fa-info-circle"></i>&nbsp;일치하는 검색 결과가 없습니다.
                 </td>
             </tr>
-
             {% else %}
                 <tr class="text-center">
                     <td style="font-weight: bold; color:gray;" colspan="5">
@@ -236,50 +243,59 @@
                 </tr>
             {% endif %}
         {% endif %}
+        </div>
     </div>
 </div>
 
+<!-- 게시물목록 끝 -->
 
-    <!-- LIST -->
+<!-- 페이징처리 시작 -->
+<ul class = "pagination">
+    <!-- 이전페이지 -->
+    {% if page_obj.has_previous %}
+    <li class="page-item">
+        <a class="page-link" data-page="{{ page_obj.previous_page_number }}" href="#" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>                        
+        </a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+        <a class="page-link" tabindex="-1" aria-disabled="true" href="#" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>               
+        </a>
+    </li>
+    {% endif %}
 
-    <!-- 페이징처리 시작 -->
-    <ul class = "board_pagetab" align="absmiddle">
-        <!-- 이전페이지 -->
-        {% if page_obj.has_previous %}
-        <li class="page-item">
-            <a class="page-link" data-page="{{ page_obj.previous_page_number }}" href="#">이전</a>
-        </li>
-        {% else %}
-        <li class="page-item disabled">
-            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
-        </li>
-        {% endif %}
-        <!-- 페이지리스트 -->
-        {% for page_number in page_obj.paginator.page_range %}
-
-            {% if page_number >= page_obj.number|add:-5 and page_number <= page_obj.number|add:5 %}
-                {% if page_number == page_obj.number %}
-                <li class="page-item active" aria-current="page">
-                    <a class="page-link" data-page="{{ page_number }}" href="#">{{ page_number }}</a>
-                </li>
-                {% else %}
-                <li class="page-item">
-                    <a class="page-link" data-page="{{ page_number }}" href="#">{{ page_number }}</a>
-                </li>
-                {% endif %}
+<!-- 페이지리스트 -->
+    {% for page_number in page_obj.paginator.page_range %}
+        {% if page_number >= page_obj.number|add:-5 and page_number <= page_obj.number|add:5 %}
+            {% if page_number == page_obj.number %}
+            <li class="page-item active" aria-current="page">
+                <a class="page-link" data-page="{{ page_number }}" href="#">{{ page_number }}</a>
+            </li>
+            {% else %}
+            <li class="page-item">
+                <a class="page-link" data-page="{{ page_number }}" href="#">{{ page_number }}</a>
+            </li>
             {% endif %}
-        {% endfor %}
-        <!-- 다음페이지 -->
-        {% if page_obj.has_next %}
-        <li class="page-item">
-            <a class="page-link" data-page="{{ page_obj.next_page_number }}" href="#">다음</a>
-        </li>
-        {% else %}
-        <li class="page-item disabled">
-            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
-        </li>
         {% endif %}
-    </ul>
+    {% endfor %}
+
+<!-- 다음페이지 -->
+    {% if page_obj.has_next %}
+    <li class="page-item">
+        <a class="page-link" data-page="{{ page_obj.next_page_number }}" href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+        </a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+        <a class="page-link" tabindex="-1" aria-disabled="true" href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>            
+        </a>
+    </li>
+    {% endif %}
+</ul>
     <!-- 페이징처리 끝 -->
 
 
