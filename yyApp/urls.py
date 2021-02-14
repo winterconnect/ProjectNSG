@@ -12,7 +12,7 @@ urlpatterns = [
     path('join/adopter/', views.join_adopter),
     path('join/guardian/', views.join_guardian),
     path('board/', views.BoardListView.as_view(), name='list'),
-    path('writepost/', views.write_post),
+    path('writepost/', views.write_post, name = 'write_post'),
     path('', views.home, name='index'),
     path('chart/', views.chart, name='chart'),
     path('postdetail/<int:postID>', views.post_detail, name='post_detail'),

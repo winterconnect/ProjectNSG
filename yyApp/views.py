@@ -70,14 +70,13 @@ def join_guardian(request):
             else:
                 res_data['error'] = '비밀번호와 비밀번호 확인이 일치하지 않아요'
 
-        return render(request, 'yyApp/guardian.html', res_data
-
+        return render(request, 'yyApp/guardian.html', res_data)
 
 def choose_authority(request):
     if request.method == "GET":
         return render(request, 'yyApp/jointype.html')
 
-                      
+
 def login(request):
     if request.method == "GET":
         return render(request, 'yyApp/login.html')
@@ -157,15 +156,16 @@ def write_post(request):
         if not content:
             errors.append('내용을 입력하세요.')
         if not errors:
-            pet = Pet(petName=petName, petBirth=petBirth, petSex=petSex, petSize=petSize, petLoc=petLoc, petSpecies=petSpecies,
-                      petWeight=petWeight, petImage=petImage, petNeuter=petNeuter, petColor=petColor,
-                      memberID=Member.objects.get(memberID=member.memberID))
+            pet = Pet(petName=petName, petBirth=petBirth, petSex=petSex, 
+            petSize=petSize, petLoc=petLoc, petSpecies=petSpecies, 
+            petWeight=petWeight, petImage=petImage, petNeuter=petNeuter, 
+            petColor=petColor, memberID=Member.objects.get(memberID=member.memberID))
 
             save_pet(pet)
             saved_pet = Pet.objects.order_by('-id').first()
 
             post = Board(memberID=Member.objects.get(memberID=member.memberID), title=title, content=content,
-                         date=date, hashtag=hashtag, petID=Pet.objects.get(id=saved_pet.id))
+                        date=date, hashtag=hashtag, petID=Pet.objects.get(id=saved_pet.id))
 
             post.save()
 
@@ -193,9 +193,7 @@ def post_delete(request):
         post = get_object_or_404(Board, id=id)
         post.delete()
     return render(request, "yyApp/finish_delete.html")
-                      
-                      
-                      
+
 
 class BoardListView(ListView):
     model = Pet
@@ -204,16 +202,19 @@ class BoardListView(ListView):
     context_object_name = 'pet_list'        #DEFAULT : <model_name>_list
 
     def get_queryset(self):
+
+
         pet_list = Pet.objects.order_by('-id')
         board_pet = Pet.objects.select_related('board')
 
         search_keyword_bar = self.request.GET.get('q', '')
         search_type = self.request.GET.get('type', '')  
-                      
-        search_keyword_box_sex = self.request.GET.get('pet_sex', '')
+
+        search_keyword_box_sex = self.request.GET.get('pet_sex', None)
         search_keyword_box_size = self.request.GET.get('pet_size', '')        
         search_keyword_box_species = self.request.GET.get('pet_species', '')
-           
+
+        print(search_keyword_box_sex)
 
         if search_keyword_bar :
             if len(search_keyword_bar) > 1 :
@@ -233,15 +234,15 @@ class BoardListView(ListView):
             
         # 검색박스 구현
         if search_keyword_box_sex and search_keyword_box_size and search_keyword_box_species :
-            search_board_list = pet_list.filter(Q (petSex__icontains=search_keyword_box_sex) & Q (petSpecies__icontains=search_keyword_box_species) & Q (petSize__icontains=search_keyword_box_size) )
+            search_board_list = pet_list.filter(Q (petSex=search_keyword_box_sex) & Q (petSpecies__icontains=search_keyword_box_species) & Q (petSize__icontains=search_keyword_box_size) )
             return search_board_list
 
         elif search_keyword_box_sex and search_keyword_box_size:
-            search_board_list = pet_list.filter(Q (petSex__icontains=search_keyword_box_sex) & Q (petSize__icontains=search_keyword_box_size) )
+            search_board_list = pet_list.filter(Q (petSex=search_keyword_box_sex) & Q (petSize__icontains=search_keyword_box_size) )
             return search_board_list
 
         elif search_keyword_box_sex and search_keyword_box_species :
-            search_board_list = pet_list.filter(Q (petSex__icontains=search_keyword_box_sex) & Q (petSpecies__icontains=search_keyword_box_species) )
+            search_board_list = pet_list.filter(Q (petSex=search_keyword_box_sex) & Q (petSpecies__icontains=search_keyword_box_species) )
             return search_board_list
 
         elif search_keyword_box_size and search_keyword_box_species :
@@ -249,7 +250,7 @@ class BoardListView(ListView):
             return search_board_list
 
         elif search_keyword_box_sex :
-            search_board_list = pet_list.filter(Q (petSex__icontains=search_keyword_box_sex) )
+            search_board_list = pet_list.filter(Q (petSex=search_keyword_box_sex) )
             return search_board_list
 
         elif search_keyword_box_size :
@@ -265,8 +266,13 @@ class BoardListView(ListView):
 
         return pet_list
 
+
+
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        # 페이지
         paginator = context['paginator']
         page_numbers_range = 5
         max_index = len(paginator.page_range)
@@ -283,10 +289,12 @@ class BoardListView(ListView):
         context['page_range'] = page_range
         board_fixed = Board.objects.order_by('-id')
 
+        # 검색필터, 검색바
+
         search_keyword_bar = self.request.GET.get('q', '')      
         search_type = self.request.GET.get('type', '')
 
-        search_keyword_box_sex = self.request.GET.get('pet_sex', '')
+        search_keyword_box_sex = self.request.GET.get('pet_sex', None)
         search_keyword_box_size = self.request.GET.get('pet_size', '')        
         search_keyword_box_species = self.request.GET.get('pet_species', '')
 
@@ -298,7 +306,16 @@ class BoardListView(ListView):
         context['pet_sex'] = search_keyword_box_sex
         context['pet_size'] = search_keyword_box_size
         context['pet_species'] = search_keyword_box_species
-                        
+
+
+        # 글쓰기 버튼 구현
+        login_member = check_session(self.request)
+        if login_member and login_member.authority :
+            is_check = True
+        else :
+            is_check = False
+        context['is_check'] = is_check
+        context['login_member'] = login_member
 
         return context
 
@@ -317,3 +334,5 @@ def chart(request):
         'labelsBar': bar_labels,
         'dataBar': bar_data
     })
+
+
