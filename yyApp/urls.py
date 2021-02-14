@@ -17,5 +17,6 @@ urlpatterns = [
     path('chart/', views.chart, name='chart'),
     path('postdetail/<int:postID>', views.post_detail, name='post_detail'),
     path('postdetail/delete', views.post_delete, name='post_delete'),
-
+    path('mypage/', views.mypage, name='mypage'),
+    path('modifyadoption', views.modify_adoption, name='modify_adoption'),
 ]

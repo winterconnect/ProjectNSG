@@ -13,14 +13,14 @@
             display:grid;
             grid-template-columns: 1fr 1fr 1fr;
             grid-template-rows: 1fr 1fr 1fr;
-            gap: 10px;   
+            gap: 10px;
         }
 
         .pet_info {
             display:grid;
             padding: 30px;
             align-items: center;
-            grid-template-rows: 400px auto;    
+            grid-template-rows: 400px auto;
 
         }
 
@@ -71,7 +71,7 @@
 <!-- SEARCH -->
 
 <div class="search_area">
-    <div class="search_checkbox">    
+    <div class="search_checkbox">
         <div>
             <form action="" method="GET">
                 <fieldset id="pet_sex">
@@ -85,6 +85,7 @@
                     크기
                     <input type="radio" name="pet_size" value="대형견"> 대형견
                     <input type="radio" name="pet_size" value="소형견"> 소형견             
+
                 </fieldset>
 
                 <fieldset id="pet_species">
@@ -103,8 +104,8 @@
 
                 <div class="col">
                     <!-- <button class="btn btn-md btn-outline-dark" type="submit">검색</button> -->
-                    <button class="btn btn-sm" type="submit">검색</button> 
-                </div>            
+                    <button class="btn btn-sm" type="submit">검색</button>
+                </div>
             </form>
         </div>
     </div>
@@ -153,7 +154,7 @@
 </div>
 
 
-    <!-- LIST --> 
+    <!-- LIST -->
 
 
     <div class="container">
@@ -165,7 +166,7 @@
                 <h5 style="color: gray; font-weight: 550;"><i class="fas fa-search"></i>&nbsp;'{{ pet_sex }}' 검색 결과입니다.</h5>
                 {% elif pet_size %}
                 <h5 style="color: gray; font-weight: 550;"><i class="fas fa-search"></i>&nbsp;'{{ pet_size }}' 검색 결과입니다.</h5>
-                {% endif %}                
+                {% endif %}
 
             </div>
         </div>
@@ -175,7 +176,7 @@
 
     {% if pet_list %}
     <div class="pet_list">
-        {% for pet in pet_list %}    
+        {% for pet in pet_list %}
         <div class="pet_info">
             <div class="photo">
                 <a href="http://localhost:8000/yyApp/postdetail/1"><img src ="{{ pet.petImage.url }}"></a>
@@ -199,7 +200,7 @@
 
         </div>
         {% endfor %}
-    </div>    
+    </div>
 
         {% else %}
             {% if q %}
@@ -239,7 +240,7 @@
 </div>
 
 
-    <!-- LIST -->                
+    <!-- LIST -->
 
     <!-- 페이징처리 시작 -->
     <ul class = "board_pagetab" align="absmiddle">

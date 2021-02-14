@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.contrib.auth.hashers import make_password, check_password
 from yyApp.models import Member, Board, Pet
 from django.core.paginator import Paginator
@@ -9,7 +9,6 @@ from django.template import context
 from django.views.generic import ListView
 from yyApp.chartData import state, city
 import datetime
-
 
 
 # Create your views here.
@@ -72,6 +71,7 @@ def join_guardian(request):
 
         return render(request, 'yyApp/guardian.html', res_data)
 
+
 def choose_authority(request):
     if request.method == "GET":
         return render(request, 'yyApp/jointype.html')
@@ -117,10 +117,9 @@ def save_pet(pet):
 
 
 def write_post(request):
-    # if request.method == "GET":
-    # return render(request, 'yyApp/writepost.html')
-    errors = []
-    if request.method == 'POST':
+    if request.method == "GET":
+        return render(request, 'yyApp/writepost.html', {'login_member': check_session(request)})
+    elif request.method == 'POST':
         member = check_session(request)
         title = request.POST.get('title', '').strip()
         content = request.POST.get('content', '').strip()
@@ -146,21 +145,25 @@ def write_post(request):
         else:
             petNeuter = None
         petColor = request.POST.get('petColor', '')
-        petImage = request.FILES['petImage']
-        if not petImage:
+
+        try:
+            petImage = request.FILES['petImage']
+        except:
             petImage = None
+
         hashtag = request.POST.get('hashtag', '').split('#')
+
+        errors = []
 
         if not title:
             errors.append('제목을 입력하세요.')
         if not content:
             errors.append('내용을 입력하세요.')
         if not errors:
-            pet = Pet(petName=petName, petBirth=petBirth, petSex=petSex, 
-            petSize=petSize, petLoc=petLoc, petSpecies=petSpecies, 
-            petWeight=petWeight, petImage=petImage, petNeuter=petNeuter, 
-            petColor=petColor, memberID=Member.objects.get(memberID=member.memberID))
-
+            pet = Pet(petName=petName, petBirth=petBirth, petSex=petSex, petSize=petSize, petLoc=petLoc,
+                      petSpecies=petSpecies,
+                      petWeight=petWeight, petImage=petImage, petNeuter=petNeuter, petColor=petColor,
+                      memberID=Member.objects.get(memberID=member.memberID))
             save_pet(pet)
             saved_pet = Pet.objects.order_by('-id').first()
 
@@ -172,7 +175,8 @@ def write_post(request):
             # for hashtag in hashtag:
             #     hashtag = hashtag.strip()
             #     post.hashtag.add(hashtag)
-    return render(request, 'yyApp/writepost.html', {'user': request.user, 'errors': errors, 'login_member': check_session(request)})
+    return render(request, 'yyApp/finish_write.html',
+                  {'user': request.user, 'errors': errors, 'login_member': check_session(request)})
 
 
 def post_detail(request, postID):
@@ -184,7 +188,8 @@ def post_detail(request, postID):
             is_check = True
     except KeyError:
         is_check = False
-    return render(request, 'yyApp/postdetail.html', {'post': post, 'is_check': is_check, 'pet': pet, 'login_member': check_session(request)})
+    return render(request, 'yyApp/postdetail.html',
+                  {'post': post, 'is_check': is_check, 'pet': pet, 'login_member': check_session(request)})
 
 
 def post_delete(request):
@@ -198,8 +203,8 @@ def post_delete(request):
 class BoardListView(ListView):
     model = Pet
     paginate_by = 9
-    template_name = 'yyApp/board_list.html'  #DEFAULT : <app_label>/<model_name>_list.html
-    context_object_name = 'pet_list'        #DEFAULT : <model_name>_list
+    template_name = 'yyApp/board_list.html'  # DEFAULT : <app_label>/<model_name>_list.html
+    context_object_name = 'pet_list'  # DEFAULT : <model_name>_list
 
     def get_queryset(self):
 
@@ -214,20 +219,20 @@ class BoardListView(ListView):
         search_keyword_box_size = self.request.GET.get('pet_size', '')        
         search_keyword_box_species = self.request.GET.get('pet_species', '')
 
-        print(search_keyword_box_sex)
-
-        if search_keyword_bar :
-            if len(search_keyword_bar) > 1 :
+        if search_keyword_bar:
+            if len(search_keyword_bar) > 1:
                 if search_type == 'all':
-                    search_board_list = board_pet.filter(Q (board__title__icontains=search_keyword_bar) | Q (board__content__icontains=search_keyword_bar))
+                    search_board_list = board_pet.filter(
+                        Q(board__title__icontains=search_keyword_bar) | Q(board__content__icontains=search_keyword_bar))
                 elif search_type == 'title_content':
-                    search_board_list = board_pet.filter(Q (board__title__icontains=search_keyword_bar) | Q (board__content__icontains=search_keyword_bar))
+                    search_board_list = board_pet.filter(
+                        Q(board__title__icontains=search_keyword_bar) | Q(board__content__icontains=search_keyword_bar))
                 elif search_type == 'title':
-                    search_board_list = board_pet.filter(board__title__icontains=search_keyword_bar)    
+                    search_board_list = board_pet.filter(board__title__icontains=search_keyword_bar)
                 elif search_type == 'content':
                     search_board_list = board_pet.filter(board__content__icontains=search_keyword_bar)
 
-                return search_board_list    
+                return search_board_list
 
             else:
                 messages.error(self.request, '검색어는 2글자 이상 입력해주세요.')   
@@ -245,20 +250,21 @@ class BoardListView(ListView):
             search_board_list = pet_list.filter(Q (petSex=search_keyword_box_sex) & Q (petSpecies__icontains=search_keyword_box_species) )
             return search_board_list
 
-        elif search_keyword_box_size and search_keyword_box_species :
-            search_board_list = pet_list.filter(Q (petSpecies__icontains=search_keyword_box_species) & Q (petSize__icontains=search_keyword_box_size) )
+        elif search_keyword_box_size and search_keyword_box_species:
+            search_board_list = pet_list.filter(
+                Q(petSpecies__icontains=search_keyword_box_species) & Q(petSize__icontains=search_keyword_box_size))
             return search_board_list
 
-        elif search_keyword_box_sex :
-            search_board_list = pet_list.filter(Q (petSex=search_keyword_box_sex) )
+        elif search_keyword_box_sex:
+            search_board_list = pet_list.filter(Q(petSex=search_keyword_box_sex))
             return search_board_list
 
-        elif search_keyword_box_size :
-            search_board_list = pet_list.filter(Q (petSize__icontains=search_keyword_box_size) )
+        elif search_keyword_box_size:
+            search_board_list = pet_list.filter(Q(petSize__icontains=search_keyword_box_size))
             return search_board_list
 
-        elif search_keyword_box_species :
-            search_board_list = pet_list.filter(Q (petSpecies__icontains=search_keyword_box_species) )          
+        elif search_keyword_box_species:
+            search_board_list = pet_list.filter(Q(petSpecies__icontains=search_keyword_box_species))
             return search_board_list
 
         else:
@@ -289,6 +295,7 @@ class BoardListView(ListView):
         context['page_range'] = page_range
         board_fixed = Board.objects.order_by('-id')
 
+        
         # 검색필터, 검색바
 
         search_keyword_bar = self.request.GET.get('q', '')      
@@ -298,7 +305,7 @@ class BoardListView(ListView):
         search_keyword_box_size = self.request.GET.get('pet_size', '')        
         search_keyword_box_species = self.request.GET.get('pet_species', '')
 
-        if len(search_keyword_bar) > 1 :
+        if len(search_keyword_bar) > 1:
             context['q'] = search_keyword_bar
 
         context['type'] = search_type
@@ -317,12 +324,10 @@ class BoardListView(ListView):
         context['is_check'] = is_check
         context['login_member'] = login_member
 
+
         return context
 
-
-
 def chart(request):
-
     pie_labels = list(state['상태'])
     pie_data = list(state['견 수'])
     bar_labels = list(city['지역'])
@@ -336,3 +341,22 @@ def chart(request):
     })
 
 
+def mypage(request):
+    login_member = check_session(request)
+    posts = Board.objects.filter(memberID=login_member.memberID)
+    pets = Pet.objects.filter(memberID=login_member.memberID)
+
+    return render(request, "yyApp/mypage.html", {'login_member': login_member, 'posts': posts, 'pets': pets})
+
+
+def modify_adoption(request):
+    id = int(request.GET.get('id'))
+    pet = Pet.objects.get(id=id)
+    if 'id' in request.GET:
+        if not pet.petAdoption:
+            pet.petAdoption = True
+            pet.save()
+        else:
+            pet.petAdoption = False
+            pet.save()
+    return render(request, "yyApp/finish_mod_adoption.html")
