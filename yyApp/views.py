@@ -9,6 +9,7 @@ from django.template import context
 from django.views.generic import ListView
 from yyApp.chartData import state, city
 import datetime
+from django.db import connection
 
 
 # Create your views here.
@@ -109,7 +110,19 @@ def logout(request):
 
 
 def home(request):
-    return render(request, 'yyApp/index_haedong.html', {'login_member': check_session(request)})
+    
+    cursor = connection.cursor()
+    strSql ='''
+    SELECT yyApp_Board.id, petImage FROM yyApp_Board JOIN yyApp_Pet ON yyApp_Board.petID_id = yyApp_Pet.id \
+        ORDER BY yyApp_Board.id DESC LIMIT 4;
+    '''  # Board tbl에서 id와 petimg 가져옴/ petID에 근거하여 Pet tbl를 조인/Board tbl의 id를 내림차순으로 4개만 정렬
+    cursor.execute(strSql)
+    result = cursor.fetchall()  # 튜플 형태로 가져옴(board_id, petImage) 
+    print(result)
+    connection.commit()
+    connection.close()
+    
+    return render(request, 'yyApp/index_haedong.html', {'login_member': check_session(request), 'pets': result})
 
 
 def save_pet(pet):
