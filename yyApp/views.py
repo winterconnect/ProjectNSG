@@ -9,6 +9,7 @@ from django.template import context
 from django.views.generic import ListView
 from yyApp.chartData import state, city
 import datetime
+from django.db import connection
 
 
 # Create your views here.
@@ -161,9 +162,9 @@ def write_post(request):
             errors.append('내용을 입력하세요.')
         if not errors:
             pet = Pet(petName=petName, petBirth=petBirth, petSex=petSex, petSize=petSize, petLoc=petLoc,
-                      petSpecies=petSpecies,
-                      petWeight=petWeight, petImage=petImage, petNeuter=petNeuter, petColor=petColor,
-                      memberID=Member.objects.get(memberID=member.memberID))
+                        petSpecies=petSpecies,
+                        petWeight=petWeight, petImage=petImage, petNeuter=petNeuter, petColor=petColor,
+                        memberID=Member.objects.get(memberID=member.memberID))
             save_pet(pet)
             saved_pet = Pet.objects.order_by('-id').first()
 
@@ -176,7 +177,7 @@ def write_post(request):
             #     hashtag = hashtag.strip()
             #     post.hashtag.add(hashtag)
     return render(request, 'yyApp/finish_write.html',
-                  {'user': request.user, 'errors': errors, 'login_member': check_session(request)})
+                    {'user': request.user, 'errors': errors, 'login_member': check_session(request)})
 
 
 def post_detail(request, postID):
@@ -189,7 +190,7 @@ def post_detail(request, postID):
     except KeyError:
         is_check = False
     return render(request, 'yyApp/postdetail.html',
-                  {'post': post, 'is_check': is_check, 'pet': pet, 'login_member': check_session(request)})
+                    {'post': post, 'is_check': is_check, 'pet': pet, 'login_member': check_session(request)})
 
 
 def post_delete(request):
@@ -204,13 +205,10 @@ class BoardListView(ListView):
     model = Pet
     paginate_by = 9
     template_name = 'yyApp/board_list.html'  # DEFAULT : <app_label>/<model_name>_list.html
-    context_object_name = 'pet_list'  # DEFAULT : <model_name>_list
+    context_object_name = 'board_pet'  # DEFAULT : <model_name>_list
 
     def get_queryset(self):
-
-
-        pet_list = Pet.objects.order_by('-id')
-        board_pet = Pet.objects.select_related('board')
+        board_pet = Pet.objects.select_related('board').order_by('-id')
 
         search_keyword_bar = self.request.GET.get('q', '')
         search_type = self.request.GET.get('type', '')  
@@ -239,41 +237,46 @@ class BoardListView(ListView):
             
         # 검색박스 구현
         if search_keyword_box_sex and search_keyword_box_size and search_keyword_box_species :
-            search_board_list = pet_list.filter(Q (petSex=search_keyword_box_sex) & Q (petSpecies__icontains=search_keyword_box_species) & Q (petSize__icontains=search_keyword_box_size) )
+            search_board_list = board_pet.filter(
+                Q(petSex=search_keyword_box_sex) & 
+                Q(petSpecies__icontains=search_keyword_box_species) & 
+                Q(petSize__icontains=search_keyword_box_size))
             return search_board_list
 
         elif search_keyword_box_sex and search_keyword_box_size:
-            search_board_list = pet_list.filter(Q (petSex=search_keyword_box_sex) & Q (petSize__icontains=search_keyword_box_size) )
+            search_board_list = board_pet.filter(
+                Q(petSex=search_keyword_box_sex) & 
+                Q(petSize__icontains=search_keyword_box_size))
             return search_board_list
 
         elif search_keyword_box_sex and search_keyword_box_species :
-            search_board_list = pet_list.filter(Q (petSex=search_keyword_box_sex) & Q (petSpecies__icontains=search_keyword_box_species) )
+            search_board_list = board_pet.filter(
+                Q(petSex=search_keyword_box_sex) &
+                Q(petSpecies__icontains=search_keyword_box_species))
             return search_board_list
 
         elif search_keyword_box_size and search_keyword_box_species:
-            search_board_list = pet_list.filter(
-                Q(petSpecies__icontains=search_keyword_box_species) & Q(petSize__icontains=search_keyword_box_size))
+            search_board_list = board_pet.filter(
+                Q(petSpecies__icontains=search_keyword_box_species) & 
+                Q(petSize__icontains=search_keyword_box_size))
             return search_board_list
 
         elif search_keyword_box_sex:
-            search_board_list = pet_list.filter(Q(petSex=search_keyword_box_sex))
+            search_board_list = board_pet.filter(Q(petSex=search_keyword_box_sex))
             return search_board_list
 
         elif search_keyword_box_size:
-            search_board_list = pet_list.filter(Q(petSize__icontains=search_keyword_box_size))
+            search_board_list = board_pet.filter(Q(petSize__icontains=search_keyword_box_size))
             return search_board_list
 
         elif search_keyword_box_species:
-            search_board_list = pet_list.filter(Q(petSpecies__icontains=search_keyword_box_species))
+            search_board_list = board_pet.filter(Q(petSpecies__icontains=search_keyword_box_species))
             return search_board_list
 
         else:
             messages.error(self.request, '옵션을 선택해주세요')
 
-        return pet_list
-
-
-
+        return board_pet
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -297,7 +300,6 @@ class BoardListView(ListView):
 
         
         # 검색필터, 검색바
-
         search_keyword_bar = self.request.GET.get('q', '')      
         search_type = self.request.GET.get('type', '')
 
@@ -324,6 +326,30 @@ class BoardListView(ListView):
         context['is_check'] = is_check
         context['login_member'] = login_member
 
+
+        # pet_list = Pet.objects.order_by('-id')
+        # for pet in pet_list:
+        #     board_list = Board.objects.filter(petID_id=pet.id)
+        #     for board in board_list:
+        #         print("board: ", board.petID_id)
+        #         print("pet: ", pet.id)
+        #         if pet.id == board.petID_id:
+        #             is_same = True
+        #         else :
+        #             is_same = False
+        #         print(is_same)
+
+
+        # print(board_list)
+        # context['is_same'] = is_same
+        # context['board_list'] = board_list
+
+        # pet = get_object_or_404(Pet, pk=board.petID_id)
+        # pet_list = Pet.objects.order_by('-id')
+        # board_pet = Pet.objects.select_related('board')
+
+        # board_number = board_pet.filter(board__id=
+        #     board__content__icontains=search_keyword_bar)
 
         return context
 
