@@ -36,7 +36,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'yyApp.apps.YyappConfig',
-    'django_db_views',
 ]
 
 MIDDLEWARE = [

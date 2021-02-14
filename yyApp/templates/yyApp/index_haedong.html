@@ -5,16 +5,28 @@
 <!-- href: 사진에 해당하는 게시글 링크 -->
 {% csrf_token %}
 
-  <div class="container">
-      <div class="col">
-          <div class="row-sm-6">
-              <canvas id="pieChart" data-url="{% url 'yyApp:chart' %}"></canvas>
-          </div>
-          <div class="row-sm-6">
-              <canvas id="barChart" data-url="{% url 'yyApp:chart' %}"></canvas>
-          </div>
-      </div>
-  </div>
+<!--  <div class="container">-->
+<!--      <div class="col">-->
+<!--          <div class="row-sm-6">-->
+<!--              <canvas id="pieChart" data-url="{% url 'yyApp:chart' %}"></canvas>-->
+<!--          </div>-->
+<!--          <div class="row-sm-6">-->
+<!--              <canvas id="barChart" data-url="{% url 'yyApp:chart' %}"></canvas>-->
+<!--          </div>-->
+<!--      </div>-->
+<!--  </div>-->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6">
+            <h3>최근 게시글</h3>
+        </div>
+        <div class="col-lg-6">
+            <canvas id="pieChart" data-url="{% url 'yyApp:chart' %}"></canvas>
+            <canvas id="barChart" data-url="{% url 'yyApp:chart' %}"></canvas>
+        </div>
+    </div>
+</div>
 
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>

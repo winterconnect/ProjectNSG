@@ -13,14 +13,14 @@
             display:grid;
             grid-template-columns: 1fr 1fr 1fr;
             grid-template-rows: 1fr 1fr 1fr;
-            gap: 10px;   
+            gap: 10px;
         }
 
         .pet_info {
             display:grid;
             padding: 30px;
             align-items: center;
-            grid-template-rows: 400px auto;    
+            grid-template-rows: 400px auto;
 
         }
 
@@ -72,7 +72,7 @@
 <!-- SEARCH -->
 
 <div class="search_area">
-    <div class="search_checkbox">    
+    <div class="search_checkbox">
         <div>
             <form action="" method="GET">
                 <fieldset id="pet_sex">
@@ -89,7 +89,7 @@
                     <input type="radio" name="pet_size" value="대형견">
                     <label for="대형견">대형견</label>
                     <input type="radio" name="pet_size" value="소형견">
-                    <label for="소형견">소형견</label>                
+                    <label for="소형견">소형견</label>
                 </fieldset>
 
                 <fieldset id="pet_species">
@@ -97,13 +97,13 @@
                     <input type="radio" name="pet_species", value="종1">
                     <label for="종1">종1</label>
                     <input type="radio" name="pet_species", value="종2">
-                    <label for="종2">종2</label>                
+                    <label for="종2">종2</label>
                 </fieldset>
 
                 <div class="col">
                     <!-- <button class="btn btn-md btn-outline-dark" type="submit">검색</button> -->
-                    <button class="btn btn-sm" type="submit">검색</button> 
-                </div>            
+                    <button class="btn btn-sm" type="submit">검색</button>
+                </div>
             </form>
         </div>
     </div>
@@ -140,7 +140,7 @@
 </div>
 
 
-    <!-- LIST --> 
+    <!-- LIST -->
 
 
     <div class="container">
@@ -152,7 +152,7 @@
                 <h5 style="color: gray; font-weight: 550;"><i class="fas fa-search"></i>&nbsp;'{{ pet_sex }}' 검색 결과입니다.</h5>
                 {% elif pet_size %}
                 <h5 style="color: gray; font-weight: 550;"><i class="fas fa-search"></i>&nbsp;'{{ pet_size }}' 검색 결과입니다.</h5>
-                {% endif %}                
+                {% endif %}
 
             </div>
         </div>
@@ -162,18 +162,27 @@
 
     {% if pet_list %}
     <div class="pet_list">
-        {% for pet in pet_list %}    
+        {% for pet in pet_list %}
         <div class="pet_info">
             <div class="photo">
                 <img src ="{{ pet.petImage.url }}">
             </div>
             <div class="txt">
-                <span class="adoption">{{ pet.petAdoption }} | <span class="name"> {{ pet.petName }} </span> | <span class="birth"> {{ pet.petBirth }} </span> | <span class = "sex"> {% if pet.petSex == True %} 수컷 {% else %} 암컷 {% endif %} </span> <br>
-                <span class = "species"> {{ pet.petSpecies }} </span>                           
+                <span class="adoption">{{ pet.petAdoption }}</span> |
+                    <span class="name"> {{ pet.petName }} </span> |
+                    <span class="birth"> {{ pet.petBirth }} </span> |
+                    <span class = "sex">
+                        {% if pet.petSex == True %}
+                            수컷
+                        {% else %}
+                            암컷
+                        {% endif %}
+                    </span> <br>
+                <span class = "species"> {{ pet.petSpecies }} </span>
             </div>
         </div>
         {% endfor %}
-    </div>    
+    </div>
 
         {% else %}
             {% if q %}
@@ -213,7 +222,7 @@
 </div>
 
 
-    <!-- LIST -->                
+    <!-- LIST -->
 
     <!-- 페이징처리 시작 -->
     <ul class = "board_pagetab" align="absmiddle">
