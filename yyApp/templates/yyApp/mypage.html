@@ -7,35 +7,38 @@
 </head>
 <body>
 {% block body %}
-<div class="container my-3" id="table">
-    <label for="table">{{ login_member.memberName }}이 작성한 글 목록</label>
-    <table class="table table-bordered">
-        <thead>
+    {% if login_member %}
+    <div class="container my-3" id="table">
+        <label for="table">{{ login_member.memberName }}이 작성한 글 목록</label>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>강아지 이름</th>
+                    <th>입양 완료 처리</th>
+                </tr>
+            </thead>
+            {% for post in posts.all %}
             <tr>
-                <th>번호</th>
-                <th>제목</th>
-                <th>강아지 이름</th>
-                <th>입양 완료 처리</th>
-            </tr>
-        </thead>
-        {% for post in posts.all %}
-        <tr>
-            <th><a href="{% url 'yyApp:post_detail' post.id %}">{{ post.id }}</a></th>
-            <th>{{ post.title }}</th>
-            {% for pet in pets.all %}
-                {% if post.petID_id == pet.id %}
-                    <th> {{ pet.petName }} </th>
-                    {% if not pet.petAdoption %}
-                        <th><a class="btn btn-outline-primary" href="{% url 'yyApp:modify_adoption' %}?id={{ pet.id }}">입양 완료</a></th>
-                    {% else %}
-                        <th><a class="btn btn-outline-primary" href="{% url 'yyApp:modify_adoption' %}?id={{ pet.id }}">입양 완료 취소</a></th>
+                <th><a href="{% url 'yyApp:post_detail' post.id %}">{{ post.id }}</a></th>
+                <th>{{ post.title }}</th>
+                {% for pet in pets.all %}
+                    {% if post.petID_id == pet.id %}
+                        <th> {{ pet.petName }} </th>
+                        {% if not pet.petAdoption %}
+                            <th><a class="btn btn-outline-primary" href="{% url 'yyApp:modify_adoption' %}?id={{ pet.id }}">입양 완료</a></th>
+                        {% else %}
+                            <th><a class="btn btn-outline-primary" href="{% url 'yyApp:modify_adoption' %}?id={{ pet.id }}">입양 완료 취소</a></th>
+                        {% endif %}
                     {% endif %}
-                {% endif %}
+                {% endfor %}
+            </tr>
             {% endfor %}
-        </tr>
-        {% endfor %}
-    </table>
-</div>
+        </table>
+    </div>
+    {% else %}
+    {% endif %}
 
 {% endblock %}
 </body>
