@@ -12,10 +12,11 @@
 
     <form method="POST"> <!--내부의 정보를 한번에 서버로 전송-->
         {% csrf_token %} <!-- 공격에 대한 취약성을 보완하는 기능?-->
-        
-        <div>
-            <img src="{{ pet.petImage.url }}" width="100" height="100">
-        </div>
+        {% if pet.petImage %}
+            <div>
+                <img src="{{ pet.petImage.url }}" width="100" height="100">
+            </div>
+        {% endif %}
         <!-- 제목박스 -->
         <div class="post_header">
           <div class="post_title">
@@ -23,7 +24,7 @@
             
             <!-- 제목 -->
             <div class="title_text">
-            <h1> {{ post.title }} </h1>
+            <h3> {{ post.title }} </h3>
             </div>
 
           </div>
@@ -57,10 +58,9 @@
 <!--            <a>해시태그: {{post.hashtag}}</a>-->
 <!--          </div>-->
 
-            <div class="post_viewer">
-          <h4> 상세정보 </h4>
+            <div class="post_viewer"></div>
             <table summary="이름, 생일, 성별, 사이즈, 보호 장소, 견종, 무게,
-                            중성화 여부, 색, 입양 완료 여부">
+                            중성화 여부, 색, 입양 완료 여부" class="table table-bordered">
 
               <colgroup>
                 <col width = "200">
@@ -78,7 +78,6 @@
                 </tr>
                  <tr>
                   <th class="first">성별</th>
-                  <td colspan="3" class="last"> {{ pet.petSex }}</td>
                 </tr>
                 <tr>
                   <th class="first">사이즈</th>
@@ -112,9 +111,8 @@
           {% if is_check %}
             <div>
               <input type="submit" value="수정">
-              <a href="{% url 'yyApp:post_delete' %}?id={{ post.id }}">삭제</a>
+              <a class = "btn btn-outline-primary" href="{% url 'yyApp:post_delete' %}?id={{ post.id }}">삭제</a>
             </div>
-
             {% else %}
                 <div>
                 </div>

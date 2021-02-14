@@ -2,6 +2,7 @@
 {% load static %}
   <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
   <link href="{% static 'all.css' %}" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/03ea8c32dc.js" crossorigin="anonymous"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
     html, head, body, footer {
@@ -12,18 +13,18 @@
 
   <nav class="navbar navbar-dark bg-dark">
     <div class="navbar__logo">
-      <i class="fas fa-bone"></i>
+      <i style="color: white;" class="fas fa-bone"></i>
       <a class="navbar-brand" href="/yyApp">나랑살개</a>
     </div>
 
     <ul class="navbar-nav navbar-dark">
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'yyApp:list' %}">보호자 게시판</a>
+        <a class="nav-link" href="{% url 'yyApp:board_list' %}">보호자 게시판</a>
       </li>
     </ul>
     <ul class="navbar-nav navbar-dark">
       <li class="nav-item">
-        <a class="nav-link" href="">마이페이지</a>
+        <a class="nav-link" href="{% url 'yyApp:mypage' %}">마이페이지</a>
       </li>
     </ul>
 

@@ -11,11 +11,12 @@ urlpatterns = [
     path('join/', views.choose_authority, name='join'),
     path('join/adopter/', views.join_adopter),
     path('join/guardian/', views.join_guardian),
-    path('board/', views.BoardListView.as_view(), name='list'),
     path('writepost/', views.write_post),
+    path('board/', views.BoardListView.as_view(), name='list'),
     path('', views.home, name='index'),
     path('chart/', views.chart, name='chart'),
     path('postdetail/<int:postID>', views.post_detail, name='post_detail'),
     path('postdetail/delete', views.post_delete, name='post_delete'),
-
+    path('mypage/', views.mypage, name='mypage'),
+    path('modifyadoption', views.modify_adoption, name='modify_adoption'),
 ]
