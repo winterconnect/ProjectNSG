@@ -128,7 +128,7 @@
 
     <div class = "container shadow-sm">
         <form action="" method="GET">
-            <div class="row">
+            <div class="row mt-1">
                 <div class="col-sm-3" style="margin-top: 10px; margin-bottom: 10px;">
                     <select class="custom-select custom-select-md" name="type">
                         <option value="all">전체</option>
@@ -188,9 +188,9 @@
 <div class="album py-5 bg-light">
     <div class="container marketing">
         <div class="row row-cols-1 row-cols-md-3 g-4">
-        {% if board_pet %}
-            {% for pet in board_pet %}
-                    <div class="col-lg-4">
+            {% if board_pet %}
+                {% for pet in board_pet %}
+                    <div class="col-lg-4 mt-4">
                         <div class="card shadow-sm h-100 text-center mb-2">
                             <a href="http://localhost:8000/yyApp/postdetail/{{ pet.board.id }}">
                             <img src ="{{ pet.petImage.url }}" class="rounded mx-auto d-block img-fluid card-img-top"></a>
@@ -205,50 +205,50 @@
                                     {{ pet.petSpecies }}
                                 </p>
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                    {% if pet.petAdoption == True %} <button type="button" class="btn btn-outline-secondary btn-sm">입양완료</button>
+                                    {% if pet.petAdoption == True %} <button type="button" class="btn btn-outline-success btn-sm">입양완료</button>
                                     {% else %} <button type="button" class="btn btn-outline-warning btn-sm">진행중</button> {% endif %}
                                 </div>
                             </div>
                         </div>
                     </div>
                 {% endfor %}
-
-        {% else %}
-            {% if q %}
-            <tr class="text-center">
-                <td style="font-weight: bold; color:gray;" colspan="5">
-                    <i class="fas fa-info-circle"></i>&nbsp;'{{ q }}'와 일치하는 검색 결과가 없습니다.
-                </td>
-            </tr>
-            {% elif pet_sex %}
-            <tr class="text-center">
-                    <i class="fas fa-info-circle"></i>&nbsp;
-                    '{% if pet_sex %} <i class="fas fa-mars"></i>
-                    {% elif pet_sex == False %} <i class="fas fa-venus"></i> {% endif %}
-                    {{ pet_size }} {{ pet_species }}'와 일치하는 검색 결과가 없습니다.
-            </tr>
-            {% elif pet_size %}
-            <tr class="text-center">
-                <td style="font-weight: bold; color:gray;" colspan="5">
-                    <i class="fas fa-info-circle"></i>&nbsp;'{{ pet_size }} {{ pet_species }}'와 일치하는 검색 결과가 없습니다.
-                </td>
-            </tr>
-            {% elif pet_species %}
-            <tr class="text-center">
-                <td style="font-weight: bold; color:gray;" colspan="5">
-                    <i class="fas fa-info-circle"></i>&nbsp;'{{ pet_species }}'와 일치하는 검색 결과가 없습니다.
-                </td>
-            </tr>
-
             {% else %}
-                <tr class="text-center">
-                    <td style="font-weight: bold; color:gray;" colspan="5">
-                        <i class="fas fa-info-circle"></i>&nbsp;작성된 게시글이 없습니다.
-                    </td>
-                </tr>
+        </div>    
+            {% if q %}
+                <div class="row text-center" style="font-weight: bold; color:gray;">
+                    <div class="col-12">
+                    <i class="fas fa-info-circle"></i>&nbsp;'{{ q }}'와 일치하는 검색 결과가 없습니다.
+                    </div>
+                </div>
+            {% elif pet_sex %}
+                <div class="row text-center" style="font-weight: bold; color:gray;">
+                    <div class="col-12">                              
+                        <i class="fas fa-info-circle"></i>&nbsp;
+                        '{% if pet_sex %} <i class="fas fa-mars"></i>
+                        {% elif pet_sex == False %} <i class="fas fa-venus"></i> {% endif %}
+                        {{ pet_size }} {{ pet_species }}'와 일치하는 검색 결과가 없습니다.
+                    </div>    
+                </div>    
+            {% elif pet_size %}
+                <div class="row text-center" style="font-weight: bold; color:gray;">
+                    <div class="col-12">
+                        <i class="fas fa-info-circle"></i>&nbsp;'{{ pet_size }} {{ pet_species }}'와 일치하는 검색 결과가 없습니다.
+                    </div>
+                </div>
+            {% elif pet_species %}
+                <div class="row text-center" style="font-weight: bold; color:gray;">
+                    <div class="col-12">
+                        <i class="fas fa-info-circle"></i>&nbsp;'{{ pet_species }}'와 일치하는 검색 결과가 없습니다.
+                    </div>
+                </div>
+            {% else %}
+                <div class="row text-center" style="font-weight: bold; color:gray;">
+                    <div class="col-12">
+                        <i class="fas fa-info-circle"></i>&nbsp;작성된 게시물이 없습니다.
+                    </div>
+                </div>
             {% endif %}
         {% endif %}
-        </div>
     </div>
 </div>
 
