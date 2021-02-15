@@ -164,7 +164,8 @@ def write_post(request):
         except:
             petImage = None
 
-        hashtag = request.POST.get('hashtag', '').split('#')
+        hashtag = request.POST.get('hashtag', '')
+        hashtag.replace(" ", "")
 
         errors = []
 
@@ -248,7 +249,7 @@ class BoardListView(ListView):
             else:
                 messages.error(self.request, '검색어는 2글자 이상 입력해주세요.')
 
-                # 검색박스 구현
+        # 검색박스 구현
         if search_keyword_box_sex and search_keyword_box_size and search_keyword_box_species:
             search_board_list = board_pet.filter(
                 Q(petSex=search_keyword_box_sex) &
