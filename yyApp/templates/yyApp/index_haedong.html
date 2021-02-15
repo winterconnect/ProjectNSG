@@ -22,22 +22,22 @@
 
   <div class="container mt-5 pr-0 pl-0 h-100 d-flex flex-column">
 
-      <div class="row">
-          <div class="col-lg-6">
+      <div class="row gx-5">
+          <div class="col-sm-4">
             <p><h3>최근 게시글</h3></p>
-              <div class="row row-cols-2">
-                {% for postID, path in pets %}    
-                  <div class="col">
-                    <div class="card">
+              {% for postID, path in pets %}                       
+                <div class="row row-cols-2">                    
+                  <div class="col shadow-sm mt-3">
+                    <div class="card shadow-sm " style = "margin-bottom: 10px;">
                       <a href="{% url 'yyApp:post_detail' postID %}">
-                        <img src="http://localhost:8000/media/{{ path }}" height="250" width="250"></a>
+                        <img src="http://localhost:8000/media/{{ path }}" class="rounded mx-auto d-block img-fluid card-img-top"></a>
                     </div>
-                  </div>
-                {% endfor %}
-              </div>
+                  </div>                 
+                </div>
+              {% endfor %}                 
           </div>
-          <div class="col-lg-6">
-              <canvas id="pieChart" data-url="{% url 'yyApp:chart' %}"></canvas>
+          <div class="col-sm-8">
+              <canvas id="pieChart" data-url="{% url 'yyApp:chart' %}"></canvas><br>
               <canvas id="barChart" data-url="{% url 'yyApp:chart' %}"></canvas>
           </div>
       </div>
@@ -63,7 +63,7 @@
               datasets: [{
                 label: '지역',
                 backgroundColor: [
-                  '#006400', '#228B22', '#64CD3C', '#80E12A', '#7DEEBC', '#D2FFD2',   
+                  '#95e1d3', '#eaffd0', '#fce38a', '#f38181', '#7DEEBC', '#D2FFD2',   
                 ],
                 data: data.dataPie
               }]
@@ -103,7 +103,7 @@
               datasets: [{
                 label: '상태',
                 backgroundColor: [
-                '#006400', '#63CC63', '#7DF4B2', '#3BE0CB', '#28E7FF', '#A7EEFF',
+                '#95e1d3', '#eaffd0', '#fce38a', '#f38181', '#7DEEBC', '#D2FFD2',
                 ],
                 data: data.dataPie,
               }]
