@@ -2,34 +2,16 @@
 {% extends "yyApp/nav.html" %}
 {% block body %}
 <body>
-<!-- href: 사진에 해당하는 게시글 링크 -->
 {% csrf_token %}
-
-  <style>
-    .pet_list {
-            display:grid;
-            grid-template-columns: 1fr 1fr ;
-            grid-template-rows: 1fr 1fr ;
-            gap: 10px;
-    }
-
-    .pet_image img {
-        max-width: 100%;
-        height: auto;
-        
-    }
-
-  </style>
 
   <div class="container">
       <div class="row">
           <div class="col-lg-6">
               <h3>최근 게시글</h3>
-                <div class="pet_list">
+                <div class="row row-cols-1 row-cols-2 g-2">
                   {% for postID, path in pets %}    
-                  <div class="pet_image">
-                    <a href="{% url 'yyApp:post_detail' postID %}"><img src="http://localhost:8000/media/{{ path }}"></a>
-                  </div>
+                    <a href="{% url 'yyApp:post_detail' postID %}">
+                      <img class="img-thumbnail" src="http://localhost:8000/media/{{ path }}"></a>
                   {% endfor %}
                 </div>
             </div>
