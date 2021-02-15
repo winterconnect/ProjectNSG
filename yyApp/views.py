@@ -39,15 +39,17 @@ def join_adopter(request):
         res_data = {}
         if not (memberID and memberPW and memberName and memberEmail):
             res_data['error'] = '모든 값을 입력해주세요'
+            return render(request, 'yyApp/adopter.html', res_data)
         else:
             if memberPW == request.POST['memberPW_check']:
                 member = Member(memberID=memberID, memberPW=make_password(memberPW), memberName=memberName,
                                 memberEmail=memberEmail, memberAge=memberAge, adopterHouse=adopterHouse,
                                 adopterAddress=adopterAddress, adopterFamily=adopterFamily, authority=False)
                 member.save()
+                return render(request, 'yyApp/finish_join.html')
             else:
                 res_data['error'] = '비밀번호와 비밀번호 확인이 일치하지 않아요'
-        return render(request, 'yyApp/adopter.html', res_data)
+                return render(request, 'yyApp/adopter.html', res_data)
 
 
 def join_guardian(request):
@@ -68,9 +70,9 @@ def join_guardian(request):
                 member = Member(memberID=memberID, memberPW=make_password(memberPW), memberName=memberName,
                                 memberEmail=memberEmail, memberAge=memberAge, authority=True)
                 member.save()
+                return render(request, 'yyApp/finish_join.html', res_data)
             else:
                 res_data['error'] = '비밀번호와 비밀번호 확인이 일치하지 않아요'
-
         return render(request, 'yyApp/guardian.html', res_data)
 
 
@@ -134,8 +136,8 @@ def write_post(request):
         return render(request, 'yyApp/writepost.html', {'login_member': check_session(request)})
     elif request.method == 'POST':
         member = check_session(request)
-        title = request.POST.get('title', '').strip()
-        content = request.POST.get('content', '').strip()
+        title = request.POST.get('title', None)
+        content = request.POST.get('content', None)
         date = datetime.date.today().isoformat()
         petName = request.POST.get('petName', '')
         petBirth = request.POST.get('petBirth', '')
@@ -164,15 +166,17 @@ def write_post(request):
         except:
             petImage = None
 
-        hashtag = request.POST.get('hashtag', '')
+        hashtag = request.POST.get('hashtag', None)
         hashtag.replace(" ", "")
 
         errors = []
 
         if not title:
             errors.append('제목을 입력하세요.')
+            return render(request, 'yyApp/writepost.html', {'user': request.user, 'errors': errors, 'login_member': check_session(request)})
         if not content:
             errors.append('내용을 입력하세요.')
+            return render(request, 'yyApp/writepost.html', {'user': request.user, 'errors': errors, 'login_member': check_session(request)})
         if not errors:
             pet = Pet(petName=petName, petBirth=petBirth, petSex=petSex, petSize=petSize, petLoc=petLoc,
                       petSpecies=petSpecies,
@@ -185,10 +189,6 @@ def write_post(request):
                          date=date, hashtag=hashtag, petID=Pet.objects.get(id=saved_pet.id))
 
             post.save()
-
-            # for hashtag in hashtag:
-            #     hashtag = hashtag.strip()
-            #     post.hashtag.add(hashtag)
     return render(request, 'yyApp/finish_write.html',
                   {'user': request.user, 'errors': errors, 'login_member': check_session(request)})
 
