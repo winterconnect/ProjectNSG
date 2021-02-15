@@ -220,8 +220,7 @@ class BoardListView(ListView):
     context_object_name = 'board_pet'  # DEFAULT : <model_name>_list
 
     def get_queryset(self):
-        board_pet = Pet.objects.select_related('board').order_by('-id')
-
+        board_pet = Pet.objects.select_related('board').order_by('-id').exclude(board__id=None)
         search_keyword_bar = self.request.GET.get('q', '')
         search_type = self.request.GET.get('type', '')  
 
@@ -350,6 +349,14 @@ class BoardListView(ListView):
         #         else :
         #             is_same = False
         #         print(is_same)
+
+        # board_pet = Pet.objects.select_related('board').order_by('-id').exclude(board__id=None)
+        # for i in board_pet:
+        #     if i.__board.id :
+        #         is_same=True
+        #     else:
+        #         is_same=False
+        # context['is_same'] = is_same
 
 
         # print(board_list)
