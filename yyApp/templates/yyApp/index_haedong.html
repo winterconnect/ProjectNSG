@@ -2,37 +2,23 @@
 {% extends "yyApp/nav.html" %}
 {% block body %}
 <body>
-<!-- href: 사진에 해당하는 게시글 링크 -->
 {% csrf_token %}
-
-  <style>
-    .pet_list {
-            display:grid;
-            grid-template-columns: 1fr 1fr ;
-            grid-template-rows: 1fr 1fr ;
-            gap: 10px;
-    }
-
-    .pet_image img {
-        max-width: 100%;
-        height: auto;
-        
-    }
-
-  </style>
 
   <div class="container">
       <div class="row">
           <div class="col-lg-6">
-              <h3>최근 게시글</h3>
-                <div class="pet_list">
-                  {% for postID, path in pets %}    
-                  <div class="pet_image">
-                    <a href="{% url 'yyApp:post_detail' postID %}"><img src="http://localhost:8000/media/{{ path }}"></a>
+            <p><h3>최근 게시글</h3></p>
+              <div class="row row-cols-2">
+                {% for postID, path in pets %}    
+                  <div class="col">
+                    <div class="card">
+                      <a href="{% url 'yyApp:post_detail' postID %}">
+                        <img src="http://localhost:8000/media/{{ path }}" height="250" width="250"></a>
+                    </div>
                   </div>
-                  {% endfor %}
-                </div>
-            </div>
+                {% endfor %}
+              </div>
+          </div>
           <div class="col-lg-6">
               <canvas id="pieChart" data-url="{% url 'yyApp:chart' %}"></canvas>
               <canvas id="barChart" data-url="{% url 'yyApp:chart' %}"></canvas>
@@ -66,6 +52,7 @@
               }]
             },
             options: {
+              
               responsive: true,
               legend: {
                 display: false,
@@ -74,8 +61,9 @@
               title: {
                 display: true,
                 text: '6개월간 경기도 지역별 유기견 수',
-                fontSize: 20,
+                fontSize: 25,
                 padding: 30,
+                fontFamily: 'Jua',
               },
               tooltips: {
               },
@@ -100,7 +88,6 @@
                 backgroundColor: [
                 '#006400', '#63CC63', '#7DF4B2', '#3BE0CB', '#28E7FF', '#A7EEFF',
                 ],
-                borderAlign: 'center',
                 data: data.dataPie,
               }]
             },
@@ -112,8 +99,10 @@
               title: {
                 display: true,
                 text: '6개월간 경기도 상태별 유기견 수',
-                fontSize: 20,
+                fontSize: 25,
                 padding: 30,
+                fontFamily: 'Jua',
+
               },
               tooltips: {
               },
