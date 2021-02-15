@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.contrib.auth.hashers import make_password, check_password
-from yyApp.models import Member, Board, Pet
+from yyApp.models import Member, Board, Pet, Comment
 from django.core.paginator import Paginator
 from django.db.models import Q, Count
 from django.contrib import messages
@@ -10,6 +10,7 @@ from django.views.generic import ListView
 from yyApp.chartData import state, city
 import datetime
 from django.db import connection
+from .form import CommentForm
 
 
 # Create your views here.
@@ -110,9 +111,8 @@ def logout(request):
 
 
 def home(request):
-    
     cursor = connection.cursor()
-    strSql ='''
+    strSql = '''
     SELECT yyApp_Board.id, petImage FROM yyApp_Board JOIN yyApp_Pet ON yyApp_Board.petID_id = yyApp_Pet.id \
         ORDER BY yyApp_Board.id DESC LIMIT 4;
     '''  # Board tbl에서 id와 petimg 가져옴/ petID에 근거하여 Pet tbl를 조인/Board tbl의 id를 내림차순으로 4개만 정렬
@@ -121,7 +121,7 @@ def home(request):
     print(result)
     connection.commit()
     connection.close()
-    
+
     return render(request, 'yyApp/index_haedong.html', {'login_member': check_session(request), 'pets': result})
 
 
@@ -174,14 +174,14 @@ def write_post(request):
             errors.append('내용을 입력하세요.')
         if not errors:
             pet = Pet(petName=petName, petBirth=petBirth, petSex=petSex, petSize=petSize, petLoc=petLoc,
-                        petSpecies=petSpecies,
-                        petWeight=petWeight, petImage=petImage, petNeuter=petNeuter, petColor=petColor,
-                        memberID=Member.objects.get(memberID=member.memberID))
+                      petSpecies=petSpecies,
+                      petWeight=petWeight, petImage=petImage, petNeuter=petNeuter, petColor=petColor,
+                      memberID=Member.objects.get(memberID=member.memberID))
             save_pet(pet)
             saved_pet = Pet.objects.order_by('-id').first()
 
             post = Board(memberID=Member.objects.get(memberID=member.memberID), title=title, content=content,
-                        date=date, hashtag=hashtag, petID=Pet.objects.get(id=saved_pet.id))
+                         date=date, hashtag=hashtag, petID=Pet.objects.get(id=saved_pet.id))
 
             post.save()
 
@@ -189,12 +189,14 @@ def write_post(request):
             #     hashtag = hashtag.strip()
             #     post.hashtag.add(hashtag)
     return render(request, 'yyApp/finish_write.html',
-                    {'user': request.user, 'errors': errors, 'login_member': check_session(request)})
+                  {'user': request.user, 'errors': errors, 'login_member': check_session(request)})
 
 
 def post_detail(request, postID):
     post = get_object_or_404(Board, pk=postID)
     pet = get_object_or_404(Pet, pk=post.petID_id)
+    comments = Comment.objects.filter(postID=postID)
+    print(comments)
     is_check = False
     try:
         if str(post.memberID) == request.session['user']:
@@ -202,7 +204,7 @@ def post_detail(request, postID):
     except KeyError:
         is_check = False
     return render(request, 'yyApp/postdetail.html',
-                    {'post': post, 'is_check': is_check, 'pet': pet, 'login_member': check_session(request)})
+                  {'post': post, 'is_check': is_check, 'pet': pet, 'comments': comments, 'login_member': check_session(request)})
 
 
 def post_delete(request):
@@ -223,10 +225,10 @@ class BoardListView(ListView):
         board_pet = Pet.objects.select_related('board').order_by('-id')
 
         search_keyword_bar = self.request.GET.get('q', '')
-        search_type = self.request.GET.get('type', '')  
+        search_type = self.request.GET.get('type', '')
 
         search_keyword_box_sex = self.request.GET.get('pet_sex', None)
-        search_keyword_box_size = self.request.GET.get('pet_size', '')        
+        search_keyword_box_size = self.request.GET.get('pet_size', '')
         search_keyword_box_species = self.request.GET.get('pet_species', '')
 
         if search_keyword_bar:
@@ -245,23 +247,23 @@ class BoardListView(ListView):
                 return search_board_list
 
             else:
-                messages.error(self.request, '검색어는 2글자 이상 입력해주세요.')   
-            
-        # 검색박스 구현
-        if search_keyword_box_sex and search_keyword_box_size and search_keyword_box_species :
+                messages.error(self.request, '검색어는 2글자 이상 입력해주세요.')
+
+                # 검색박스 구현
+        if search_keyword_box_sex and search_keyword_box_size and search_keyword_box_species:
             search_board_list = board_pet.filter(
-                Q(petSex=search_keyword_box_sex) & 
-                Q(petSpecies__icontains=search_keyword_box_species) & 
+                Q(petSex=search_keyword_box_sex) &
+                Q(petSpecies__icontains=search_keyword_box_species) &
                 Q(petSize__icontains=search_keyword_box_size))
             return search_board_list
 
         elif search_keyword_box_sex and search_keyword_box_size:
             search_board_list = board_pet.filter(
-                Q(petSex=search_keyword_box_sex) & 
+                Q(petSex=search_keyword_box_sex) &
                 Q(petSize__icontains=search_keyword_box_size))
             return search_board_list
 
-        elif search_keyword_box_sex and search_keyword_box_species :
+        elif search_keyword_box_sex and search_keyword_box_species:
             search_board_list = board_pet.filter(
                 Q(petSex=search_keyword_box_sex) &
                 Q(petSpecies__icontains=search_keyword_box_species))
@@ -269,7 +271,7 @@ class BoardListView(ListView):
 
         elif search_keyword_box_size and search_keyword_box_species:
             search_board_list = board_pet.filter(
-                Q(petSpecies__icontains=search_keyword_box_species) & 
+                Q(petSpecies__icontains=search_keyword_box_species) &
                 Q(petSize__icontains=search_keyword_box_size))
             return search_board_list
 
@@ -310,13 +312,12 @@ class BoardListView(ListView):
         context['page_range'] = page_range
         board_fixed = Board.objects.order_by('-id')
 
-        
         # 검색필터, 검색바
-        search_keyword_bar = self.request.GET.get('q', '')      
+        search_keyword_bar = self.request.GET.get('q', '')
         search_type = self.request.GET.get('type', '')
 
         search_keyword_box_sex = self.request.GET.get('pet_sex', None)
-        search_keyword_box_size = self.request.GET.get('pet_size', '')        
+        search_keyword_box_size = self.request.GET.get('pet_size', '')
         search_keyword_box_species = self.request.GET.get('pet_species', '')
 
         if len(search_keyword_bar) > 1:
@@ -328,16 +329,14 @@ class BoardListView(ListView):
         context['pet_size'] = search_keyword_box_size
         context['pet_species'] = search_keyword_box_species
 
-
         # 글쓰기 버튼 구현
         login_member = check_session(self.request)
-        if login_member and login_member.authority :
+        if login_member and login_member.authority:
             is_check = True
-        else :
+        else:
             is_check = False
         context['is_check'] = is_check
         context['login_member'] = login_member
-
 
         # pet_list = Pet.objects.order_by('-id')
         # for pet in pet_list:
@@ -351,7 +350,6 @@ class BoardListView(ListView):
         #             is_same = False
         #         print(is_same)
 
-
         # print(board_list)
         # context['is_same'] = is_same
         # context['board_list'] = board_list
@@ -364,6 +362,7 @@ class BoardListView(ListView):
         #     board__content__icontains=search_keyword_bar)
 
         return context
+
 
 def chart(request):
     pie_labels = list(state['상태'])
@@ -398,3 +397,17 @@ def modify_adoption(request):
             pet.petAdoption = False
             pet.save()
     return render(request, "yyApp/finish_mod_adoption.html")
+
+
+def add_comment_to_post(request, postID):
+    post = get_object_or_404(Board, id=postID)
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.postID = post
+            comment.save()
+            return redirect('yyApp:post_detail', postID=post.id)
+    else:
+        form = CommentForm()
+        return render(request, 'yyApp/add_comment_to_post.html', {'form': form})
