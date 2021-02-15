@@ -1,129 +1,116 @@
 <!DOCTYPE html>
 <html>
 <head>
-  {% extends "yyApp/nav.html" %}
-  {% block body %}
-
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+    {% extends "yyApp/nav.html" %}
+    {% block body %}
+    <meta charset="UTF-8">
+    <style>
+        [class*="row"]{
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid gray;
+        }
+    </style>
 </head>
-
 <body>
-
-    <form method="POST"> <!--내부의 정보를 한번에 서버로 전송-->
-        {% csrf_token %} <!-- 공격에 대한 취약성을 보완하는 기능?-->
-        {% if pet.petImage %}
-            <div>
-                <img src="{{ pet.petImage.url }}" width="100" height="100">
-            </div>
-        {% endif %}
-        <!-- 제목박스 -->
-        <div class="post_header">
-          <div class="post_title">
-            <a href="http://127.0.0.1:8000/yyApp/board/" class="link_board"></a>
-            
-            <!-- 제목 -->
-            <div class="title_text">
-            <h3> {{ post.title }} </h3>
-            </div>
-
-          </div>
+<div class="container">
+    <div class="row">
+        <strong>{{ post.title }}</strong>
+    </div>
+    <div class="row-lg-12">
+        <p>{{ post.content|linebreaksbr }}</p>
+        <p>{{ post.hashtag }}</p>
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
+            {% if pet.petImage %}
+                <img src="{{ pet.petImage.url }}" width="300" height="300">
+            {% endif %}
         </div>
-
-<!--        &lt;!&ndash; 회원 & 글 정보&ndash;&gt;-->
-<!--        <div class="member_area">-->
-<!--          &lt;!&ndash; <a href="회원 상세 팝업" class="thumb"> &ndash;&gt;-->
-<!--          <div class="memberInfo">-->
-<!--            <h3>작성자: {{post.memberID}}</h3>-->
-<!--            <a id="memberID" href="#" role="button" class="memberID">-->
-<!--            </a>-->
-<!--          </div>-->
-
-<!--          <div class="post_info">-->
-<!--            <h4>작성날짜: {{post.date}}</h4>-->
-<!--          </div>-->
-<!--        </div>-->
-
-<!--        &lt;!&ndash; 게시글 상세 &ndash;&gt;-->
-<!--        <div class="post_viewer">-->
-<!--          -->
-<!--          &lt;!&ndash; 본문 &ndash;&gt;-->
-<!--          <div class="post_content_viewer"> -->
-<!--            <p>{{ post.content | linebreaksbr }}</p>-->
-<!--          </div>-->
-
-
-<!--          &lt;!&ndash; 해시태그 &ndash;&gt;-->
-<!--          <div class="post_hashtag">-->
-<!--            <a>해시태그: {{post.hashtag}}</a>-->
-<!--          </div>-->
-
-            <div class="post_viewer"></div>
-            <table summary="이름, 생일, 성별, 사이즈, 보호 장소, 견종, 무게,
-                            중성화 여부, 색, 입양 완료 여부" class="table table-bordered">
-
-              <colgroup>
-                <col width = "200">
-                <col width = "*">
-                <col width = "200">
-                <col width = "*">
-              <tbody>
+        <div class="col-lg-8">
+            <table class="table table-bordered">
                 <tr>
-                  <th class="first">이름</th>
-                  <td colspan="3" class="last"> {{ pet.petName }} </td>
+                    <th>이름</th>
+                    <td>{{ pet.petName }}</td>
                 </tr>
                 <tr>
                   <th class="first">생일</th>
                   <td colspan="3" class="last"> {{ pet.petBirth }} </td>
                 </tr>
-                 <tr>
-                  <th class="first">성별</th>
+                <tr>
+                    <th class="first">성별</th>
+                    {% if pet.petSex == True %}
+                        <td colspan="3" class="last">수컷</td>
+                    {% elif pet.petSex == False %}
+                        <td colspan="3" class="last">암컷</td>
+                    {% else %}
+                        <td colspan="3" class="last">모름</td>
+                    {% endif %}
                 </tr>
                 <tr>
-                  <th class="first">사이즈</th>
-                  <td colspan="3" class="last"> {{ pet.petSize }}</td>
+                    <th class="first">사이즈</th>
+                    <td colspan="3" class="last"> {{ pet.petSize }}</td>
                 </tr>
                 <tr>
-                  <th class="first">보호 장소</th>
-                  <td colspan="3" class="last"> {{ pet.petLoc }}</td>
+                    <th class="first">보호 장소</th>
+                    <td colspan="3" class="last"> {{ pet.petLoc }}</td>
                 </tr>
                 <tr>
-                  <th class="first">견종</th>
-                  <td colspan="3" class="last"> {{ pet.petSpecies}}</td>
+                    <th class="first">견종</th>
+                    <td colspan="3" class="last"> {{ pet.petSpecies}}</td>
                 </tr>
                 <tr>
-                  <th class="first">무게</th>
-                  <td colspan="3" class="last"> {{ pet.petWeight }}</td>
+                    <th class="first">무게</th>
+                    <td colspan="3" class="last"> {{ pet.petWeight }}</td>
                 </tr>
                 <tr>
-                  <th class="first">중성화 여부</th>
-                  <td colspan="3" class="last"> {{ pet.petNeuter }}</td>
+                    <th class="first">중성화 여부</th>
+                    {% if pet.petSex == True %}
+                        <td colspan="3" class="last">중성화 O</td>
+                    {% elif pet.petSex == False %}
+                        <td colspan="3" class="last">중성화 X</td>
+                    {% else %}
+                        <td colspan="3" class="last">모름</td>
+                    {% endif %}
                 </tr>
                 <tr>
-                  <th class="first">색</th>
-                  <td colspan="3" class="last"> {{ pet.petColor }}</td>
+                    <th class="first">색</th>
+                    <td colspan="3" class="last"> {{ pet.petColor }}</td>
                 </tr>
-              </tbody>
             </table>
-          </div>
-
-          <!-- 수정, 삭제-->
-          {% if is_check %}
-            <div>
-              <input type="submit" value="수정">
-              <a class = "btn btn-outline-primary" href="{% url 'yyApp:post_delete' %}?id={{ post.id }}">삭제</a>
-            </div>
-            {% else %}
-                <div>
-                </div>
-          {% endif %}
         </div>
-        댓글 (작성자, 본문, 작성시간)
-    </form>
+    </div>
+    <div class="row">
+        <strong style="padding:15px 0px 15px 15px">댓글</strong> <br>
+        <div class="col-lg-12">
+            {% for comment in comments.all %}
+                <table class="table table-bordered">
+                    <tr>
+                        <td style="font-size:13px;"><strong style="font-size:20px;">{{ comment.memberID }}</strong> {{ comment.date }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ comment.content }}</td>
+                    </tr>
+                </table>
+            {% empty %}
+                아직 댓글이 없어요
+            {% endfor %}
+            <a class="btn btn-outline-dark" href="{% url 'yyApp:add_comment_to_post' postID=post.id %}">Add comment</a>
+        </div>
+    </div>
+
+    {% if is_check %}
+        <div class="row">
+            <div class="col-lg-10"></div>
+            <div class="col-lg-2">
+                <a class="btn btn-outline-dark">수정</a>
+                <a class="btn btn-outline-dark" href="{% url 'yyApp:post_delete' %}?id={{ post.id }}">삭제</a>
+            </div>
+        </div>
+    {% endif %}
+</div>
 
 
 </body>
-
-  {% endblock %}
-
+{% endblock %}
 </html>

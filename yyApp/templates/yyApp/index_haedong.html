@@ -28,7 +28,7 @@
                 <div class="pet_list">
                   {% for postID, path in pets %}    
                   <div class="pet_image">
-                    <a href={% url 'yyApp:post_detail' postID %}><img src="http://localhost:8000/media/{{ path }}"></a>  
+                    <a href="{% url 'yyApp:post_detail' postID %}"><img src="http://localhost:8000/media/{{ path }}"></a>
                   </div>
                   {% endfor %}
                 </div>
