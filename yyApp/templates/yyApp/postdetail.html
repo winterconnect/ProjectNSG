@@ -9,13 +9,14 @@
             padding: 8px;
             margin: 5px;
             border: 1px solid gray;
+            
         }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="row">
-        <strong>{{ post.title }}</strong>
+        <h3><strong>{{ post.title }}</strong></h3>
     </div>
     <div class="row-lg-12">
         <p>{{ post.content|linebreaksbr }}</p>
@@ -28,43 +29,44 @@
             {% endif %}
         </div>
         <div class="col-lg-8">
-            <table class="table table-bordered">
+            <table class="table table-bordered table-hover jumbotron text-center" style="background-color white">
                 <tr>
-                    <th>이름</th>
+                    <th bgcolor="lightgrey">이름</th>
                     <td>{{ pet.petName }}</td>
                 </tr>
                 <tr>
-                  <th class="first">생일</th>
+                  <th bgcolor="lightgrey" class="first">생일</th>
                   <td colspan="3" class="last"> {{ pet.petBirth }} </td>
                 </tr>
                 <tr>
-                    <th class="first">성별</th>
+                    <th bgcolor="lightgrey" class="first">성별</th>
                     {% if pet.petSex == True %}
-                        <td colspan="3" class="last">수컷</td>
+                        <td colspan="3" class= "last"><i class="fas fa-mars"></i></td>
                     {% elif pet.petSex == False %}
-                        <td colspan="3" class="last">암컷</td>
+                        <td colspan="3" class= "last"><i class="fas fa-venus"></i></td>
                     {% else %}
-                        <td colspan="3" class="last">모름</td>
+                        <td colspan="3" class= "last"><i class="fas fa-question"></i></td>
                     {% endif %}
+
                 </tr>
                 <tr>
-                    <th class="first">사이즈</th>
+                    <th bgcolor="lightgrey" class="first">사이즈</th>
                     <td colspan="3" class="last"> {{ pet.petSize }}</td>
                 </tr>
                 <tr>
-                    <th class="first">보호 장소</th>
+                    <th bgcolor="lightgrey" class="first">보호 장소</th>
                     <td colspan="3" class="last"> {{ pet.petLoc }}</td>
                 </tr>
                 <tr>
-                    <th class="first">견종</th>
+                    <th bgcolor="lightgrey" class="first">견종</th>
                     <td colspan="3" class="last"> {{ pet.petSpecies}}</td>
                 </tr>
                 <tr>
-                    <th class="first">무게</th>
+                    <th bgcolor="lightgrey" class="first">무게</th>
                     <td colspan="3" class="last"> {{ pet.petWeight }}</td>
                 </tr>
                 <tr>
-                    <th class="first">중성화 여부</th>
+                    <th bgcolor="lightgrey" class="first">중성화 여부</th>
                     {% if pet.petSex == True %}
                         <td colspan="3" class="last">중성화 O</td>
                     {% elif pet.petSex == False %}
@@ -74,7 +76,7 @@
                     {% endif %}
                 </tr>
                 <tr>
-                    <th class="first">색</th>
+                    <th bgcolor="lightgrey" class="first">색</th>
                     <td colspan="3" class="last"> {{ pet.petColor }}</td>
                 </tr>
             </table>
