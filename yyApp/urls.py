@@ -19,4 +19,5 @@ urlpatterns = [
     path('postdetail/delete', views.post_delete, name='post_delete'),
     path('mypage/', views.mypage, name='mypage'),
     path('modifyadoption', views.modify_adoption, name='modify_adoption'),
+    path('postdetail/<int:postID>/comment/', views.add_comment_to_post, name='add_comment_to_post'),
 ]
