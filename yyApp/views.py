@@ -20,7 +20,7 @@ def check_session(request):
     if get_session:
         login_member = Member.objects.get(memberID=get_session)
     else:
-        login_member = ''
+        login_member = None
     return login_member
 
 
