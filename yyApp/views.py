@@ -164,7 +164,8 @@ def write_post(request):
         except:
             petImage = None
 
-        hashtag = request.POST.get('hashtag', '').split('#')
+        hashtag = request.POST.get('hashtag', '')
+        hashtag.replace(" ", "")
 
         errors = []
 
