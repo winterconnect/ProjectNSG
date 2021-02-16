@@ -151,12 +151,26 @@
 </div>
 
 
+<!-- 글쓰기 버튼 -->
+
+<div class = "container" style="margin-top: 20px;">
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        {% if is_check %}
+            <a href="{% url 'yyApp:write_post' %}">
+                <button type="button" class="btn btn-primary">글쓰기</button>
+            </a>
+        {% else %}
+        <br>
+        <br>
+        {% endif %}
+    </div>
+</div>
 
 <!-- 게시물목록-->
 
 <!-- 검색결과가 있을 경우 -->
 <div class="text-center container">
-    <div class="col-12">
+    <div class="col-12 mt-4">
         {% if q %}
         <h5 style="color: gray; font-weight: 550;"><i class="fas fa-search"></i>&nbsp;'{{ q }}' 검색 결과입니다.</h5>
         {% elif pet_sex %}
@@ -171,19 +185,6 @@
 </div>
 
 
-<!-- 글쓰기 버튼 -->
-
-<div class = "container" style="margin-top: 20px;">
-    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        {% if is_check %}
-            <a href="{% url 'yyApp:write_post' %}">
-                <button type="button" class="btn btn-primary">글쓰기</button>
-            </a>
-        {% else %}
-        <br>
-        {% endif %}
-    </div>
-</div>
 
 <!-- 게시물 목록 -->
 <div class="album py-5">

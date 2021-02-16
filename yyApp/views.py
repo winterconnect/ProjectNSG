@@ -235,7 +235,7 @@ class BoardListView(ListView):
             if len(search_keyword_bar) > 1:
                 if search_type == 'all':
                     search_board_list = board_pet.filter(
-                        Q(board__title__icontains=search_keyword_bar) | Q(board__content__icontains=search_keyword_bar))
+                        Q(board__title__icontains=search_keyword_bar) | Q(board__content__icontains=search_keyword_bar) | Q(board__hashtag__icontains=search_keyword_bar))
                 elif search_type == 'title_content':
                     search_board_list = board_pet.filter(
                         Q(board__title__icontains=search_keyword_bar) | Q(board__content__icontains=search_keyword_bar))
@@ -243,9 +243,10 @@ class BoardListView(ListView):
                     search_board_list = board_pet.filter(board__title__icontains=search_keyword_bar)
                 elif search_type == 'content':
                     search_board_list = board_pet.filter(board__content__icontains=search_keyword_bar)
+                elif search_type == 'hashtag':
+                    search_board_list = board_pet.filter(board__hashtag__icontains=search_keyword_bar)                    
 
                 return search_board_list
-
             else:
                 messages.error(self.request, '검색어는 2글자 이상 입력해주세요.')
 
