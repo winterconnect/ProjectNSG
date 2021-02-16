@@ -188,8 +188,8 @@
 <!-- 게시물 목록 -->
 <div class="album py-5">
     <div class="container marketing">
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            {% if board_pet %}
+        {% if board_pet %}    
+            <div class="row row-cols-1 row-cols-md-3 g-4">
                 {% for pet in board_pet %}
                     <div class="col-lg-4 mt-4">
                         <div class="card shadow-sm h-100 text-center mb-2">
@@ -213,8 +213,8 @@
                         </div>
                     </div>
                 {% endfor %}
-            {% else %}
-        </div>    
+            </div>
+        {% else %}            
             {% if q %}
                 <div class="row text-center" style="font-weight: bold; color:gray;">
                     <div class="col-12">
@@ -258,53 +258,55 @@
 
 <!-- 페이징처리 시작 -->
 <ul class = "pagination justify-content-center mt-5">
-    <!-- 이전페이지 -->
+
+<!-- 이전페이지 -->
     {% if page_obj.has_previous %}
-    <li class="page-item">
-        <a class="page-link" data-page="{{ page_obj.previous_page_number }}" href="#" aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>                        
-        </a>
-    </li>
+        <li class="page-item">
+            <a class="page-link" data-page="{{ page_obj.previous_page_number }}" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>                        
+            </a>
+        </li>
     {% else %}
-    <li class="page-item disabled">
-        <a class="page-link" tabindex="-1" aria-disabled="true" href="#" aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>               
-        </a>
-    </li>
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>               
+            </a>
+        </li>
     {% endif %}
 
 <!-- 페이지리스트 -->
     {% for page_number in page_obj.paginator.page_range %}
         {% if page_number >= page_obj.number|add:-5 and page_number <= page_obj.number|add:5 %}
             {% if page_number == page_obj.number %}
-            <li class="page-item active" aria-current="page">
-                <a class="page-link" data-page="{{ page_number }}" href="#">{{ page_number }}</a>
-            </li>
+                <li class="page-item active" aria-current="page">
+                    <a class="page-link" data-page="{{ page_number }}" href="#">{{ page_number }}</a>
+                </li>
             {% else %}
-            <li class="page-item">
-                <a class="page-link" data-page="{{ page_number }}" href="#">{{ page_number }}</a>
-            </li>
+                <li class="page-item">
+                    <a class="page-link" data-page="{{ page_number }}" href="#">{{ page_number }}</a>
+                </li>
             {% endif %}
         {% endif %}
     {% endfor %}
 
 <!-- 다음페이지 -->
     {% if page_obj.has_next %}
-    <li class="page-item">
-        <a class="page-link" data-page="{{ page_obj.next_page_number }}" href="#" aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-        </a>
-    </li>
+        <li class="page-item">
+            <a class="page-link" data-page="{{ page_obj.next_page_number }}" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
     {% else %}
-    <li class="page-item disabled">
-        <a class="page-link" tabindex="-1" aria-disabled="true" href="#" aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>            
-        </a>
-    </li>
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>            
+            </a>
+        </li>
     {% endif %}
 </ul>
-    <!-- 페이징처리 끝 -->
 
-</div>
+<!-- 페이징처리 끝 -->
+
+
+</body>
 {% endblock %}
-
