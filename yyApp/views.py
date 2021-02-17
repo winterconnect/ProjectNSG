@@ -216,142 +216,310 @@ def post_delete(request):
     return render(request, "yyApp/finish_delete.html")
 
 
-class BoardListView(ListView):
-    model = Pet
+def board_list(request) :
     paginate_by = 9
-    template_name = 'yyApp/board_list.html'  # DEFAULT : <app_label>/<model_name>_list.html
-    context_object_name = 'board_pet'  # DEFAULT : <model_name>_list
+    context = {}
 
-    def get_queryset(self):
-        board_pet = Pet.objects.select_related('board').order_by('-id').exclude(board__id=None)
-        search_keyword_bar = self.request.GET.get('q', '')
-        search_type = self.request.GET.get('type', '')
+    # 페이지
+    context['is_paginated'] = True
+    board_pet_list = Pet.objects.select_related('board').order_by('-id').exclude(board__id=None)    
 
-        search_keyword_box_sex = self.request.GET.get('pet_sex', None)
-        search_keyword_box_size = self.request.GET.get('pet_size', '')
-        search_keyword_box_species = self.request.GET.get('pet_species', '')
+    paginator = Paginator(board_pet_list, paginate_by)
+    page_numbers_range = 10
+    current_page = int(request.GET.get('page', 1))
+    context['current_page'] = current_page
 
-        if search_keyword_bar:
-            if len(search_keyword_bar) > 1:
-                if search_type == 'all':
-                    search_board_list = board_pet.filter(
-                        Q(board__title__icontains=search_keyword_bar) | Q(board__content__icontains=search_keyword_bar) | Q(board__hashtag__icontains=search_keyword_bar))
-                elif search_type == 'title_content':
-                    search_board_list = board_pet.filter(
-                        Q(board__title__icontains=search_keyword_bar) | Q(board__content__icontains=search_keyword_bar))
-                elif search_type == 'title':
-                    search_board_list = board_pet.filter(board__title__icontains=search_keyword_bar)
-                elif search_type == 'content':
-                    search_board_list = board_pet.filter(board__content__icontains=search_keyword_bar)
-                elif search_type == 'hashtag':
-                    search_board_list = board_pet.filter(board__hashtag__icontains=search_keyword_bar)                    
+    # 시작/끝 인덱스 조회
+    start_index = int((current_page - 1) / page_numbers_range) * page_numbers_range
+    end_index = start_index + page_numbers_range       
 
-                return search_board_list
-            else:
-                messages.error(self.request, '검색어는 2글자 이상 입력해주세요.')
+    # 현재 페이지가 속한 페이지 그룹의 범위
+    current_page_group_range = paginator.page_range[start_index : end_index]
 
-        # 검색박스 구현
-        if search_keyword_box_sex and search_keyword_box_size and search_keyword_box_species:
-            search_board_list = board_pet.filter(
-                Q(petSex=search_keyword_box_sex) &
-                Q(petSpecies__icontains=search_keyword_box_species) &
-                Q(petSize__icontains=search_keyword_box_size))
-            return search_board_list
+    start_page = paginator.page(current_page_group_range[0])
+    end_page = paginator.page(current_page_group_range[-1])
 
-        elif search_keyword_box_sex and search_keyword_box_size:
-            search_board_list = board_pet.filter(
-                Q(petSex=search_keyword_box_sex) &
-                Q(petSize__icontains=search_keyword_box_size))
-            return search_board_list
+    has_previous_page = start_page.has_previous()
+    has_next_page = end_page.has_next()
 
-        elif search_keyword_box_sex and search_keyword_box_species:
-            search_board_list = board_pet.filter(
-                Q(petSex=search_keyword_box_sex) &
-                Q(petSpecies__icontains=search_keyword_box_species))
-            return search_board_list
+    context['current_page_group_range'] = current_page_group_range
+    if has_previous_page :
+        context['has_previous_page'] = has_previous_page
+        context['previous_page'] = start_page.previous_page_number
 
-        elif search_keyword_box_size and search_keyword_box_species:
-            search_board_list = board_pet.filter(
-                Q(petSpecies__icontains=search_keyword_box_species) &
-                Q(petSize__icontains=search_keyword_box_size))
-            return search_board_list
+    if has_next_page :
+        context['has_next_page'] = has_next_page
+        context['next_page'] = end_page.next_page_number
 
-        elif search_keyword_box_sex:
-            search_board_list = board_pet.filter(Q(petSex=search_keyword_box_sex))
-            return search_board_list
+    e = paginate_by * current_page
+    s = e - paginate_by
+    board_pet_list = board_pet_list[s:e]
+    context['board_pet_list'] = board_pet_list
+    return render(request, 'yyApp/board_list.html', context)
 
-        elif search_keyword_box_size:
-            search_board_list = board_pet.filter(Q(petSize__icontains=search_keyword_box_size))
-            return search_board_list
 
-        elif search_keyword_box_species:
-            search_board_list = board_pet.filter(Q(petSpecies__icontains=search_keyword_box_species))
-            return search_board_list
+def board_search(request) :
+    paginate_by = 9
+    context = {}
 
-        else:
-            messages.error(self.request, '옵션을 선택해주세요')
+    board_pet_list= Pet.objects.select_related('board').order_by('-id').exclude(board__id=None)
+    search_keyword_bar = request.GET.get('q', '')
+    search_type = request.GET.get('type', '')
 
-        return board_pet
+    search_keyword_box_sex = request.GET.get('pet_sex', '')
+    search_keyword_box_size = request.GET.get('pet_size', '')
+    search_keyword_box_species = request.GET.get('pet_species', '')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    # 검색박스 구현     
+    if search_keyword_box_sex and search_keyword_box_size and search_keyword_box_species:
+        board_pet_list = board_pet_list.filter(
+            Q(petSex=search_keyword_box_sex) &
+            Q(petSpecies__icontains=search_keyword_box_species) &
+            Q(petSize__icontains=search_keyword_box_size))
 
-        # 페이지
-        paginator = context['paginator']
-        page_numbers_range = 5
-        max_index = len(paginator.page_range)
+    elif search_keyword_box_sex and search_keyword_box_size:
+        board_pet_list = board_pet_list.filter(
+            Q(petSex=search_keyword_box_sex) &
+            Q(petSize__icontains=search_keyword_box_size))
 
-        page = self.request.GET.get('page')
-        current_page = int(page) if page else 1
+    elif search_keyword_box_sex and search_keyword_box_species:
+        board_pet_list = board_pet_list.filter(
+            Q(petSex=search_keyword_box_sex) &
+            Q(petSpecies__icontains=search_keyword_box_species))
 
-        start_index = int((current_page - 1) / page_numbers_range) * page_numbers_range
-        end_index = start_index + page_numbers_range
-        if end_index >= max_index:
-            end_index = max_index
+    elif search_keyword_box_size and search_keyword_box_species:
+        board_pet_list = board_pet_list.filter(
+            Q(petSpecies__icontains=search_keyword_box_species) &
+            Q(petSize__icontains=search_keyword_box_size))
 
-        page_range = paginator.page_range[start_index:end_index]
-        context['page_range'] = page_range
-        board_fixed = Board.objects.order_by('-id')
+    elif search_keyword_box_sex:
+        board_pet_list = board_pet_list.filter(Q(petSex=search_keyword_box_sex))
 
-        # 검색필터, 검색바
-        search_keyword_bar = self.request.GET.get('q', '')
-        search_type = self.request.GET.get('type', '')
+    elif search_keyword_box_size:
+        board_pet_list = board_pet_list.filter(Q(petSize__icontains=search_keyword_box_size))
 
-        search_keyword_box_sex = self.request.GET.get('pet_sex', None)
-        search_keyword_box_size = self.request.GET.get('pet_size', '')
-        search_keyword_box_species = self.request.GET.get('pet_species', '')
+    elif search_keyword_box_species:
+        board_pet_list = board_pet_list.filter(Q(petSpecies__icontains=search_keyword_box_species))
 
-        if len(search_keyword_bar) > 1:
-            context['q'] = search_keyword_bar
+    # else:
+    #     messages.error(request, '옵션을 선택하세요.') 
 
-        context['type'] = search_type
-        context['board_fixed'] = board_fixed
-        context['pet_sex'] = search_keyword_box_sex
-        context['pet_size'] = search_keyword_box_size
-        context['pet_species'] = search_keyword_box_species
 
-        # 글쓰기 버튼 구현
-        login_member = check_session(self.request)
-        if login_member and login_member.authority:
-            is_check = True
-        else:
-            is_check = False
-        context['is_check'] = is_check
-        context['login_member'] = login_member
+    if search_keyword_bar :
+        if search_type == 'all':
+            board_pet_list = board_pet_list.filter(
+                Q(board__title__icontains=search_keyword_bar) | Q(board__content__icontains=search_keyword_bar) | Q(board__hashtag__icontains=search_keyword_bar))
+        elif search_type == 'title_content':
+            board_pet_list = board_pet_list.filter(
+                Q(board__title__icontains=search_keyword_bar) | Q(board__content__icontains=search_keyword_bar))
+        elif search_type == 'title':
+            board_pet_list = board_pet_list.filter(board__title__icontains=search_keyword_bar)
+        elif search_type == 'content':
+            board_pet_list = board_pet_list.filter(board__content__icontains=search_keyword_bar)
+        elif search_type == 'hashtag':
+            board_pet_list = board_pet_list.filter(board__hashtag__icontains=search_keyword_bar)  
 
-        # pet_list = Pet.objects.order_by('-id')
-        # for pet in pet_list:
-        #     board_list = Board.objects.filter(petID_id=pet.id)
-        #     for board in board_list:
-        #         print("board: ", board.petID_id)
-        #         print("pet: ", pet.id)
-        #         if pet.id == board.petID_id:
-        #             is_same = True
-        #         else :
-        #             is_same = False
-        #         print(is_same)
+    # else:
+    #     messages.error(request, '검색어를 입력해주세요.')
 
-        return context
+
+
+    # 페이지
+    context['is_paginated'] = True
+   
+    paginator = Paginator(board_pet_list, paginate_by)
+    page_numbers_range = 10
+    current_page = int(request.GET.get('page', 1))
+    context['current_page'] = current_page
+
+    # 시작/끝 인덱스 조회
+    start_index = int((current_page - 1) / page_numbers_range) * page_numbers_range
+    end_index = start_index + page_numbers_range       
+
+    # 현재 페이지가 속한 페이지 그룹의 범위
+    current_page_group_range = paginator.page_range[start_index : end_index]
+
+    start_page = paginator.page(current_page_group_range[0])
+    end_page = paginator.page(current_page_group_range[-1])
+
+    has_previous_page = start_page.has_previous()
+    has_next_page = end_page.has_next()
+
+    context['current_page_group_range'] = current_page_group_range
+    if has_previous_page :
+        context['has_previous_page'] = has_previous_page
+        context['previous_page'] = start_page.previous_page_number
+
+    if has_next_page :
+        context['has_next_page'] = has_next_page
+        context['next_page'] = end_page.next_page_number
+
+    e = paginate_by * current_page
+    s = e - paginate_by
+    board_pet_list = board_pet_list[s:e]
+    context['board_pet_list'] = board_pet_list
+
+    return render(request, 'yyApp/board_search.html', context)
+
+
+
+# class BoardListView(ListView):
+#     model = Pet
+#     template_name = 'yyApp/board_list.html'  # DEFAULT : <app_label>/<model_name>_list.html
+#     context_object_name = 'board_pet'  # DEFAULT : <model_name>_list
+
+#     def get_queryset(self):
+#         board_pet = Pet.objects.select_related('board').order_by('-id').exclude(board__id=None)
+#         search_keyword_bar = self.request.GET.get('q', None)
+#         search_type = self.request.GET.get('type', '')
+
+#         search_keyword_box_sex = self.request.GET.get('pet_sex', None)
+#         search_keyword_box_size = self.request.GET.get('pet_size', None)
+#         search_keyword_box_species = self.request.GET.get('pet_species', None)
+
+
+#         # 검색박스 구현     
+#         if search_keyword_box_sex and search_keyword_box_size and search_keyword_box_species:
+#             search_board_list = board_pet.filter(
+#                 Q(petSex=search_keyword_box_sex) &
+#                 Q(petSpecies__icontains=search_keyword_box_species) &
+#                 Q(petSize__icontains=search_keyword_box_size))
+#             return search_board_list
+
+#         elif search_keyword_box_sex and search_keyword_box_size:
+#             search_board_list = board_pet.filter(
+#                 Q(petSex=search_keyword_box_sex) &
+#                 Q(petSize__icontains=search_keyword_box_size))
+#             return search_board_list
+
+#         elif search_keyword_box_sex and search_keyword_box_species:
+#             search_board_list = board_pet.filter(
+#                 Q(petSex=search_keyword_box_sex) &
+#                 Q(petSpecies__icontains=search_keyword_box_species))
+#             return search_board_list
+
+#         elif search_keyword_box_size and search_keyword_box_species:
+#             search_board_list = board_pet.filter(
+#                 Q(petSpecies__icontains=search_keyword_box_species) &
+#                 Q(petSize__icontains=search_keyword_box_size))
+#             return search_board_list
+
+#         elif search_keyword_box_sex:
+#             search_board_list = board_pet.filter(Q(petSex=search_keyword_box_sex))
+#             return search_board_list
+
+#         elif search_keyword_box_size:
+#             search_board_list = board_pet.filter(Q(petSize__icontains=search_keyword_box_size))
+#             return search_board_list
+
+#         elif search_keyword_box_species:
+#             search_board_list = board_pet.filter(Q(petSpecies__icontains=search_keyword_box_species))
+#             return search_board_list
+
+#         else:
+#             messages.error(self.request, '옵션을 선택하세요.') 
+
+
+#         if search_keyword_bar :
+#             if search_type == 'all':
+#                 search_board_list = board_pet.filter(
+#                     Q(board__title__icontains=search_keyword_bar) | Q(board__content__icontains=search_keyword_bar) | Q(board__hashtag__icontains=search_keyword_bar))
+#             elif search_type == 'title_content':
+#                 search_board_list = board_pet.filter(
+#                     Q(board__title__icontains=search_keyword_bar) | Q(board__content__icontains=search_keyword_bar))
+#             elif search_type == 'title':
+#                 search_board_list = board_pet.filter(board__title__icontains=search_keyword_bar)
+#             elif search_type == 'content':
+#                 search_board_list = board_pet.filter(board__content__icontains=search_keyword_bar)
+#             elif search_type == 'hashtag':
+#                 search_board_list = board_pet.filter(board__hashtag__icontains=search_keyword_bar) 
+#             return search_board_list 
+
+#         elif not (search_keyword_box_sex or search_keyword_box_size or search_keyword_box_species) :
+#             messages.error(self.request, '검색어를 입력해주세요.')
+
+#         return board_pet
+
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+
+#         # 페이지
+#         paginate_by = 9
+#         context['is_paginated'] = True
+
+#         paginator = Paginator(board_pet, paginate_by)
+#         page_numbers_range = 5
+#         current_page = int(self.request.GET.get('page', 1))
+#         context['current_page'] = current_page
+
+#         # 시작/끝 인덱스 조회
+#         start_index = int((current_page - 1) / page_numbers_range) * page_numbers_range
+#         end_index = start_index + page_numbers_range       
+
+#         # 현재 페이지가 속한 페이지 그룹의 범위
+#         current_page_group_range = paginator.page_range[start_index : end_index]
+
+#         start_page = paginator.page(current_page_group_range[0])
+#         end_page = paginator.page(current_page_group_range[-1])
+
+#         has_previous_page = start_page.has_previous()
+#         has_next_page = end_page.has_next()
+#         context['current_page_group_range'] = current_page_group_range
+#         if has_previous_page :
+#             context['has_previous_page'] = has_previous_page
+#             context['previous_page'] = start_page.previous_page_number
+
+#         if has_next_page :
+#             context['has_next_page'] = has_next_page
+#             context['next_page'] = end_page.next_page_number
+
+
+#         # board_fixed = Board.objects.order_by('-id')
+
+#         # 검색필터, 검색바
+#         search_keyword_bar = self.request.GET.get('q', '')
+#         search_type = self.request.GET.get('type', '')
+
+#         search_keyword_box_sex = self.request.GET.get('pet_sex', None)
+#         search_keyword_box_size = self.request.GET.get('pet_size', None)
+#         search_keyword_box_species = self.request.GET.get('pet_species', None)
+
+#         if len(search_keyword_bar) > 1:
+#             context['q'] = search_keyword_bar
+
+#         context['type'] = search_type
+#         # context['board_fixed'] = board_fixed
+#         context['pet_sex'] = search_keyword_box_sex
+#         context['pet_size'] = search_keyword_box_size
+#         context['pet_species'] = search_keyword_box_species
+#         context['board_pet'] = board_pet
+
+#         # 글쓰기 버튼 구현
+#         login_member = check_session(self.request)
+#         if login_member and login_member.authority:
+#             is_check = True
+#         else:
+#             is_check = False
+#         context['is_check'] = is_check
+#         context['login_member'] = login_member
+
+
+
+
+#         # pet_list = Pet.objects.order_by('-id')
+#         # for pet in pet_list:
+#         #     board_list = Board.objects.filter(petID_id=pet.id)
+#         #     for board in board_list:
+#         #         print("board: ", board.petID_id)
+#         #         print("pet: ", pet.id)
+#         #         if pet.id == board.petID_id:
+#         #             is_same = True
+#         #         else :
+#         #             is_same = False
+#         #         print(is_same)
+
+#         return context
 
 
 def chart(request):
