@@ -45,7 +45,7 @@
 <div class = "container" style="margin-top: 20px;">
     <div class="container shadow-sm  bg-light" style="margin-top: 20px;">
         <div class="row">
-            <form action="{% url 'yyApp:search' %}" method="GET">
+            <form action="" method="GET">
                 <div class="row" style="padding: 20px;">             
                     <div class="col">
                         <fieldset id="pet_sex" class="col">
@@ -127,7 +127,7 @@
     </div>
     <br>
     <div class = "container shadow-sm  bg-light">
-        <form action="{% url 'yyApp:search' %}" method="GET">
+        <form action="" method="GET">
             <div class="row mt-1">
                 <div class="col-sm-3" style="margin-top: 10px; margin-bottom: 10px;">
                     <select class="custom-select custom-select-md" name="type">
@@ -272,7 +272,7 @@
 
 <!-- 이전페이지 -->
     {% if has_previous_page %}
-        <a href="/yyApp/board/?page={{previous_page}}" style = "color: #CDCDCD"> 이전 </a>
+        <a href="/yyApp/search/?pet_sex={{request.GET.pet_sex}}&page={{previous_page}}" style = "color: #CDCDCD"> 이전 </a>
     {% endif %}
 
 <!-- 페이지 번호 링크 -->
@@ -280,9 +280,11 @@
         &nbsp;
     <!-- page_obj.number: 현재 보고있는 페이지 -->
         {% if page == page.obj.number %} 
-            <a style="color: #FFC107">{{ page }}</a>
+            <a style="color: #FFC107">
+                {{ page }}
+            </a>
         {% else %}
-            <a href ="/yyApp/board/?page={{page}}" style = "color: #CDCDCD">
+            <a href="" style = "color: #CDCDCD">
                 {{ page }}
             </a>
         {% endif %}
@@ -307,7 +309,7 @@
     <!-- 다음페이지 그룹-->
     &nbsp;
     {% if has_next_page %}
-            <a href="/yyApp/board/?page={{next_page}}" style = "color: #CDCDCD">다음</a>
+            <a href="/yyApp/search/?page={{next_page}}" style = "color: #CDCDCD">다음</a>
     {% endif %}
 {% endif %}
 
