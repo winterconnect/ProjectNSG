@@ -16,6 +16,8 @@
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+</head>
+
 
     <style>
     .bd-placeholder-img {
@@ -32,10 +34,8 @@
         }
     }
     </style>
-</head>
 
 <body>
-
 {% block body %}
 
 
@@ -265,6 +265,8 @@
 <!-- 게시물목록 끝 -->
 
 
+
+
 <!-- 페이징처리 시작 -->
 
 {% if is_paginated %}
@@ -314,5 +316,10 @@
 </div>
 <!-- 페이징처리 끝 -->
 
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+        crossorigin="anonymous"></script>
 {% endblock %}
 </body>
