@@ -25,7 +25,7 @@
     <div class="row">
         <div class="col-lg-4">
             {% if pet.petImage %}
-                <img src="{{ pet.petImage.url }}" width="300" height="300">
+                <img src="{{ pet.petImage.url }}" class="rounded mx-auto d-block img-fluid">
             {% endif %}
         </div>
         <div class="col-lg-8">
@@ -87,17 +87,37 @@
         <div class="col-lg-12">
             {% for comment in comments.all %}
                 <table class="table table-bordered">
-                    <tr>
-                        <td style="font-size:13px;"><strong style="font-size:20px;">{{ comment.memberID }}</strong> {{ comment.date }}</td>
+                    <tr>                    
+                        <td style="font-size:13px;"><strong style="font-size:20px;"> {{ comment.memberID }}</strong> {{ comment.date }} 
+                        {% if comment.memberID  == login_member %}
+                            <a class="btn btn-outline-dark">수정</a>
+                            <a class="btn btn-outline-dark" href="{% url 'yyApp:comment_delete' comment.id %}">삭제</a>
+                        {% else %}
+                        {% endif %}
+                        
+                        
+                        </td>
                     </tr>
                     <tr>
                         <td>{{ comment.content }}</td>
+
+
                     </tr>
+
                 </table>
             {% empty %}
                 아직 댓글이 없어요
             {% endfor %}
-            <a class="btn btn-outline-dark" href="{% url 'yyApp:add_comment_to_post' postID=post.id %}">Add comment</a>
+
+        <h1>새로운 댓글</h1>
+        <form action = {% url 'yyApp:comment_write' post.id %} method = "POST">
+        {% csrf_token %}
+        <input type="text" name="content" placeholder="댓글을 입력해주세요.">
+        <button type="submit" class="save btn btn-default">댓글 달기</button>
+        </form>
+
+
+
         </div>
     </div>
 

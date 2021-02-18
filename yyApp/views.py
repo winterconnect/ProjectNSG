@@ -11,7 +11,7 @@ from yyApp.chartData import state, city
 import datetime
 from django.db import connection
 from .form import CommentForm
-
+from django.urls import reverse, reverse_lazy
 
 # Create your views here.
 
@@ -130,6 +130,9 @@ def home(request):
 def save_pet(pet):
     pet.save()
 
+def save_comment(comment):
+    comment.save()    
+
 
 def write_post(request):
     if request.method == "GET":
@@ -194,18 +197,30 @@ def write_post(request):
 
 
 def post_detail(request, postID):
+    context = {}
+
     post = get_object_or_404(Board, pk=postID)
     pet = get_object_or_404(Pet, pk=post.petID_id)
     comments = Comment.objects.filter(postID=postID)
-    print(comments)
+    login_member = check_session(request)
     is_check = False
+    is_comment_check = False
+
     try:
         if str(post.memberID) == request.session['user']:
             is_check = True
     except KeyError:
         is_check = False
-    return render(request, 'yyApp/postdetail.html',
-                  {'post': post, 'is_check': is_check, 'pet': pet, 'comments': comments, 'login_member': check_session(request)})
+   
+    context['post'] = post
+    context['pet'] = pet
+    context['comments'] = comments
+    context['is_check'] = is_check
+    context['is_comment_check'] = is_comment_check
+    context['login_member'] = login_member
+
+
+    return render(request, 'yyApp/postdetail.html', context)
 
 
 def post_delete(request):
@@ -214,6 +229,62 @@ def post_delete(request):
         post = get_object_or_404(Board, id=id)
         post.delete()
     return render(request, "yyApp/finish_delete.html")
+
+
+def comment_write(request, postID) : 
+    post = get_object_or_404(Board, id=postID)      
+    if request.method == 'POST' :
+        member = check_session(request)        
+        date = datetime.date.today().isoformat()        
+        content = request.POST.get('content')
+
+        comment = Comment(memberID = Member.objects.get(memberID=member.memberID),
+        date = date, content=content, postID = Board.objects.get(id=post.id))
+        comment.save()
+
+    return redirect(reverse('yyApp:post_detail', args=[post.id]))
+
+
+def comment_delete(request, commentID) :
+    comment = get_object_or_404(Comment, pk=commentID)    
+    post = get_object_or_404(Board, id=comment.postID_id)
+    login_member = check_session(request)
+
+    if comment.memberID_id == login_member.memberID :
+        comment.delete()    
+
+    return redirect(reverse('yyApp:post_detail', args=[post.id]))
+
+
+
+    # post = get_object_or_404(Board, id=postID)     
+    # comment = get_object_or_404(Comment, id=postID)
+    # comment.delete()
+    # return redirect(reverse('yyApp:post_detail', args=[post.id]))
+
+
+
+
+    # if comment.memberID == Member.objects.get( = request.user.get_username()) :
+    #     comment.delete()
+
+    # id = int(request.GET.get('id'))
+    # if 'id' in request.GET:
+
+    #     post.delete()
+
+    # return redirect(reverse('yyApp:post_detail', args=[post.id]))
+
+
+    # comment = Comment.objects.get(pk=pk)
+    # board_pk = comment.board.pk
+
+    #     return redirect(reverse('yyApp:post_detail', args=[board_pk]))
+    # else :
+    #     return render(request, 'yyApp/postdetail.html', {'comment' : comment, "auth_error" : "'해당댓글에 대한 삭제 권한이 없습니다.' "})
+
+
+
 
 
 def board_list(request) :
@@ -255,7 +326,21 @@ def board_list(request) :
     s = e - paginate_by
     board_pet_list = board_pet_list[s:e]
     context['board_pet_list'] = board_pet_list
+
+    # 글쓰기 버튼 구현
+    login_member = check_session(request)
+    if login_member and login_member.authority:
+        is_check = True
+    else:
+        is_check = False
+    context['is_check'] = is_check
+    context['login_member'] = login_member
+
+
+
     return render(request, 'yyApp/board_list.html', context)
+
+
 
 
 def board_search(request) :
@@ -358,6 +443,19 @@ def board_search(request) :
     s = e - paginate_by
     board_pet_list = board_pet_list[s:e]
     context['board_pet_list'] = board_pet_list
+
+    # 글쓰기 버튼 구현
+    login_member = check_session(request)
+    if login_member and login_member.authority:
+        is_check = True
+    else:
+        is_check = False
+    context['is_check'] = is_check
+    context['login_member'] = login_member
+
+
+
+
 
     return render(request, 'yyApp/board_search.html', context)
 
@@ -495,14 +593,7 @@ def board_search(request) :
 #         context['pet_species'] = search_keyword_box_species
 #         context['board_pet'] = board_pet
 
-#         # 글쓰기 버튼 구현
-#         login_member = check_session(self.request)
-#         if login_member and login_member.authority:
-#             is_check = True
-#         else:
-#             is_check = False
-#         context['is_check'] = is_check
-#         context['login_member'] = login_member
+
 
 
 
@@ -555,17 +646,3 @@ def modify_adoption(request):
             pet.petAdoption = False
             pet.save()
     return render(request, "yyApp/finish_mod_adoption.html")
-
-
-def add_comment_to_post(request, postID):
-    post = get_object_or_404(Board, id=postID)
-    if request.method == "POST":
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.postID = post
-            comment.save()
-            return redirect('yyApp:post_detail', postID=post.id)
-    else:
-        form = CommentForm()
-        return render(request, 'yyApp/add_comment_to_post.html', {'form': form})
