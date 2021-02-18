@@ -30,7 +30,7 @@
       </div>
         <div class="nav">
           <ul class="navbar-nav justify-content-end">
-            {% if login_member%}
+            {% if login_member.memberID != 'guest' %}
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'yyApp:logout' %}">로그아웃</a>
               </li>

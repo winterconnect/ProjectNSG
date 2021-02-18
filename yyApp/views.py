@@ -17,10 +17,14 @@ from django.urls import reverse, reverse_lazy
 
 def check_session(request):
     get_session = request.session.get('user')
+    login_member = Member()
     if get_session:
         login_member = Member.objects.get(memberID=get_session)
     else:
-        login_member = None
+        try:
+            login_member = Member.objects.get(memberID='guest')
+        except:
+            login_member = Member.objects.create(memberID='guest', memberPW='guest', memberName='guest', memberEmail='guest', memberAge='1900-01-01', authority=False)
     return login_member
 
 
