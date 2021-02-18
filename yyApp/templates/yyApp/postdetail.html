@@ -14,7 +14,7 @@
     </style>
 </head>
 <body>
-<div class="container">
+<div class="container mt-5">
     <div class="row">
         <h3><strong>{{ post.title }}</strong></h3>
     </div>
@@ -84,41 +84,42 @@
     </div>
     <div class="row">
         <strong style="padding:15px 0px 15px 15px">댓글</strong> <br>
-        <div class="col-lg-12">
             {% for comment in comments.all %}
-                <table class="table table-bordered">
+                <table class="table">
                     <tr>                    
-                        <td style="font-size:13px;"><strong style="font-size:20px;"> {{ comment.memberID }}</strong> {{ comment.date }} 
-                        {% if comment.memberID  == login_member %}
-                            <a class="btn btn-outline-dark">수정</a>
-                            <a class="btn btn-outline-dark" href="{% url 'yyApp:comment_delete' comment.id %}">삭제</a>
+                        <td style="font-size:13px;" bgcolor="#dbe2ef"><strong style="font-size:20px;"> {{ comment.memberID }}</strong> {{ comment.date }} </td>
+                        <td style="border-left: None;" align="right" bgcolor="#dbe2ef">
+                            {% if comment.memberID  == login_member %}
+                                <a class="btn btn-light btn-sm">수정</a>
+                                <a class="btn btn-danger btn-sm" href="{% url 'yyApp:comment_delete' comment.id %}">삭제</a> 
                         {% else %}
                         {% endif %}
-                        
-                        
                         </td>
                     </tr>
                     <tr>
-                        <td>{{ comment.content }}</td>
-
-
+                        <td colspan="2" bgcolor="#f9f7f7">{{ comment.content }}</td>
                     </tr>
-
                 </table>
             {% empty %}
+                <br>
                 아직 댓글이 없어요
+                <br>
+                <br>
             {% endfor %}
 
-        <h1>새로운 댓글</h1>
-        <form action = {% url 'yyApp:comment_write' post.id %} method = "POST">
-        {% csrf_token %}
-        <input type="text" name="content" placeholder="댓글을 입력해주세요.">
-        <button type="submit" class="save btn btn-default">댓글 달기</button>
-        </form>
-
-
-
-        </div>
+        <div class = "container shadow-sm">
+            <form action = {% url 'yyApp:comment_write' post.id %} method = "POST">
+                <div class = "row" style="border:none;">
+                {% csrf_token %}
+                    <div class="col-sm-10">            
+                        <textarea cols=80 name="content" placeholder="댓글을 입력해주세요."></textarea>
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="submit" class="btn btn-outline-dark">댓글 달기</button>
+                    </div> 
+                </div>
+            </form>
+        </div>    
     </div>
 
     {% if is_check %}
