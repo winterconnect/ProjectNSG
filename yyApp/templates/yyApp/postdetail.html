@@ -141,43 +141,36 @@
     {% endif %}
 </div>
 
-
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-    Launch demo modal
-</button>
-
 <!-- Modal -->
 <div class="modal fade" id="staticBackdrop" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                <h5 class="modal-title" id="staticBackdropLabel">회원정보</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <h5>회원정보</h5>
-                    <table class="table table-bordered">
-                        <tr>
-                            <th>이름</th>
-                            <td>{{ member.memberName }}</td>
-                        </tr>
-                        <tr>
-                          <th>아이디</th>
-                          <td>{{ member.memberID }}</td>
-                        </tr>
-                        <tr>
-                          <th>이메일</th>
-                          <td>{{ member.memberEmail }}</td>
-                        </tr>
-                        <tr>
-                          <th>생일</th>
-                          <td>{{ member.memberAge }}</td>
-                        </tr>
-                    </table>
-                    <hr>                    
-                    <p>This <a href="#" role="button" class="btn btn-secondary popover-test" title="Popover title" data-bs-content="Popover body content is set in this attribute.">button</a>
-                    triggers a popover on click.</p>
+                <table class="table table-bordered">
+                    <tr>
+                        <th>이름</th>
+                        <td>{{ member.memberName }}</td>
+                    </tr>
+                    <tr>
+                        <th>아이디</th>
+                        <td>{{ member.memberID }}</td>
+                    </tr>
+                    <tr>
+                        <th>이메일</th>
+                        <td>{{ member.memberEmail }}</td>
+                    </tr>
+                    <tr>
+                        <th>생일</th>
+                        <td>{{ member.memberAge }}</td>
+                    </tr>
+                </table>
+                <hr>                    
+                <p>This <a href="#" role="button" class="btn btn-secondary popover-test" title="Popover title" data-bs-content="Popover body content is set in this attribute.">button</a>
+                triggers a popover on click.</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
