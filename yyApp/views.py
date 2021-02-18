@@ -201,6 +201,7 @@ def post_detail(request, postID):
 
     post = get_object_or_404(Board, pk=postID)
     pet = get_object_or_404(Pet, pk=post.petID_id)
+    member = get_object_or_404(Member, pk=post.memberID_id)
     comments = Comment.objects.filter(postID=postID)
     login_member = check_session(request)
     is_check = False
@@ -214,6 +215,7 @@ def post_detail(request, postID):
    
     context['post'] = post
     context['pet'] = pet
+    context['member'] = member
     context['comments'] = comments
     context['is_check'] = is_check
     context['is_comment_check'] = is_comment_check
