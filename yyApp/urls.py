@@ -17,8 +17,10 @@ urlpatterns = [
     path('', views.home, name='index'),
     path('chart/', views.chart, name='chart'),
     path('postdetail/<int:postID>', views.post_detail, name='post_detail'),
-    path('postdetail/delete', views.post_delete, name='post_delete'),
+    path('postdetail/delete', views.post_delete, name='post_delete'),    
+    path('postdetail/<int:postID>/comment_write', views.comment_write, name='comment_write'),
+    path('postdetail/<int:commentID>/comment_delete', views.comment_delete, name='comment_delete'),
     path('mypage/', views.mypage, name='mypage'),
     path('modifyadoption', views.modify_adoption, name='modify_adoption'),
-    path('postdetail/<int:postID>/comment/', views.add_comment_to_post, name='add_comment_to_post'),
+    
 ]
