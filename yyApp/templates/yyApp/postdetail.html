@@ -116,7 +116,7 @@
             {% endfor %}
 
         <div class = "container shadow-sm">
-            <form action = {% url 'yyApp:comment_write' post.id %} method = "POST">
+            <form action = "{% url 'yyApp:comment_write' post.id %}" method = "POST">
                 <div class = "row" style="border:none;">
                 {% csrf_token %}
                     <div class="col-sm-10">            
@@ -130,15 +130,26 @@
         </div>    
     </div>
 
-    {% if is_check %}
-        <div class="row">
-            <div class="col-lg-10"></div>
-            <div class="col-lg-2">
+    <div class="row">
+        <div class="col-lg-10">
+            <a href="{% url 'yyApp:like_post' post.id %}">
+                {% if check_like_post %}
+                    <i style="color:red; padding:5px;" class="fas fa-heart fa-2x"></i>
+                    <h6 style="color:gray;">{{ post.like.count }} likes</h6>
+                {% else %}
+                    <i style="color:red; padding:5px;" class="far fa-heart fa-2x"></i>
+                    <h6 style="color:gray;">{{ post.like.count }} likes</h6>
+                {% endif %}
+            </a>
+        </div>
+        <div class="col-lg-2">
+            {% if is_check %}
                 <a class="btn btn-outline-dark">수정</a>
                 <a class="btn btn-outline-dark" href="{% url 'yyApp:post_delete' %}?id={{ post.id }}">삭제</a>
-            </div>
+            {% endif %}
         </div>
-    {% endif %}
+    </div>
+
 </div>
 
 <!-- Modal -->
