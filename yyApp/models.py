@@ -17,12 +17,12 @@ class Member(models.Model):
 
 
 class Board(models.Model):
-    memberID = models.ForeignKey('Member', on_delete=models.SET_DEFAULT, default=' ')
+    memberID = models.ForeignKey('Member', on_delete=models.SET_DEFAULT, related_name='posts', default=' ')
     date = models.DateTimeField(auto_now=True)
     title = models.CharField(max_length=200)
     content = models.CharField(max_length=200, blank=True)
     hashtag = models.CharField(max_length=200, blank=True)
-    like = models.IntegerField(default=0, blank=True, null=False)
+    like = models.ManyToManyField('Member', related_name='like_posts', blank=True, default='')
     petID = models.OneToOneField('Pet', on_delete=models.SET_DEFAULT, default='')
 
 
