@@ -17,22 +17,30 @@ from django.urls import reverse, reverse_lazy
 # Create your views here.
 
 def check_session(request):
-    get_session = request.session.get('user')
     login_member = Member()
-    if get_session:
-        login_member = Member.objects.get(memberID=get_session)
-    else:
+    try:
+        get_session = request.session.get('user')
+        if get_session:
+            login_member = Member.objects.get(memberID=get_session)
+        else:
+            try:
+                login_member = Member.objects.get(memberID='guest')
+            except:
+                login_member = Member.objects.create(memberID='guest', memberPW='guest', memberName='guest',
+                                                     memberEmail='guest', memberAge='1900-01-01', authority=False)
+    except:
         try:
             login_member = Member.objects.get(memberID='guest')
         except:
             login_member = Member.objects.create(memberID='guest', memberPW='guest', memberName='guest',
                                                  memberEmail='guest', memberAge='1900-01-01', authority=False)
+    print(login_member)
     return login_member
 
 
 def join_adopter(request):
     if request.method == "GET":
-        return render(request, 'yyApp/adopter.html')
+        return render(request, 'yyApp/adopter.html', {'login_member': check_session(request)})
     elif request.method == "POST":
         memberID = request.POST.get('memberID', None)
         memberPW = request.POST.get('memberPW', None)
@@ -52,7 +60,7 @@ def join_adopter(request):
                                 memberEmail=memberEmail, memberAge=memberAge, adopterHouse=adopterHouse,
                                 adopterAddress=adopterAddress, adopterFamily=adopterFamily, authority=False)
                 member.save()
-                return render(request, 'yyApp/finish_join.html')
+                return render(request, 'yyApp/finish_join.html', {'login_member': check_session(request)})
             else:
                 res_data['error'] = '비밀번호와 비밀번호 확인이 일치하지 않아요'
                 return render(request, 'yyApp/adopter.html', res_data)
@@ -60,7 +68,7 @@ def join_adopter(request):
 
 def join_guardian(request):
     if request.method == "GET":
-        return render(request, 'yyApp/guardian.html')
+        return render(request, 'yyApp/guardian.html', {'login_member': check_session(request)})
     elif request.method == "POST":
         memberID = request.POST.get('memberID', None)
         memberPW = request.POST.get('memberPW', None)
@@ -76,7 +84,7 @@ def join_guardian(request):
                 member = Member(memberID=memberID, memberPW=make_password(memberPW), memberName=memberName,
                                 memberEmail=memberEmail, memberAge=memberAge, authority=True)
                 member.save()
-                return render(request, 'yyApp/finish_join.html', res_data)
+                return render(request, 'yyApp/finish_join.html', {'login_member': check_session(request)})
             else:
                 res_data['error'] = '비밀번호와 비밀번호 확인이 일치하지 않아요'
         return render(request, 'yyApp/guardian.html', res_data)
@@ -112,7 +120,6 @@ def login(request):
 
 def logout(request):
     a = check_session(request)
-    print(a.memberID)
     if request.session['user']:
         del (request.session['user'])
     return redirect('/yyApp')
@@ -125,8 +132,7 @@ def home(request):
         ORDER BY yyApp_Board.id DESC LIMIT 4;
     '''  # Board tbl에서 id와 petimg 가져옴/ petID에 근거하여 Pet tbl를 조인/Board tbl의 id를 내림차순으로 4개만 정렬
     cursor.execute(strSql)
-    result = cursor.fetchall()  # 튜플 형태로 가져옴(board_id, petImage) 
-    print(result)
+    result = cursor.fetchall()  # 튜플 형태로 가져옴(board_id, petImage)
     connection.commit()
     connection.close()
 
