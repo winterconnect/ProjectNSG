@@ -1,8 +1,8 @@
-## 나랑살개!
+## 나랑살개! (유기견 입양 사이트)
 
 
 
-DB(MySQL), HTML, Django를 배운 후 인터페이스(유기동물 입양 사이트)를 개발한 프로젝트입니다.
+DB(MySQL), HTML, Django를 배운 후 인터페이스(유기견 입양 사이트)를 개발한 프로젝트입니다.
 
 
 
@@ -14,12 +14,10 @@ DB(MySQL), HTML, Django를 배운 후 인터페이스(유기동물 입양 사이
 - 애견샵을 통한 분양보다 유기견 입양을 선호하는 추세를 보이고 있다.
 
 
-
 #### 2) 유기동물 보호센터
 
 - 유기동물 보호센터는 입양희망자가 사이트에 접속 후, 보호센터를 직접 방문해야 하는 시스템으로,
 - 불필요한 기간과 비용이 소요된다.
-
 
 
 #### 3) 보다 손쉽고 효율적인 플랫폼 필요
@@ -42,6 +40,8 @@ DB(MySQL), HTML, Django를 배운 후 인터페이스(유기동물 입양 사이
 #### 1) 기획
 <img src ="https://github.com/winterconnect/Project_Interface/blob/winter/img/0_process.png?raw=true">
 
+
+
 #### 2) 설계
 
 - DB 모델링
@@ -57,6 +57,8 @@ DB(MySQL), HTML, Django를 배운 후 인터페이스(유기동물 입양 사이
 <img src ="https://github.com/winterconnect/Project_Interface/blob/winter/img/5_mypage.png?raw=true">
 
 
+
+
 ### 4. 결과
 - 설계한 대로 모든 기능 구현 완료
 - 회원가입(보호자, 입양희망자 구분)
@@ -67,13 +69,22 @@ DB(MySQL), HTML, Django를 배운 후 인터페이스(유기동물 입양 사이
 <img src = "https://github.com/winterconnect/Project_Interface/blob/winter/img/webpage2.gif?raw=true">
 
 
+
+
 ### 5. 프로젝트 이후 개선
 
-- 프로젝트 계획 단계에서 향후과제로 남겨두었던 "회원 프로필 열람", "좋아요" 기능을 추가 구현
+- 프로젝트 계획 단계에서 향후과제로 남겨두었던 "회원 프로필 열람", "댓글", "좋아요" 기능을 추가 구현
+
+
 - 회원 프로필 열람 기능
 <img src ="https://github.com/winterconnect/Project_Interface/blob/winter/img/profile.gif?raw=true">
-- 좋아요 기능
+
+
+
+
+- 댓글 & 좋아요 기능
 <img src = "https://github.com/winterconnect/Project_Interface/blob/winter/img/like.gif?raw=true">
+
 
 
 
@@ -84,6 +95,7 @@ DB(MySQL), HTML, Django를 배운 후 인터페이스(유기동물 입양 사이
 - 뚜렷한 목표가 있고, 충분히 협업하면 가능하다는 것이 놀라웠다.
 - 특히 Django와 DB를 실제로 사용해 페이지를 구현해보았다는 것이 큰 경험이었다.
 - 사이트의 퀄리티를 떠나서, 새로운 툴과 언어를 활용하는 데 거부감을 많이 없애주었고, 어떤 새로운 것을 배우더라도 해낼 수 있을 것 같은 자신감을 얻었다!
+
 
 
 
