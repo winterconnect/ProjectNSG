@@ -40,30 +40,40 @@ DB(MySQL), HTML, Django를 배운 후 인터페이스(유기동물 입양 사이
 ### 3. 진행과정
 
 #### 1) 기획
+<img src ="https://github.com/winterconnect/Project_Interface/blob/winter/img/0_process.png?raw=true">
 
 #### 2) 설계
 
 - DB 모델링
+
+<img src ="https://github.com/winterconnect/Project_Interface/blob/winter/img/6_diagram.png?raw=true">
+
 - 화면설계
 
-#### 3) 기능구현과 디자인
-
-#### 4) 점검
-
-
-
+<img src ="https://github.com/winterconnect/Project_Interface/blob/winter/img/1_main.png?raw=true">
+<img src ="https://github.com/winterconnect/Project_Interface/blob/winter/img/2_guardian.png?raw=true">
+<img src ="https://github.com/winterconnect/Project_Interface/blob/winter/img/3_write.png?raw=true">
+<img src ="https://github.com/winterconnect/Project_Interface/blob/winter/img/4_detail.png?raw=true">
+<img src ="https://github.com/winterconnect/Project_Interface/blob/winter/img/5_mypage.png?raw=true">
 
 
 ### 4. 결과
+- 설계한 대로 모든 기능 구현 완료
+- 회원가입(보호자, 입양희망자 구분)
+- 회원 가입 후 글쓰기 가능
+- 마이페이지(페이지 내 입양여부 변경버튼)
+- 유기견 정보 상세페이지
 
+<img src = "https://github.com/winterconnect/Project_Interface/blob/winter/img/webpage2.gif?raw=true">
 
 
 ### 5. 프로젝트 이후 개선
 
 - 프로젝트 계획 단계에서 향후과제로 남겨두었던 "회원 프로필 열람", "좋아요" 기능을 추가 구현
-
-
-
+- 회원 프로필 열람 기능
+<img src ="https://github.com/winterconnect/Project_Interface/blob/winter/img/profile.gif?raw=true">
+- 좋아요 기능
+<img src = "https://github.com/winterconnect/Project_Interface/blob/winter/img/like.gif?raw=true">
 
 
 
