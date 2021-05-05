@@ -76,13 +76,13 @@ DB(MySQL), HTML, Django를 배운 후 인터페이스(유기견 입양 사이트
 - 프로젝트 계획 단계에서 향후과제로 남겨두었던 "회원 프로필 열람", "댓글", "좋아요" 기능을 추가 구현
 
 
-- 회원 프로필 열람 기능
+#### 1) 회원 프로필 열람 기능
 <img src ="https://github.com/winterconnect/Project_Interface/blob/winter/img/profile.gif?raw=true">
 
 
 
 
-- 댓글 & 좋아요 기능
+#### 2) 댓글 & 좋아요 기능
 <img src = "https://github.com/winterconnect/Project_Interface/blob/winter/img/like.gif?raw=true">
 
 
