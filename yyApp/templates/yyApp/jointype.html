@@ -1,7 +1,15 @@
+<!DOCTYPE html>
+<html style="height:100%;">
 {% extends "yyApp/nav.html" %}
 {% block body %}
-<div align="center">
-<button type="button" class="btn btn-primary" onclick="location.href='guardian/'">보호자</button>
-<button type="button" class="btn btn-primary" onclick="location.href='adopter/'">입양희망자</button>
+
+<div class="container pr-0 pl-0 h-100 d-flex flex-column" align="center">
+    <div class="container mt-5">
+        <div class="mt-2 mb-5">회원 유형 선택</div>
+        <button type="button" class="btn btn-outline-dark" onclick="location.href='guardian/'">보호자</button>
+        <button type="button" class="btn btn-outline-dark" onclick="location.href='adopter/'">입양희망자</button>
+    </div>
 </div>
+
 {% endblock%}
+</html>

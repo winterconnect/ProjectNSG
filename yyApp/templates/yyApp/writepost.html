@@ -10,10 +10,9 @@
 
 <body>
 <div class="container my-3">
-    <!-- <button><a href="new_post/">글쓰기</a></button> #게시판 페이지에 버튼 추가-->
-    <!-- 네이버 카페 글쓰기 디자인 참고-->
     <div>
         <h4 style="text-align:center;">게시판 글쓰기</h4>
+        <h6 style="color:red; text-align:center;">{{ errors }}</h6>
     </div>
 
     <form method="POST" class="post-form" action="." enctype="multipart/form-data"> <!--내부의 정보를 한번에 서버로 전송-->
@@ -82,8 +81,6 @@
             <option value=None>선택</option>
             <option value="골든리트리버">골든리트리버</option>
             <option value="요크셔테리어">요크셔테리어</option>
-              <option value="골든리트리버">골든리트리버</option>
-            <option value="요크셔테리어">요크셔테리어</option>
             <option value="말티즈">말티즈</option>
             <option value="시츄">시츄</option>
             <option value="푸들">푸들</option>
@@ -126,19 +123,14 @@
         </div>
 
         <div class="form-group">
-<!--          <ul id="hashtag">-->
-<!--          </ul>-->
-
-          <input type="text" id="hashtag" size="10" placeholder="# 태그 입력" />
-          <button type="submit">해시태그</button>
-          <!-- 버튼 누르면 해당 값 전송. 여러번 가능해야 함 -->
+          <label for="hashtag">해시태그</label><br>
+          <input type="text" class="form-control" id="hashtag" name="hashtag" placeholder="#태그 입력">
         </div>
-
 
         <div>
           <label for="petName">본문</label><br>
           <textarea rows ="10" cols="50" name="content"></textarea><br>
-          <input type="submit" value="글쓰기"><br><!--type="submit" 버튼이 클릭되면 서버로 전송-->
+          <input type="submit" value="글쓰기" class="btn btn-outline-dark"><br><!--type="submit" 버튼이 클릭되면 서버로 전송-->
         </div>
 
     </form>

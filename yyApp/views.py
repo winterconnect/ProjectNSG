@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.contrib.auth.hashers import make_password, check_password
-from yyApp.models import Member, Board, Pet
+from yyApp.models import Member, Board, Pet, Comment
 from django.core.paginator import Paginator
 from django.db.models import Q, Count
 from django.contrib import messages
@@ -9,22 +9,38 @@ from django.template import context
 from django.views.generic import ListView
 from yyApp.chartData import state, city
 import datetime
+from django.db import connection
+from .form import CommentForm
+from django.urls import reverse, reverse_lazy
 
 
 # Create your views here.
 
 def check_session(request):
-    get_session = request.session.get('user')
-    if get_session:
-        login_member = Member.objects.get(memberID=get_session)
-    else:
-        login_member = ''
+    login_member = Member()
+    try:
+        get_session = request.session.get('user')
+        if get_session:
+            login_member = Member.objects.get(memberID=get_session)
+        else:
+            try:
+                login_member = Member.objects.get(memberID='guest')
+            except:
+                login_member = Member.objects.create(memberID='guest', memberPW='guest', memberName='guest',
+                                                     memberEmail='guest', memberAge='1900-01-01', authority=False)
+    except:
+        try:
+            login_member = Member.objects.get(memberID='guest')
+        except:
+            login_member = Member.objects.create(memberID='guest', memberPW='guest', memberName='guest',
+                                                 memberEmail='guest', memberAge='1900-01-01', authority=False)
+    print(login_member)
     return login_member
 
 
 def join_adopter(request):
     if request.method == "GET":
-        return render(request, 'yyApp/adopter.html')
+        return render(request, 'yyApp/adopter.html', {'login_member': check_session(request)})
     elif request.method == "POST":
         memberID = request.POST.get('memberID', None)
         memberPW = request.POST.get('memberPW', None)
@@ -37,20 +53,22 @@ def join_adopter(request):
         res_data = {}
         if not (memberID and memberPW and memberName and memberEmail):
             res_data['error'] = '모든 값을 입력해주세요'
+            return render(request, 'yyApp/adopter.html', res_data)
         else:
             if memberPW == request.POST['memberPW_check']:
                 member = Member(memberID=memberID, memberPW=make_password(memberPW), memberName=memberName,
                                 memberEmail=memberEmail, memberAge=memberAge, adopterHouse=adopterHouse,
                                 adopterAddress=adopterAddress, adopterFamily=adopterFamily, authority=False)
                 member.save()
+                return render(request, 'yyApp/finish_join.html', {'login_member': check_session(request)})
             else:
                 res_data['error'] = '비밀번호와 비밀번호 확인이 일치하지 않아요'
-        return render(request, 'yyApp/adopter.html', res_data)
+                return render(request, 'yyApp/adopter.html', res_data)
 
 
 def join_guardian(request):
     if request.method == "GET":
-        return render(request, 'yyApp/guardian.html')
+        return render(request, 'yyApp/guardian.html', {'login_member': check_session(request)})
     elif request.method == "POST":
         memberID = request.POST.get('memberID', None)
         memberPW = request.POST.get('memberPW', None)
@@ -66,9 +84,9 @@ def join_guardian(request):
                 member = Member(memberID=memberID, memberPW=make_password(memberPW), memberName=memberName,
                                 memberEmail=memberEmail, memberAge=memberAge, authority=True)
                 member.save()
+                return render(request, 'yyApp/finish_join.html', {'login_member': check_session(request)})
             else:
                 res_data['error'] = '비밀번호와 비밀번호 확인이 일치하지 않아요'
-
         return render(request, 'yyApp/guardian.html', res_data)
 
 
@@ -102,18 +120,36 @@ def login(request):
 
 def logout(request):
     a = check_session(request)
-    print(a.memberID)
     if request.session['user']:
         del (request.session['user'])
     return redirect('/yyApp')
 
 
 def home(request):
-    return render(request, 'yyApp/index_haedong.html', {'login_member': check_session(request)})
+
+    context = {}
+    cursor = connection.cursor()
+    strSql = '''
+    SELECT yyApp_Board.id, petImage FROM yyApp_Board JOIN yyApp_Pet ON yyApp_Board.petID_id = yyApp_Pet.id \
+        ORDER BY yyApp_Board.id DESC LIMIT 4;
+    '''  # Board tbl에서 id와 petimg 가져옴/ petID에 근거하여 Pet tbl를 조인/Board tbl의 id를 내림차순으로 4개만 정렬
+    cursor.execute(strSql)
+    result = cursor.fetchall()  # 튜플 형태로 가져옴(board_id, petImage)
+    connection.commit()
+    connection.close()
+
+    context['login_member'] = check_session(request)
+    context['pets'] = result
+
+    return render(request, 'yyApp/index_haedong.html', context)
 
 
 def save_pet(pet):
     pet.save()
+
+
+def save_comment(comment):
+    comment.save()
 
 
 def write_post(request):
@@ -121,8 +157,8 @@ def write_post(request):
         return render(request, 'yyApp/writepost.html', {'login_member': check_session(request)})
     elif request.method == 'POST':
         member = check_session(request)
-        title = request.POST.get('title', '').strip()
-        content = request.POST.get('content', '').strip()
+        title = request.POST.get('title', None)
+        content = request.POST.get('content', None)
         date = datetime.date.today().isoformat()
         petName = request.POST.get('petName', '')
         petBirth = request.POST.get('petBirth', '')
@@ -151,14 +187,19 @@ def write_post(request):
         except:
             petImage = None
 
-        hashtag = request.POST.get('hashtag', '').split('#')
+        hashtag = request.POST.get('hashtag', None)
+        hashtag.replace(" ", "")
 
         errors = []
 
         if not title:
             errors.append('제목을 입력하세요.')
+            return render(request, 'yyApp/writepost.html',
+                          {'user': request.user, 'errors': errors, 'login_member': check_session(request)})
         if not content:
             errors.append('내용을 입력하세요.')
+            return render(request, 'yyApp/writepost.html',
+                          {'user': request.user, 'errors': errors, 'login_member': check_session(request)})
         if not errors:
             pet = Pet(petName=petName, petBirth=petBirth, petSex=petSex, petSize=petSize, petLoc=petLoc,
                       petSpecies=petSpecies,
@@ -168,28 +209,42 @@ def write_post(request):
             saved_pet = Pet.objects.order_by('-id').first()
 
             post = Board(memberID=Member.objects.get(memberID=member.memberID), title=title, content=content,
-                        date=date, hashtag=hashtag, petID=Pet.objects.get(id=saved_pet.id))
+                         date=date, hashtag=hashtag, petID=Pet.objects.get(id=saved_pet.id))
 
             post.save()
-
-            # for hashtag in hashtag:
-            #     hashtag = hashtag.strip()
-            #     post.hashtag.add(hashtag)
     return render(request, 'yyApp/finish_write.html',
                   {'user': request.user, 'errors': errors, 'login_member': check_session(request)})
 
 
 def post_detail(request, postID):
+    context = {}
+
     post = get_object_or_404(Board, pk=postID)
     pet = get_object_or_404(Pet, pk=post.petID_id)
+    member = get_object_or_404(Member, pk=post.memberID_id)
+    comments = Comment.objects.filter(postID=postID)
+    login_member = check_session(request)
     is_check = False
+    is_comment_check = False
+
+    check_like_post = post.like.filter(memberID=login_member.memberID).exists()
+
     try:
         if str(post.memberID) == request.session['user']:
             is_check = True
     except KeyError:
         is_check = False
-    return render(request, 'yyApp/postdetail.html',
-                  {'post': post, 'is_check': is_check, 'pet': pet, 'login_member': check_session(request)})
+
+    context['post'] = post
+    context['pet'] = pet
+    context['member'] = member
+    context['comments'] = comments
+    context['is_check'] = is_check
+    context['is_comment_check'] = is_comment_check
+    context['login_member'] = login_member
+    context['check_like_post'] = check_like_post
+
+    return render(request, 'yyApp/postdetail.html', context)
 
 
 def post_delete(request):
@@ -200,132 +255,216 @@ def post_delete(request):
     return render(request, "yyApp/finish_delete.html")
 
 
-class BoardListView(ListView):
-    model = Pet
+def comment_write(request, postID):
+    post = get_object_or_404(Board, id=postID)
+    if request.method == 'POST':
+        member = check_session(request)
+        date = datetime.date.today().isoformat()
+        content = request.POST.get('content')
+
+        comment = Comment(memberID=Member.objects.get(memberID=member.memberID),
+                          date=date, content=content, postID=Board.objects.get(id=post.id))
+        comment.save()
+
+    return redirect(reverse('yyApp:post_detail', args=[post.id]))
+
+
+def comment_delete(request, commentID):
+    comment = get_object_or_404(Comment, pk=commentID)
+    post = get_object_or_404(Board, id=comment.postID_id)
+    login_member = check_session(request)
+
+    if comment.memberID_id == login_member.memberID:
+        comment.delete()
+
+    return redirect(reverse('yyApp:post_detail', args=[post.id]))
+
+    # post = get_object_or_404(Board, id=postID)
+    # comment = get_object_or_404(Comment, id=postID)
+    # comment.delete()
+    # return redirect(reverse('yyApp:post_detail', args=[post.id]))
+
+    # if comment.memberID == Member.objects.get( = request.user.get_username()) :
+    #     comment.delete()
+
+    # id = int(request.GET.get('id'))
+    # if 'id' in request.GET:
+
+    #     post.delete()
+
+    # return redirect(reverse('yyApp:post_detail', args=[post.id]))
+
+    # comment = Comment.objects.get(pk=pk)
+    # board_pk = comment.board.pk
+
+    #     return redirect(reverse('yyApp:post_detail', args=[board_pk]))
+    # else :
+    #     return render(request, 'yyApp/postdetail.html', {'comment' : comment, "auth_error" : "'해당댓글에 대한 삭제 권한이 없습니다.' "})
+
+
+def board_list(request):
     paginate_by = 9
-    template_name = 'yyApp/board_list.html'  # DEFAULT : <app_label>/<model_name>_list.html
-    context_object_name = 'pet_list'  # DEFAULT : <model_name>_list
+    context = {}
 
-    def get_queryset(self):
+    # 페이지
+    context['is_paginated'] = True
+    board_pet_list = Pet.objects.select_related('board').order_by('-id').exclude(board__id=None)
 
+    paginator = Paginator(board_pet_list, paginate_by)
+    page_numbers_range = 10
+    current_page = int(request.GET.get('page', 1))
+    context['current_page'] = current_page
 
-        pet_list = Pet.objects.order_by('-id')
-        board_pet = Pet.objects.select_related('board')
+    # 시작/끝 인덱스 조회
+    start_index = int((current_page - 1) / page_numbers_range) * page_numbers_range
+    end_index = start_index + page_numbers_range
 
-        search_keyword_bar = self.request.GET.get('q', '')
-        search_type = self.request.GET.get('type', '')  
+    # 현재 페이지가 속한 페이지 그룹의 범위
+    current_page_group_range = paginator.page_range[start_index: end_index]
 
-        search_keyword_box_sex = self.request.GET.get('pet_sex', None)
-        search_keyword_box_size = self.request.GET.get('pet_size', '')        
-        search_keyword_box_species = self.request.GET.get('pet_species', '')
+    start_page = paginator.page(current_page_group_range[0])
+    end_page = paginator.page(current_page_group_range[-1])
 
-        if search_keyword_bar:
-            if len(search_keyword_bar) > 1:
-                if search_type == 'all':
-                    search_board_list = board_pet.filter(
-                        Q(board__title__icontains=search_keyword_bar) | Q(board__content__icontains=search_keyword_bar))
-                elif search_type == 'title_content':
-                    search_board_list = board_pet.filter(
-                        Q(board__title__icontains=search_keyword_bar) | Q(board__content__icontains=search_keyword_bar))
-                elif search_type == 'title':
-                    search_board_list = board_pet.filter(board__title__icontains=search_keyword_bar)
-                elif search_type == 'content':
-                    search_board_list = board_pet.filter(board__content__icontains=search_keyword_bar)
+    has_previous_page = start_page.has_previous()
+    has_next_page = end_page.has_next()
 
-                return search_board_list
+    context['current_page_group_range'] = current_page_group_range
+    if has_previous_page:
+        context['has_previous_page'] = has_previous_page
+        context['previous_page'] = start_page.previous_page_number
 
-            else:
-                messages.error(self.request, '검색어는 2글자 이상 입력해주세요.')   
-            
-        # 검색박스 구현
-        if search_keyword_box_sex and search_keyword_box_size and search_keyword_box_species :
-            search_board_list = pet_list.filter(Q (petSex=search_keyword_box_sex) & Q (petSpecies__icontains=search_keyword_box_species) & Q (petSize__icontains=search_keyword_box_size) )
-            return search_board_list
+    if has_next_page:
+        context['has_next_page'] = has_next_page
+        context['next_page'] = end_page.next_page_number
 
-        elif search_keyword_box_sex and search_keyword_box_size:
-            search_board_list = pet_list.filter(Q (petSex=search_keyword_box_sex) & Q (petSize__icontains=search_keyword_box_size) )
-            return search_board_list
+    e = paginate_by * current_page
+    s = e - paginate_by
+    board_pet_list = board_pet_list[s:e]
+    context['board_pet_list'] = board_pet_list
 
-        elif search_keyword_box_sex and search_keyword_box_species :
-            search_board_list = pet_list.filter(Q (petSex=search_keyword_box_sex) & Q (petSpecies__icontains=search_keyword_box_species) )
-            return search_board_list
+    # 글쓰기 버튼 구현
+    login_member = check_session(request)
+    if login_member and login_member.authority:
+        is_check = True
+    else:
+        is_check = False
+    context['is_check'] = is_check
+    context['login_member'] = login_member
 
-        elif search_keyword_box_size and search_keyword_box_species:
-            search_board_list = pet_list.filter(
-                Q(petSpecies__icontains=search_keyword_box_species) & Q(petSize__icontains=search_keyword_box_size))
-            return search_board_list
-
-        elif search_keyword_box_sex:
-            search_board_list = pet_list.filter(Q(petSex=search_keyword_box_sex))
-            return search_board_list
-
-        elif search_keyword_box_size:
-            search_board_list = pet_list.filter(Q(petSize__icontains=search_keyword_box_size))
-            return search_board_list
-
-        elif search_keyword_box_species:
-            search_board_list = pet_list.filter(Q(petSpecies__icontains=search_keyword_box_species))
-            return search_board_list
-
-        else:
-            messages.error(self.request, '옵션을 선택해주세요')
-
-        return pet_list
+    return render(request, 'yyApp/board_list.html', context)
 
 
+def board_search(request):
+    paginate_by = 9
+    context = {}
+
+    board_pet_list = Pet.objects.select_related('board').order_by('-id').exclude(board__id=None)
+    search_keyword_bar = request.GET.get('q', '')
+    search_type = request.GET.get('type', '')
+
+    search_keyword_box_sex = request.GET.get('pet_sex', '')
+    search_keyword_box_size = request.GET.get('pet_size', '')
+    search_keyword_box_species = request.GET.get('pet_species', '')
+
+    # 검색박스 구현     
+    if search_keyword_box_sex and search_keyword_box_size and search_keyword_box_species:
+        board_pet_list = board_pet_list.filter(
+            Q(petSex=search_keyword_box_sex) &
+            Q(petSpecies__icontains=search_keyword_box_species) &
+            Q(petSize__icontains=search_keyword_box_size))
+
+    elif search_keyword_box_sex and search_keyword_box_size:
+        board_pet_list = board_pet_list.filter(
+            Q(petSex=search_keyword_box_sex) &
+            Q(petSize__icontains=search_keyword_box_size))
+
+    elif search_keyword_box_sex and search_keyword_box_species:
+        board_pet_list = board_pet_list.filter(
+            Q(petSex=search_keyword_box_sex) &
+            Q(petSpecies__icontains=search_keyword_box_species))
+
+    elif search_keyword_box_size and search_keyword_box_species:
+        board_pet_list = board_pet_list.filter(
+            Q(petSpecies__icontains=search_keyword_box_species) &
+            Q(petSize__icontains=search_keyword_box_size))
+
+    elif search_keyword_box_sex:
+        board_pet_list = board_pet_list.filter(Q(petSex=search_keyword_box_sex))
+
+    elif search_keyword_box_size:
+        board_pet_list = board_pet_list.filter(Q(petSize__icontains=search_keyword_box_size))
+
+    elif search_keyword_box_species:
+        board_pet_list = board_pet_list.filter(Q(petSpecies__icontains=search_keyword_box_species))
+
+    # else:
+    #     messages.error(request, '옵션을 선택하세요.') 
+
+    if search_keyword_bar:
+        if search_type == 'all':
+            board_pet_list = board_pet_list.filter(
+                Q(board__title__icontains=search_keyword_bar) | Q(board__content__icontains=search_keyword_bar) | Q(
+                    board__hashtag__icontains=search_keyword_bar))
+        elif search_type == 'title_content':
+            board_pet_list = board_pet_list.filter(
+                Q(board__title__icontains=search_keyword_bar) | Q(board__content__icontains=search_keyword_bar))
+        elif search_type == 'title':
+            board_pet_list = board_pet_list.filter(board__title__icontains=search_keyword_bar)
+        elif search_type == 'content':
+            board_pet_list = board_pet_list.filter(board__content__icontains=search_keyword_bar)
+        elif search_type == 'hashtag':
+            board_pet_list = board_pet_list.filter(board__hashtag__icontains=search_keyword_bar)
+
+            # else:
+    #     messages.error(request, '검색어를 입력해주세요.')
+
+    # 페이지
+    context['is_paginated'] = True
+
+    paginator = Paginator(board_pet_list, paginate_by)
+    page_numbers_range = 10
+    current_page = int(request.GET.get('page', 1))
+    context['current_page'] = current_page
+
+    # 시작/끝 인덱스 조회
+    start_index = int((current_page - 1) / page_numbers_range) * page_numbers_range
+    end_index = start_index + page_numbers_range
+
+    # 현재 페이지가 속한 페이지 그룹의 범위
+    current_page_group_range = paginator.page_range[start_index: end_index]
+
+    start_page = paginator.page(current_page_group_range[0])
+    end_page = paginator.page(current_page_group_range[-1])
+
+    has_previous_page = start_page.has_previous()
+    has_next_page = end_page.has_next()
+
+    context['current_page_group_range'] = current_page_group_range
+    if has_previous_page:
+        context['has_previous_page'] = has_previous_page
+        context['previous_page'] = start_page.previous_page_number
+
+    if has_next_page:
+        context['has_next_page'] = has_next_page
+        context['next_page'] = end_page.next_page_number
+
+    e = paginate_by * current_page
+    s = e - paginate_by
+    board_pet_list = board_pet_list[s:e]
+    context['board_pet_list'] = board_pet_list
+
+    # 글쓰기 버튼 구현
+    login_member = check_session(request)
+    if login_member and login_member.authority:
+        is_check = True
+    else:
+        is_check = False
+    context['is_check'] = is_check
+    context['login_member'] = login_member
+
+    return render(request, 'yyApp/board_search.html', context)
 
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        # 페이지
-        paginator = context['paginator']
-        page_numbers_range = 5
-        max_index = len(paginator.page_range)
-
-        page = self.request.GET.get('page')
-        current_page = int(page) if page else 1
-
-        start_index = int((current_page - 1) / page_numbers_range) * page_numbers_range
-        end_index = start_index + page_numbers_range
-        if end_index >= max_index:
-            end_index = max_index
-
-        page_range = paginator.page_range[start_index:end_index]
-        context['page_range'] = page_range
-        board_fixed = Board.objects.order_by('-id')
-
-        
-        # 검색필터, 검색바
-
-        search_keyword_bar = self.request.GET.get('q', '')      
-        search_type = self.request.GET.get('type', '')
-
-        search_keyword_box_sex = self.request.GET.get('pet_sex', None)
-        search_keyword_box_size = self.request.GET.get('pet_size', '')        
-        search_keyword_box_species = self.request.GET.get('pet_species', '')
-
-        if len(search_keyword_bar) > 1:
-            context['q'] = search_keyword_bar
-
-        context['type'] = search_type
-        context['board_fixed'] = board_fixed
-        context['pet_sex'] = search_keyword_box_sex
-        context['pet_size'] = search_keyword_box_size
-        context['pet_species'] = search_keyword_box_species
-
-
-        # 글쓰기 버튼 구현
-        login_member = check_session(self.request)
-        if login_member and login_member.authority :
-            is_check = True
-        else :
-            is_check = False
-        context['is_check'] = is_check
-        context['login_member'] = login_member
-
-
-        return context
 
 def chart(request):
     pie_labels = list(state['상태'])
@@ -360,3 +499,14 @@ def modify_adoption(request):
             pet.petAdoption = False
             pet.save()
     return render(request, "yyApp/finish_mod_adoption.html")
+
+
+def like_post(request, postID):
+    post = get_object_or_404(Board, id=postID)
+    login_member = check_session(request)
+    check_like_post = post.like.filter(memberID=login_member.memberID).exists()
+    if check_like_post:
+        post.like.remove(login_member)
+    else:
+        post.like.add(login_member)
+    return redirect(reverse('yyApp:post_detail', args=[post.id]))
